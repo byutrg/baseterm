@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+		
+		{% stylesheets '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/jBox.css' %}
+			<link href="{{ asset_url }}" rel="stylesheet">
+		{% endstylesheets %}
+        {% block stylesheets %}{% endblock %}
+		
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+		
+		{% javascripts '@AppBundle/Resources/js/jquery-2.1.4.min.js' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		{% javascripts '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/jBox.js' %}
+			<script src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+		
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

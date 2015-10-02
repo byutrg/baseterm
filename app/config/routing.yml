@@ -1,0 +1,31 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+lucky_number:
+    path: /lucky/number
+    defaults: { _controller: AppBundle:Lucky:number}
+
+search_termbase:
+    path: /termbase/search
+    defaults: { _controller: AppBundle:TermbaseSearch:search }
+
+search_termbase_js:
+    path: /termbase/search.{_format}
+    defaults: { _controller: AppBundle:TermbaseSearch:script, _format: js}
+    requirements:
+        _format: js|json
+
+lang_codes_list:
+    path: /termbase/lang_codes.{_format}
+    defaults: { _controller: AppBundle:TermbaseSearch:jsonLoad, _format: json}
+    requirements:
+        _format: js|json
+
+jbox_small:
+    path: /termbase/entry/view/small
+    defaults: { _controller: JboxBundle:Jbox:small }
+
+jbox_large:
+    path: /termbase/entry/view/large
+    defaults: { _controller: JboxBundle:Jbox:large }

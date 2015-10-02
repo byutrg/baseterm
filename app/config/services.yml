@@ -1,0 +1,21 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    api_controller:
+        class: ServiceBundle\Controller\apiController
+    termbases_controller:
+        class: ServiceBundle\Controller\TermbasesController
+    termbase_controller:
+        class: ServiceBundle\Controller\TermbaseController
+    global_controller:
+        class: ServiceBundle\Controller\GlobalController
+    person_controller:
+        class: ServiceBundle\Controller\PersonController
+    entry_controller:
+        class: ServiceBundle\Controller\EntryController

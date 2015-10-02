@@ -1,0 +1,8 @@
+{% for f in forms %}
+	{{ form_start(f.form.createView(), {'action': path('search_termbase'), 'method': 'POST'}) }}
+	<p>Termbase:</p>
+		<div><span>Id:</span>{{f.termbase.id}}</div>
+		<div><span>Working Language:</span>{{f.termbase.working_language}}</div>
+		<div><span>Name:</span>{{f.termbase.name}}</div>
+	{{ form_end(f.form.createView()) }}
+{% endfor %}

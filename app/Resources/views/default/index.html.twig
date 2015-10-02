@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<p>
+		Welcome!  Which termbase would you like to view?
+	</p>
+	{{ render(controller(
+		'AppBundle:TermbasesSelect:getAll'
+	)) }}
+{% endblock %}

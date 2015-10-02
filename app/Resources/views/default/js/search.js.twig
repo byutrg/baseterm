@@ -1,0 +1,629 @@
+<script>
+$(document).ready(init);
+var entries;
+var termbaseId;
+var langList = [];
+var tigList = [];
+var termList = [];
+var resultList = [];
+var resultRows = [];
+var activeModal = {};
+var activeIndex = -1;
+
+function init()
+{
+	entries = $.parseJSON('{{entries|json_encode}}');
+	termbaseId = '{{id|raw}}';
+	
+	for (var e = 0; e < entries.length; e++)
+	{
+		var languages = entries[e]['languages'];
+		//create List structures
+		for (var l = 0; l < languages.length; l++)
+		{
+			var language = languages[l];
+			var tigs = languages[l]['terms'];
+			langList.push({
+					'entry_id':e, 
+					'language_id':l,
+					'language':language
+				});
+				
+			for (var t = 0; t < tigs.length; t++)
+			{
+				var term = tigs[t]['term'];
+				var tig = tigs[t];
+				tigList.push({
+					'entry_id':e,
+					'language_id':l,
+					'tig_id':t,
+					'tig':tig
+				});
+				
+				termList.push({
+					'entry_id':e,
+					'language_id':l,
+					'tig_id':t,
+					'term':term
+				});
+			}
+		}
+	}
+	
+	//add options to #languageCode select
+	$.getJSON('lang_codes.json', function(data){
+		langCodeLoader(data);;
+	});
+	
+	//add options to #subjectField select
+	subjectFieldLoader();
+	
+	//add options to #customer select
+	customerLoader();
+	
+	//add options to #transacPerson select
+	// transacPersonLoader();
+}
+
+function searchForm()
+{
+	var children = $('#searchQueries').children();
+	
+	resultList = [];
+	$('.search_result').remove();
+	
+	var results = [];
+	var paramProvided = false;
+	for (var i = 0; i < children.length; i++)
+	{
+		if (children[i].value != '')
+		{
+			paramProvided = true;
+			var resultArray = [];
+			switch(children[i].id){
+				case 'term':
+					resultArray = termFind(children[i].value);
+					break;
+				case 'pos':
+					//resultArray = posFind(children[i].value);
+					resultArray = tigFind(children[i].value, 'pos');
+					break;
+				case 'languageCode':
+					resultArray = langFind(children[i].value, 'code');
+					break;
+				// case 'transacPerson':
+					// resultArray = personFind(children[i].value);
+					// break;
+				case 'subjectField':
+					resultArray = subjectFieldFind(children[i].value);
+					break;
+				case 'approval':
+					//resultArray = approvalFind(children[i].value);
+					resultArray = tigFind(children[i].value, 'status');
+					break;
+				case 'customer':
+					resultArray = customerFind(children[i].value);
+					break;
+				default:
+					break;
+			}
+			if (resultArray.length > 0) results.push(resultArray);
+		}
+	}
+	
+	//narrow results with each additional query provided
+	if (results.length > 0 || paramProvided)
+	{
+		if (results.length > 1)
+		{
+			var rLengthSmall = results[0].length;
+			var narrow = 0;
+			for (var i = 0; i < results.length; i++)
+			{
+				if (results[i].length < rLengthSmall)
+				{
+					rLengthSmall = results[i].length;
+					narrow = i;
+				}
+			}
+			
+			for (var y = 0; y < results[narrow].length; y++)
+			{
+				var exists = true;
+				for (var x = 0; x < results.length; x++)
+				{
+					if (narrow==x) continue;
+					
+					if ($.inArray(results[narrow][y], results[x]) < 0)
+					{
+						exists = false;
+					}
+				}
+				if (exists == true)
+				{
+					resultList.push(results[narrow][y]);
+				}
+			}
+		}
+		else
+		{
+			resultList = results[0];
+		}
+		
+		if (typeof resultList != 'undefined' && resultList.length > 0)
+		{
+			printResults();
+		}
+		else
+		{
+			var error = $('<tr></tr>');
+			error.attr('class', 'noQueriesError search_result');
+			error.text("No matching terms were found.");
+			$('#resultsTable').append(error);	
+		}
+	}
+	else
+	{
+		var error = $('<tr></tr>');
+		error.attr('class', 'noQueriesError search_result');
+		error.text("No search parameters were entered!");
+		$('#resultsTable').append(error);	
+	}
+
+}
+function noResultsError()
+{
+	var error = $('<tr></tr>');
+	error.attr('class', 'noQueriesError search_result');
+	error.text("No Search Results were found.");
+	$('#resultsTable').append(error);
+}
+
+function printResults()
+{
+	if (typeof resultList == 'undefined') return false;
+	for (var i = 0; i < resultList.length; i++) 
+	{	
+		var resultId = resultList[i];
+		var idSplit = resultId.split('_');
+		
+		var e = idSplit[1]; 
+		var l = idSplit[2];
+		var t = idSplit[3];
+		
+				
+		var resultRow = $('<tr></tr>');
+		resultRow.attr('id', resultId);
+		resultRow.attr('class', 'search_result');
+		
+		//term
+		var resultTerm = $('<td></td>');
+		resultTerm.attr('id', resultId+'_term');
+		resultTerm.text(entries[e]['languages'][l]['terms'][t]['term']);
+		//pos
+		var resultPos = $('<td></td>');
+		resultPos.text(entries[e]['languages'][l]['terms'][t]['pos']);
+		//lang
+		var resultLangCode = $('<td></td>');
+		resultLangCode.text(entries[e]['languages'][l]['code']);
+		//Transac
+		var resultTransacPersonEntry = $('<td></td>');
+		if (typeof entries[e]['transactions'] != 'undefined')
+		{
+			for (var x = 0; x < entries[e]['transactions'].length; x++)
+			{
+				var resultTransacPerson_item = $('<p></p>');
+				resultTransacPerson_item.text(entries[e]['transactions'][x].person);
+				resultTransacPersonEntry.append(resultTransacPerson_item);
+			}
+		}
+		resultRow.append(resultTerm);
+		resultRow.append(resultPos);
+		resultRow.append(resultLangCode);
+		resultRows.push(resultRow);
+		$('#resultsTable').append(resultRow);
+
+		
+		var idSpan = $('<input>');
+		idSpan.text(resultId);
+		idSpan.attr('class', 'idList');
+		idSpan.attr('type', 'hidden');
+		
+		
+		var modal = new jBox('Modal', {
+			width: 600,
+			height: 400,
+			id: resultId+'_modal_'+i,
+			attach: $('#'+resultId+"_term"),
+			title: entries[e]['languages'][l]['terms'][t]['term'],
+			onOpen: function(){
+				smallWindowConstruct(this);
+				modalListener(this);
+			},
+			onClose: function(){
+			}
+		});
+		
+	}
+	
+}
+
+//windowContent Constructors
+function smallWindowConstruct(modal)
+{
+	var idSplit = modal.id.split('_');
+		
+	var e = idSplit[1]; 
+	var l = idSplit[2];
+	var t = idSplit[3];
+	
+	var navObject = {
+		'e': e,
+		'l': l,
+		't': t
+	};
+	modal.ajax({url: 'entry/view/small', data: {'termbaseId':termbaseId, 'nav': navObject}});
+}
+
+//large window constructor
+function largeWindowConstruct()
+{
+	
+}
+
+
+//modalWindow listeners
+function modalListener(modal)
+{
+	activeModal = modal;
+	activeModal.setHeight(200);
+	activeModal.setWidth(300);
+	$('.expandButton').text('More Details');
+	$('.expandButton').attr('onClick', 'expandModalButton_pressed()');
+}
+
+function expandModalButton_pressed()
+{
+	activeModal.setHeight(400);
+	activeModal.setWidth(600);
+	$('.expandButton').text('Fewer Details');
+	$('.expandButton').attr('onClick', 'shrinkModalButton_pressed()');
+}
+
+function shrinkModalButton_pressed()
+{
+	activeModal.setHeight(200);
+	activeModal.setWidth(300);
+	$('.expandButton').text('More Details');
+	$('.expandButton').attr('onClick', 'expandModalButton_pressed()');
+}
+
+//SELECT element pre-loaders
+function langCodeLoader(langCodeMaster)
+{
+	var langCodes = [];
+	
+	for (var i = 0; i < langList.length; i++)
+	{
+		var code = langList[i].language.code;
+		
+		if ($.inArray(code, langCodes) < 0)
+		{
+			langCodes.push(code);
+		}
+	}
+	for (var i = 0; i < langCodes.length; i++)
+	{
+		var code = langCodes[i];
+		var exists;
+		for (var e = 0; e < langCodeMaster.length; e++)
+		{
+			if ($.inArray(code.toLowerCase(),langCodeMaster[e].codes) > -1)
+			{
+				exists = true;
+				
+				var opt = $('<option></option>');
+				opt.attr('value', code);
+				opt.text(langCodeMaster[e].name);
+				$('#languageCode').append(opt);
+				break;
+			}
+		}
+		if (!exists)
+		{
+			var opt = $('<option></option>');
+			opt.attr('value', code);
+			opt.text(code);
+			$('#languageCode').append(opt);
+		}
+	}
+}
+
+function transacPersonLoader()
+{
+	var personList = [];
+	
+	for (var e = 0; e < entries.length; e++)
+	{
+		var transactions = (typeof entries[e]['transactions'] != 'undefined') ? entries[e]['transactions'] : [];
+		transacLooper(transactions, personList);
+		
+		var languages = entries[e]['languages'];
+		for (var l = 0; l < languages.length; l++)
+		{
+			var language = languages[l];
+			var transactions = (typeof language['transactions'] != 'undefined') ? entries[e]['transactions'] : [];
+			transacLooper(transactions, personList);
+			
+			var tigs = language['terms'];
+			for (var t = 0; t < tigs.length; t++)
+			{
+				var tig = tigs[t];
+				var transactions = (typeof tig['transactions'] != 'undefined') ? entries[e]['transactions'] : [];
+				transacLooper(transactions, personList);
+			}
+		}
+	}
+	for (var i = 0; i < personList.length; i++)
+	{
+		var person = personList[i];
+		var opt = $('<option></option>');
+		opt.attr('value', person);
+		opt.text(person);
+		$('#transacPerson').append(opt);
+	}
+}
+
+function transacLooper(transactions, personList) //used by transacPersonLoader()
+{
+	if (typeof transactions == 'undefined') return;
+	for (var i = 0; i < transactions.length; i++)
+	{
+		if($.inArray(transactions[i].person, personList) < 0)
+		{	
+			personList.push(transactions[i].person);
+		}
+	}
+}
+
+function subjectFieldLoader()
+{
+	var subjectFields = [];
+	for (var i = 0; i < entries.length; i++)
+	{
+		var field = entries[i].subject_field;
+		
+		if (typeof field != 'undefined' && $.inArray(field, subjectFields) < 0)
+		{
+			subjectFields.push(field);
+		}
+	}
+	for (var i = 0; i < subjectFields.length; i++)
+	{
+		var field = subjectFields[i];
+		var opt = $('<option></option>');
+		opt.attr('value', field);
+		opt.text(field);
+		$('#subjectField').append(opt);
+	}
+}
+
+function customerLoader()
+{
+	var customers = [];
+	for (var i = 0; i < tigList.length; i++)
+	{
+		var tigObject = tigList[i];
+		var customerList = tigObject.tig.customers;
+		if (typeof customerList == 'undefined' || customerList.length < 1) continue;
+		for (var c = 0; c < customerList.length; c++)
+		{
+			var customer = customerList[c];
+			if (typeof customer != 'undefined' && $.inArray(customer, customers) < 0)
+			{
+				customers.push(customer);
+			}
+		}
+	}
+	for (var i = 0; i < customers.length; i++)
+	{
+		var customer = customers[i];
+		var opt = $('<option></option>');
+		opt.attr('value', customer);
+		opt.text(customer);
+		$('#customer').append(opt);
+	}
+}
+
+
+
+
+//Search Functions
+function termFind(query)
+{
+	var results = [];
+	for (var t = 0; t < termList.length; t++)
+	{
+		var term = termList[t];
+		
+		var re = new RegExp(query, "i");
+		
+		if (typeof term.term != 'undefined' &&
+			term.term.search(re) > -1)
+		{
+			var resultId = "I_"+term.entry_id+"_"+term.language_id+"_"+term.tig_id;
+			
+			if ($.inArray(resultId, resultList) < 0)
+			{
+				results.push(resultId);
+			}
+		}
+	}
+	
+	return results;
+}
+
+function tigFind(query, index)
+{
+	var results = [];
+	for (var t = 0; t < tigList.length; t++)
+	{
+		var tig = tigList[t];
+		
+		if ( query == '*' || (typeof tig.tig[index] != 'undefined' &&
+			tig.tig[index].toUpperCase() == query.toUpperCase()))
+		{
+			var resultId = "I_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
+			
+			if ($.inArray(resultId, resultList) < 0)
+			{
+				results.push(resultId);
+			}
+		}
+	}
+	
+	return results;
+}
+
+function langFind(query, index)
+{
+	var results = [];
+	for (var l = 0; l < langList.length; l++)
+	{
+		var language = langList[l].language;
+		if ( typeof language[index] != 'undefined' &&
+			language[index].toUpperCase() == query.toUpperCase())
+		{
+			var terms = language.terms;
+			
+			for (var t = 0; t < terms.length; t++)
+			{
+				var resultId = "I_"+langList[l].entry_id+"_"+langList[l].language_id+"_"+t;
+				
+				
+				if ($.inArray(resultId, resultList) < 0)
+				{
+					results.push(resultId);
+				}
+			}
+		}
+	}
+	
+	return results;
+}
+
+function personFind(query)
+{
+	var results = [];
+	
+	for (var e = 0; e < entries.length; e++)
+	{
+		var transactions = (typeof entries[e]['transactions'] != 'undefined') ? entries[e]['transactions'] : [];
+		
+		var found = transactionNameCompare(query, transactions);
+		
+		var languages = entries[e]['languages'];
+		for (var l = 0; l < languages.length; l++)
+		{
+			var language = languages[l];
+			var transactions = (typeof language['transactions'] != 'undefined') ? entries[e]['transactions'] : [];
+			
+			if (!found) found = transactionNameCompare(query, transactions);
+			
+			var tigs = language['terms'];
+			for (var t = 0; t < tigs.length; t++)
+			{
+				var tig = tigs[t];
+				var transactions = (typeof tig['transactions'] != 'undefined') ? entries[e]['transactions'] : [];
+				
+				if (!found) found = transactionNameCompare(query, transactions);
+				
+				var resultId = "I_"+e+"_"+l+"_"+t;
+				
+				if (found)
+				{
+					results.push(resultId);
+				}
+				
+			}
+		}
+
+	}
+	return results;
+}
+
+function transactionNameCompare(query, transactions)
+{
+	if (typeof transactions == 'undefined') return false;
+	for (var i = 0; i < transactions.length; i++)
+	{
+		var re = new RegExp(query, 'i')
+		if (transactions[i].person.search(re) > -1)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+//
+function subjectFieldFind(query)
+{
+	var results = [];
+	
+	for (var e = 0; e < entries.length; e++)
+	{
+		var subjectField = (typeof entries[e]['subject_field'] != 'undefined') ? entries[e]['subject_field'] : "";
+		
+		var found = (subjectField != "" && subjectField.toUpperCase() == query.toUpperCase()) ? true : false;
+		
+		var languages = entries[e]['languages'];
+		for (var l = 0; l < languages.length; l++)
+		{
+			var language = languages[l];	
+			var tigs = language['terms'];
+			for (var t = 0; t < tigs.length; t++)
+			{
+				var tig = tigs[t];
+				
+				var resultId = "I_"+e+"_"+l+"_"+t;
+				
+				if (found)
+				{
+					results.push(resultId);
+				}
+				
+			}
+		}
+
+	}
+	return results;
+}
+
+function customerFind(query)
+{
+	var results = [];
+	for (var t = 0; t < tigList.length; t++)
+	{
+		var tig = tigList[t];
+		if (typeof tig.tig.customers == 'undefined') continue;
+		for (var i = 0; i < tig.tig.customers.length; i++)
+		{
+			if ( query == '*' || (typeof tig.tig['customers'][i] != 'undefined' &&
+				tig.tig['customers'][i].toUpperCase() == query.toUpperCase()))
+			{
+				var resultId = "I_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
+				
+				if ($.inArray(resultId, resultList) < 0)
+				{
+					results.push(resultId);
+				}
+			}
+		}
+	}
+	
+	return results;
+}
+
+	
+</script>

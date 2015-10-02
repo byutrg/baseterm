@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style>
+.expandButton {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+}
+
+.noQueriesError {
+	color: red;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+	<div id='searchQueries'>
+		<input type='text' id='term' name='term' placeholder='Term'/>
+		<select id='pos' name='pos'>
+			<option value='' selected>Select a part of speech...</option>
+			<option value='noun'>Noun</option>
+			<option value='verb'>Verb</option>
+			<option value='adjective'>Adjective</option>
+			<option value='adverb'>Adverb</option>
+			<option value='properNoun'>Proper Noun</option>
+			<option value='other'>Other</option>
+		</select>
+		<select id='languageCode' name='languageCode'>
+			<option value='' selected>Select a language...</option>
+		</select>
+		<select id='subjectField' name='subjectField'>
+			<option value='' selected>Select a subject field...</option>
+		</select>
+		<select id='approval' name='approval'>
+			<option value='' selected>Select an approval...</option>
+			<option value='*'>Any</option>
+			<option value='preferredTerm-admn-sts'>Preferred</option>
+            <option value='admittedTerm-admn-sts'>Admitted</option>
+			<option value='deprecatedTerm-admn-sts'>Deprecated</option>
+			<option value='supersededTerm-admn-sts'>Superseded</option>
+		</select>
+		<select id='customer' name='customer'>
+			<option value='' selected>Select a customer...</option>
+		</select>
+		<!--<span>Person</span>
+		<select id='transacPerson' name='transacPerson'>
+			<option value='' selected>---</option>
+		</select>-->
+		<button onClick='searchForm()'>Search</button>
+	</div>
+	<div id='results'>
+		<table id='resultsTable'>
+			<tr>
+				<th>Term</th>
+				<th>Part of Speech</th>
+				<th>Language</th>
+			</tr>
+		</table>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ render(controller(
+		'AppBundle:TermbaseSearch:script',
+		{'id':id}
+	)) }}
+{% endblock %}
+	
+	
+
