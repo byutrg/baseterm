@@ -4,13 +4,34 @@
 	</head>
 	<body>
 		<p>
-			e: {{e}}, l: {{l}}, t: {{t}}
+			Term: <span>{{entries[e].languages[l].terms[t].term}}</span>
+		</p>
+		<p>
+			Approval: 
+			<span>
+			{% if entries[e].languages[l].terms[t].status is defined %}
+				{% if entries[e].languages[l].terms[t].status == "preferredTerm-admn-sts" %}
+					Preferred
+				{% elseif entries[e].languages[l].terms[t].status == "admittedTerm-admn-sts" %}
+					Admitted
+				{% elseif entries[e].languages[l].terms[t].status == "deprecatedTerm-admn-sts" %}
+					Deprecated
+				{% elseif entries[e].languages[l].terms[t].status == "supersededTerm-admn-sts" %}
+					Superseded
+				{% else %}
+					{{entries[e].languages[l].terms[t].status}}
+				{% endif %}
+			{% else %}
+				---
+			{% endif %}
+			</span>
 		</p>
 		<p>
 			Part of Speech: <span>{{entries[e].languages[l].terms[t].pos}}</span>
 		</p>
-		
-		
+		<p>
+		</p>
+		<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
 	</body>
 </html>
 

@@ -2,6 +2,7 @@
 $(document).ready(init);
 var entries;
 var termbaseId;
+var langCodeMaster;
 var langList = [];
 var tigList = [];
 var termList = [];
@@ -192,6 +193,16 @@ function printResults()
 		var t = idSplit[3];
 		
 				
+		// <th>Term</th>
+		// <th>Language</th>
+		// <th>Synonym(s)</th>
+		// <th>Translation(s)</th>
+		// <th>Subject Field</th>
+		// <th>Part of Speech</th>
+		// <th>Approval Status</th>
+		// <th>Customer(s)</th>
+		// <th>Project</th>
+		
 		var resultRow = $('<tr></tr>');
 		resultRow.attr('id', resultId);
 		resultRow.attr('class', 'search_result');
@@ -200,29 +211,157 @@ function printResults()
 		var resultTerm = $('<td></td>');
 		resultTerm.attr('id', resultId+'_term');
 		resultTerm.text(entries[e]['languages'][l]['terms'][t]['term']);
-		//pos
-		var resultPos = $('<td></td>');
-		resultPos.text(entries[e]['languages'][l]['terms'][t]['pos']);
+		
+		//Language
 		//lang
-		var resultLangCode = $('<td></td>');
-		resultLangCode.text(entries[e]['languages'][l]['code']);
-		//Transac
-		var resultTransacPersonEntry = $('<td></td>');
-		if (typeof entries[e]['transactions'] != 'undefined')
+		var code = entries[e]['languages'][l]['code'];
+		var langName = "";
+		var exists = false;
+		for (var z = 0; z < langCodeMaster.length; z++)
 		{
-			for (var x = 0; x < entries[e]['transactions'].length; x++)
+			if ($.inArray(code.toLowerCase(),langCodeMaster[z].codes) > -1)
 			{
-				var resultTransacPerson_item = $('<p></p>');
-				resultTransacPerson_item.text(entries[e]['transactions'][x].person);
-				resultTransacPersonEntry.append(resultTransacPerson_item);
+				exists = true;
+				langName = langCodeMaster[z].name;
 			}
 		}
-		resultRow.append(resultTerm);
-		resultRow.append(resultPos);
-		resultRow.append(resultLangCode);
-		resultRows.push(resultRow);
-		$('#resultsTable').append(resultRow);
+		if (!exists) langName = code;
+		var resultLangCode = $('<td></td>');
+		resultLangCode.text(langName);
+		
+		//Synonyms + Translations
+		var resultSynonym = $('<td></td>');
+		var resultTranslations = $('<td></td>');
+		var synonymsExist = false;
+		var translationsExist = false;
+		for (var z = 0; z < entries[e]['languages'].length; z++)
+		{		
+			for (var x = 0; x < entries[e]['languages'][z].terms.length; x++)
+			{
+				if (z == l)
+				{
+					if (entries[e]['languages'][z].terms.length - 1 > 0)
+					{
+						synonymsExist = true;
+						if (x == t) continue;
+						var synonymTerm = $('<p></p>');
+						synonymTerm.text(entries[e]['languages'][z].terms[x].term);
+						resultSynonym.append(synonymTerm);	
+					}
+				}
+				else
+				{
+					if (entries[e]['languages'][z].terms.length - 1 > 0)
+					{
+						translationsExist = true;
+						var transTerm = $('<p></p>');
+						transTerm.text(entries[e]['languages'][z].terms[x].term);
+						resultTranslations.append(transTerm);	
+					}
+					
+				}
+				
+			}
+		}
+		if (!synonymsExist) resultSynonym.text('---');
+		if (!translationsExist) resultTranslations.text('---');
+		
+		//Subject Field
+		var resultSubject = $('<td></td>');
+		var subject = (typeof entries[e]['subject_field'] != 'undefined') ? entries[e]['subject_field'] : '---';
+		resultSubject.text(subject);
+		
+		//pos
+		var resultPos = $('<td></td>');
+		var pos = (typeof entries[e]['languages'][l]['terms'][t]['pos'] != 'undefined') ? entries[e]['languages'][l]['terms'][t]['pos'] : '---';
+		resultPos.text(pos);
+		
+		//approval status
+		var resultStatus = $('<td></td>');
+		var status = (typeof entries[e]['languages'][l]['terms'][t]['status'] != 'undefined') ? entries[e]['languages'][l]['terms'][t]['status'] : '---';
+		resultStatus.text(status);
+		
+		
+		//customers
+		var resultCustomers = $('<td></td>');
+		if (typeof entries[e]['languages'][l]['terms'][t]['customers'] != 'undefined')
+		{
+			var customers = [];
+			for (var z = 0; z < entries[e]['languages'][l]['terms'][t]['customers'].length; z++)
+			{
+				var cust = entries[e]['languages'][l]['terms'][t]['customers'][z];
+				if ($.inArray(cust, customers) < 0)
+				{
+					customers.push(cust);
+					var customerP = $('<p></p>');
+					customerP.text(cust);
+					resultCustomers.append(customerP);
+				}
+			}
+		}
+		else
+		{
+			resultCustomers.text('---');
+		}
 
+		//projects
+		var resultProjects = $('<td></td>');
+		if (typeof entries[e]['languages'][l]['terms'][t]['projects'] != 'undefined')
+		{
+			var projects = [];
+			for (var z = 0; z < entries[e]['languages'][l]['terms'][t]['projects'].length; z++)
+			{
+				var pro = entries[e]['languages'][l]['terms'][t]['projects'][z];
+				if ($.inArray(pro, projects) < 0)
+				{
+					projects.push(pro);
+					var projectP = $('<p></p>');
+					projectP.text(pro);
+					resultProjects.append(projectP);
+				}
+			}
+		}
+		else
+		{
+			resultProjects.text('---');
+		}
+		
+		//// Transac
+		// var resultTransacPersonEntry = $('<td></td>');
+		// if (typeof entries[e]['transactions'] != 'undefined')
+		// {
+			// for (var x = 0; x < entries[e]['transactions'].length; x++)
+			// {
+				// var resultTransacPerson_item = $('<p></p>');
+				// resultTransacPerson_item.text(entries[e]['transactions'][x].person);
+				// resultTransacPersonEntry.append(resultTransacPerson_item);
+			// }
+		
+		// }
+		
+		resultRow.append(resultTerm);
+		resultRow.append(resultLangCode);
+		resultRow.append(resultSynonym);
+		resultRow.append(resultTranslations);
+		resultRow.append(resultSubject);
+		resultRow.append(resultPos);
+		resultRow.append(resultStatus);
+		resultRow.append(resultCustomers);
+		resultRow.append(resultProjects);
+		
+		resultRows.push(resultRow);
+		$('#resultTableBody').append(resultRow);
+
+		
+		// <th>Term</th>
+		// <th>Language</th>
+		// <th>Synonym(s)</th>
+		// <th>Translation(s)</th>
+		// <th>Subject Field</th>
+		// <th>Part of Speech</th>
+		// <th>Approval Status</th>
+		// <th>Customer(s)</th>
+		// <th>Project</th>
 		
 		var idSpan = $('<input>');
 		idSpan.text(resultId);
@@ -299,8 +438,9 @@ function shrinkModalButton_pressed()
 }
 
 //SELECT element pre-loaders
-function langCodeLoader(langCodeMaster)
+function langCodeLoader(langCodeData)
 {
+	langCodeMaster = langCodeData;
 	var langCodes = [];
 	
 	for (var i = 0; i < langList.length; i++)
@@ -453,7 +593,7 @@ function termFind(query)
 		{
 			var resultId = "I_"+term.entry_id+"_"+term.language_id+"_"+term.tig_id;
 			
-			if ($.inArray(resultId, resultList) < 0)
+			if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 			{
 				results.push(resultId);
 			}
@@ -475,7 +615,7 @@ function tigFind(query, index)
 		{
 			var resultId = "I_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
 			
-			if ($.inArray(resultId, resultList) < 0)
+			if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 			{
 				results.push(resultId);
 			}
@@ -501,7 +641,7 @@ function langFind(query, index)
 				var resultId = "I_"+langList[l].entry_id+"_"+langList[l].language_id+"_"+t;
 				
 				
-				if ($.inArray(resultId, resultList) < 0)
+				if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 				{
 					results.push(resultId);
 				}
@@ -540,7 +680,7 @@ function personFind(query)
 				
 				var resultId = "I_"+e+"_"+l+"_"+t;
 				
-				if (found)
+				if (found && $.inArray(resultId, results) < 0)
 				{
 					results.push(resultId);
 				}
@@ -588,7 +728,7 @@ function subjectFieldFind(query)
 				
 				var resultId = "I_"+e+"_"+l+"_"+t;
 				
-				if (found)
+				if (found && $.inArray(resultId, results) < 0)
 				{
 					results.push(resultId);
 				}
@@ -605,7 +745,7 @@ function customerFind(query)
 	var results = [];
 	for (var t = 0; t < tigList.length; t++)
 	{
-		var tig = tigList[t];
+		var tig = tigList[t]; 
 		if (typeof tig.tig.customers == 'undefined') continue;
 		for (var i = 0; i < tig.tig.customers.length; i++)
 		{
@@ -614,7 +754,7 @@ function customerFind(query)
 			{
 				var resultId = "I_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
 				
-				if ($.inArray(resultId, resultList) < 0)
+				if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 				{
 					results.push(resultId);
 				}
@@ -625,5 +765,4 @@ function customerFind(query)
 	return results;
 }
 
-	
 </script>
