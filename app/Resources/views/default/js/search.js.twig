@@ -9,7 +9,11 @@ var termList = [];
 var resultList = [];
 var resultRows = [];
 var activeModal = {};
+var addNoteModal = {};
 var activeIndex = -1;
+var changed = false;
+
+$(document).ready($('#resultsTable').tablesorter());
 
 function init()
 {
@@ -64,10 +68,18 @@ function init()
 	
 	//add options to #transacPerson select
 	// transacPersonLoader();
+	
+	//non-unique jBox windows
+	addNoteModal = new jBox('Modal', {
+		height: 300,
+		width: 300,
+		closeOnClick: false,
+	});
 }
 
+//***************************Click handlers***************************************
 function searchForm()
-{
+{	
 	var children = $('#searchQueries').children();
 	
 	resultList = [];
@@ -154,6 +166,15 @@ function searchForm()
 		if (typeof resultList != 'undefined' && resultList.length > 0)
 		{
 			printResults();
+			new jBox('Notice',{
+				autoClose: 2000,
+				content: 'Search complete!  Click a term to see more details',
+				color: 'blue',
+				attributes: {
+					x: 'right',
+					y: 'top'
+				}
+			})
 		}
 		else
 		{
@@ -170,8 +191,16 @@ function searchForm()
 		error.text("No search parameters were entered!");
 		$('#resultsTable').append(error);	
 	}
-
 }
+
+
+
+
+
+
+
+//******************************TEXT OUTPUTS******************************************
+
 function noResultsError()
 {
 	var error = $('<tr></tr>');
@@ -210,6 +239,7 @@ function printResults()
 		//term
 		var resultTerm = $('<td></td>');
 		resultTerm.attr('id', resultId+'_term');
+		resultTerm.attr('class', 'result_term');
 		resultTerm.text(entries[e]['languages'][l]['terms'][t]['term']);
 		
 		//Language
@@ -238,7 +268,7 @@ function printResults()
 		{		
 			for (var x = 0; x < entries[e]['languages'][z].terms.length; x++)
 			{
-				if (z == l)
+				if (z == l) //synonyms
 				{
 					if (entries[e]['languages'][z].terms.length - 1 > 0)
 					{
@@ -249,9 +279,9 @@ function printResults()
 						resultSynonym.append(synonymTerm);	
 					}
 				}
-				else
+				else //translations
 				{
-					if (entries[e]['languages'][z].terms.length - 1 > 0)
+					if (entries[e]['languages'][z].terms.length > 0)
 					{
 						translationsExist = true;
 						var transTerm = $('<p></p>');
@@ -279,8 +309,22 @@ function printResults()
 		//approval status
 		var resultStatus = $('<td></td>');
 		var status = (typeof entries[e]['languages'][l]['terms'][t]['status'] != 'undefined') ? entries[e]['languages'][l]['terms'][t]['status'] : '---';
-		resultStatus.text(status);
-		
+		switch(status)
+		{
+			case "preferredTerm-admn-sts":
+				resultStatus.text("Preferred");
+				break;
+            case "admittedTerm-admn-sts":
+				resultStatus.text("Admitted");
+				break;
+			case "deprecatedTerm-admn-sts":
+				resultStatus.text("Deprecated");
+				break;
+			case "supersededTerm-admn-sts":
+				resultStatus.text("Superseded");
+				break;
+			
+		}
 		
 		//customers
 		var resultCustomers = $('<td></td>');
@@ -367,7 +411,7 @@ function printResults()
 		idSpan.text(resultId);
 		idSpan.attr('class', 'idList');
 		idSpan.attr('type', 'hidden');
-		
+				
 		
 		var modal = new jBox('Modal', {
 			width: 600,
@@ -378,13 +422,112 @@ function printResults()
 			onOpen: function(){
 				smallWindowConstruct(this);
 				modalListener(this);
+				new jBox('Notice',{
+					autoClose: 15000,
+					content: '<p>Click on a value to edit it!<p>'+
+								'<p>Clicking the shaded area will close the details window.</p>'+
+								'<p>You will be asked if you want to save any changes you made.</p>'+
+								'<p>Clicking on this notice will close it.</p>',
+					color: 'blue',
+					position: {
+						x: 'right',
+						y: 'center'
+					},
+					offset: {
+						x: -20
+					}
+				})
 			},
-			onClose: function(){
-			}
+			onClose: checkChanges,
 		});
 		
 	}
-	
+	//append some content to the tbody
+	$("#resultsTable").trigger('update');
+}
+
+function saveEntryChanges()
+{
+	alert('1');
+	// alert(activeModal.content);
+}
+
+function checkChanges()
+{
+	if (changed)
+	{	
+		var idSplit = activeModal.id.split('_');
+			
+		var e = idSplit[1]; 
+		var l = idSplit[2];
+		var t = idSplit[3];
+		
+		var navObject = {
+			'e': e,
+			'l': l,
+			't': t
+		};
+		
+		var confirmModal = new jBox('Confirm', {
+			closeOnClick: false,
+			width: 200,
+			height: 100,
+			content: 'Changes have been made to an entry.  Would you like to keep these or discard them?',
+			confirmButton: "Save Changes",
+			confirm: function(){
+				
+				alert(JSON.stringify(entries[e]));
+				$.ajax({
+					url: 'entry/update',
+					data: {
+						'termbaseId': termbaseId,
+						'entry': entries[e],
+					},
+					success: function(result){
+						new jBox('Notice', {
+							theme: 'NoticeBorder',
+							color: 'blue',
+							content:'<p>Entry Updated</p>',
+							attributes: { 
+								x: 'right',
+								y: 'bottom'
+							}
+						});
+						
+						searchForm();//refresh result list
+						//sort Table
+						//append some content to the tbody
+					},
+					error: function(result){
+						new jBox('Notice', {
+							theme: 'NoticeBorder',
+							color: 'red',
+							content:'<p>Update Error</p>'+
+									'<p>Entry not updated!</p>',
+							attributes: { 
+								x: 'right',
+								y: 'bottom'
+							}
+						});
+					}
+				});
+			},
+			cancel: function(){
+				entries = $.parseJSON('{{entries|json_encode}}');
+				new jBox('Notice', {
+					theme: 'NoticeBorder',
+					color: 'green',
+					content:'<p>Changes ignored.</p>',
+					attributes: { 
+						x: 'right',
+						y: 'bottom'
+					}
+				});
+			},
+		});
+		confirmModal.open();
+		changed = false;
+	}
 }
 
 //windowContent Constructors
@@ -417,27 +560,53 @@ function modalListener(modal)
 	activeModal = modal;
 	activeModal.setHeight(200);
 	activeModal.setWidth(300);
-	$('.expandButton').text('More Details');
-	$('.expandButton').attr('onClick', 'expandModalButton_pressed()');
+	// $('.expandButton').text('More Details');
+	// $('.expandButton').attr('onClick', 'expandModalButton_pressed()');
 }
 
 function expandModalButton_pressed()
 {
+	var idSplit = activeModal.id.split('_');
+		
+	var e = idSplit[1]; 
+	var l = idSplit[2];
+	var t = idSplit[3];
+	
+	var navObject = {
+		'e': e,
+		'l': l,
+		't': t
+	};
+	activeModal.ajax({url: 'entry/view/large', data: {'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(400);
 	activeModal.setWidth(600);
-	$('.expandButton').text('Fewer Details');
-	$('.expandButton').attr('onClick', 'shrinkModalButton_pressed()');
+	// $('.expandButton').text('Fewer Details');
+	// $('.expandButton').attr('onClick', 'shrinkModalButton_pressed()');
 }
 
 function shrinkModalButton_pressed()
 {
+	var idSplit = activeModal.id.split('_');
+		
+	var e = idSplit[1]; 
+	var l = idSplit[2];
+	var t = idSplit[3];
+	
+	var navObject = {
+		'e': e,
+		'l': l,
+		't': t
+	};
+	activeModal.ajax({url: 'entry/view/small', data: {'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(200);
 	activeModal.setWidth(300);
-	$('.expandButton').text('More Details');
-	$('.expandButton').attr('onClick', 'expandModalButton_pressed()');
+	// $('.expandButton').text('More Details');
+	// $('.expandButton').attr('onClick', 'expandModalButton_pressed()');
 }
 
-//SELECT element pre-loaders
+
+
+//***********************SELECT element pre-loaders*****************************
 function langCodeLoader(langCodeData)
 {
 	langCodeMaster = langCodeData;
@@ -578,7 +747,7 @@ function customerLoader()
 
 
 
-//Search Functions
+//*******************************Search Functions************************************
 function termFind(query)
 {
 	var results = [];
@@ -765,4 +934,320 @@ function customerFind(query)
 	return results;
 }
 
+
+
+//******************************Modal JS*****************************
+	var previousText;
+
+	var input;
+
+	//mini-window event handlers
+	
+	
+	
+	//Information pop-ups
+	$('body').on('mouseover', '.result_term', function(){
+		$('.result_term').jBox('Mouse', {
+			content: 'Click to view entry!'
+		});
+	});
+	$('body').on('mouseover', '.modalDivValue span', function(){
+		$('.modalDivValue span').jBox('Mouse', {
+			content: 'Click to edit this value!',
+			closeOnClick: true
+		});
+	});
+	$('body').on('mouseover', '.addNote', function(){
+		$('.addNote').jBox('Mouse', {
+			content: 'Add a new note!'
+		});
+	});
+	
+	
+	//TEXT BOXES
+	$('body').on('click', '.editText', function(){
+		
+		input = $('<input class="inputTextValue" type="text" />');
+		input.attr('id', $(this).attr('id'));
+		var currentText;
+		
+		var type = input.attr('id').split('_')[0];
+		switch(type)
+		{
+			case 'subjectValue':
+				//warn that Notes are kept at Entry level
+				new jBox('Notice', {
+					color: 'red',
+					content: '<p>Subject fields apply to the entire entry. Changing the subject field will apply to all terms of an entry.</p>',
+					position: {
+						x: 'left',
+						y: 'center'
+					},
+					offset: {
+						x: 20
+					}
+				});
+				
+				if ($(this).text() != "---")
+				{
+					currentText = $(this).text();
+				}
+				else
+				{
+					currentText = "";
+				}
+				break;
+			case 'noteValue':
+			
+				//warn that Notes are kept at Entry level
+				new jBox('Notice', {
+					color: 'red',
+					content: '<p>Notes are kept at the entry level.  Any notes added will apply to all terms of an entry.</p>'+
+							'<p>Leave an entry blank to delete it.</p>',
+					position: {
+						x: 'left',
+						y: 'center'
+					},
+					offset: {
+						x: 20
+					}
+				});
+			
+				if ($(this).text() != "Click here to add a note." && $(this).text() != "---")
+				{
+					currentText = $(this).text();
+				}
+				else
+				{
+					currentText = "";
+				}
+				break;
+			default:
+				if ($(this).text() != "---")
+				{
+					currentText = $(this).text();
+				}
+				else
+				{
+					currentText = "";
+				}
+				break;
+		}
+		previousText = currentText;
+		$(this).replaceWith( input );
+		input.attr('value', currentText);
+		input.focus();
+	});
+	$('body').on('focusout', '.inputTextValue', function(){
+			
+			var input = $('<span class="editText"></span>');
+			input.attr('id', $(this).attr('id'));
+			var currentText;
+			($(this).val() != "") ? currentText = $(this).val() : currentText = "---";
+			$(this).replaceWith( input );
+			
+			
+			if (currentText != previousText)
+			{
+				changed = true;
+			
+				var idSplit = activeModal.id.split('_');
+		
+				var e = idSplit[1]; 
+				var l = idSplit[2];
+				var t = idSplit[3];
+			
+				//update entries
+				var type = input.attr('id').split('_')[0];
+				switch (type)
+				{
+					case 'termValue':
+						entries[e].languages[l].terms[t].term = currentText;
+						break;
+					case 'noteValue':
+						
+						input.attr('class', 'editText notesValue');
+						var noteIndex;
+						(typeof input.attr('id').split('_')[1] != 'undefined') ? noteIndex = input.attr('id').split('_')[1] : noteIndex = 'new';
+						if (currentText == "---")
+						{
+							if (noteIndex != 'new') 
+							{
+								entries[e].notes.splice(noteIndex, 1);
+							}
+						}
+						else
+						{
+							if (noteIndex == 'new')
+							{
+								if (typeof entries[e].notes != "undefined")
+								{
+									entries[e].notes.push(currentText);
+								}
+								else
+								{
+									entries[e].notes = [currentText];
+								}
+							}
+							else
+							{
+								entries[e].notes[noteindex] = currentText;
+							}
+						}
+						break;
+					case 'subjectValue':
+						entries[e].subject_field = currentText;
+						break;
+				}
+			}
+			input.text(currentText);
+			
+		});
+	
+	//SELECTION MENUS
+	$('body').on('click', '.editList', function(){
+		
+		input = $('<select class="inputListValue"></select>');
+		input.attr('id',$(this).attr('id'));
+		var type = $(this).attr('id').split('_')[0];
+		previousText = $(this).text();
+		switch(type)
+		{
+			case 'statusValue':
+				var optPref = $('<option value="preferredTerm-admn-sts">Preferred</option>');
+				var optAdm = $("<option value='admittedTerm-admn-sts'>Admitted</option>");
+				var optDep = $("<option value='deprecatedTerm-admn-sts'>Deprecated</option>");
+				var optSup = $("<option value='supersededTerm-admn-sts'>Superseded</option>");
+				
+				switch($(this).text())
+				{
+					case 'Preferred':
+						optPref.attr('selected', 'true');
+						break;
+					case 'Admitted':
+						optAdm.attr('selected','true');
+						break;
+					case 'Deprecated':
+						optDep.attr('selected','true');
+						break;
+					case 'Superseded':
+						optSup.attr('selected','true');
+						break;
+				}
+				input.append(optPref);
+				input.append(optAdm);
+				input.append(optDep);
+				input.append(optSup);
+				
+				$(this).replaceWith(input);
+				break;
+			case 'posValue':
+				var optNoun = $("<option value='noun'>Noun</option>");
+				var optVerb = $("<option value='verb'>Verb</option>");
+				var optAdj = $("<option value='adjective'>Adjective</option>");
+				var optAdv = $("<option value='adverb'>Adverb</option>");
+				var optPropN = $("<option value='properNoun'>Proper Noun</option>");
+				var optOther = $("<option value='other'>Other</option>");
+				
+				switch($(this).text())
+				{
+					case 'Noun':
+						optNoun.attr('selected', 'true');
+						break;
+					case 'Verb':
+						optVerb.attr('selected','true');
+						break;
+					case 'Adjective':
+						optAdj.attr('selected','true');
+						break;
+					case 'Adverb':
+						optAdv.attr('selected','true');
+						break;
+					case 'Proper Noun':
+						optPropN.attr('selected','true');
+						break;
+					case 'Other':
+						optOther.attr('selected','true');
+						break;
+				}
+				input.append(optNoun);
+				input.append(optVerb);
+				input.append(optAdj);
+				input.append(optAdv);
+				input.append(optPropN);
+				input.append(optOther);
+				
+				$(this).replaceWith(input);
+				break;
+		}
+	
+		input.focus();
+	});
+	$('body').on('focusout', '.inputListValue', function(){
+			
+			var input = $('<span class="editList"></span>');
+			input.attr('id',$(this).attr('id'));
+			var currentText;
+			
+			switch($(this).val())
+			{
+				case "preferredTerm-admn-sts":
+					currentText = "Preferred";
+					break;
+				case "admittedTerm-admn-sts":
+					currentText = "Admitted";
+					break;
+				case "deprecatedTerm-admn-sts":
+					currentText = "Deprecated";
+					break;
+				case "supersededTerm-admn-sts":
+					currentText = "Superseded";
+					break;
+				case 'noun':
+					currentText = "Noun";
+					break;
+				case 'verb':
+					currentText = "Verb";
+					break;
+				case 'adjective':
+					currentText = "Adjective";
+					break;
+				case 'adverb':
+					currentText = "Adverb";
+					break;
+				case 'properNoun':
+					currentText = "properNoun";
+					break;
+				case 'other':
+					currentText = "Other";
+					break;
+			}
+			
+			$(this).replaceWith( input );
+			input.text(currentText);
+			
+			if (currentText != previousText)
+			{
+				changed = true;
+			
+				var idSplit = activeModal.id.split('_');
+		
+				var e = idSplit[1]; 
+				var l = idSplit[2];
+				var t = idSplit[3];
+			
+				//update entries
+				var type = input.attr('id').split('_')[0];
+				switch (type)
+				{
+					case 'statusValue':
+						entries[e].languages[l].terms[t].status = $(this).val();
+						break;
+					case 'posValue':
+						entries[e].languages[l].terms[t].pos = $(this).val();
+						break;
+				}
+			}
+			
+		});
 </script>

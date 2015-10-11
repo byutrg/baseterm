@@ -11,7 +11,16 @@
 .noQueriesError {
 	color: red;
 }
+
+.notesValue {
+	display: block;
+	margin-left: 30px;
+}
 </style>
+
+{% stylesheets '@AppBundle/Resources/js/jquery_plugins/tablesorter/themes/blue/style.css.twig' %}
+			<link href="{{ asset_url }}" rel="stylesheet">
+		{% endstylesheets %}
 {% endblock %}
 
 {% block body %}
@@ -50,7 +59,7 @@
 		<button onClick='searchForm()'>Search</button>
 	</div>
 	<div id='results'>
-		<table id='resultsTable'>
+		<table id='resultsTable' class='tablesorter'>
 			<thead>
 				<tr>
 					<th>Term</th>
@@ -71,6 +80,11 @@
 {% endblock %}
 
 {% block javascripts %}
+	
+	{% javascripts '@AppBundle/Resources/js/jquery_plugins/tablesorter/jquery.tablesorter.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+
 	{{ render(controller(
 		'AppBundle:TermbaseSearch:script',
 		{'id':id}

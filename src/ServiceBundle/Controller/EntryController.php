@@ -18,9 +18,13 @@ class EntryController extends Controller
 		
 		$this->path = $api_address."/termbases/".$termbase_id."/entries";
 	}
-
 	
 	//Entry Controller
+	public function setId($entry_id)
+	{
+		$this->path_id = $this->path."/".$entry_id;
+	}
+	
 	public function get($entry_id)
 	{
 		$this->path_id = $this->path."/".$entry_id;
@@ -50,8 +54,8 @@ class EntryController extends Controller
 	public function updateEntry($entry)
 	{
 		$apiController = new apiController();
-		$result_json = $apiController->put($this->path_id, $entry);
-		
+		$result_json = $apiController->put($this->path_id,$entry);
+		echo(json_encode($entry));
 		return $result_json;
 	}
 	

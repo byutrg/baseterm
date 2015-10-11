@@ -29,3 +29,29 @@ jbox_small:
 jbox_large:
     path: /termbase/entry/view/large
     defaults: { _controller: JboxBundle:Jbox:large }
+
+jbox_addNote:
+    path: /termbase/entry/view/addNote
+    defaults: { _controller: JboxBundle:Jbox:addNote }
+
+entry_update:
+    path: /termbase/entry/update
+    defaults: { _controller: AppBundle:EditEntry:update }
+
+tablesorter_bg:
+    path: /css/bg.{_format}
+    defaults: { _controller: AppBundle:TablesorterCSS:bg, _format: gif }
+    requirements:
+        _format: gif
+
+tablesorter_asc:
+    path: /css/asc.{_format}
+    defaults: { _controller: AppBundle:TablesorterCSS:asc, _format: gif }
+    requirements:
+        _format: gif
+
+tablesorter_desc:
+    path: /css/desc.{_format}
+    defaults: { _controller: AppBundle:TablesorterCSS:desc, _format: gif }
+    requirements:
+        _format: gif

@@ -7,6 +7,9 @@
 		{% stylesheets '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/jBox.css' %}
 			<link href="{{ asset_url }}" rel="stylesheet">
 		{% endstylesheets %}
+		{% stylesheets '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/themes/NoticeBorder.css' %}
+			<link href="{{ asset_url }}" rel="stylesheet">
+		{% endstylesheets %}
         {% block stylesheets %}{% endblock %}
 		
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -17,7 +20,7 @@
 		{% javascripts '@AppBundle/Resources/js/jquery-2.1.4.min.js' %}
 			<script src="{{ asset_url }}"></script>
 		{% endjavascripts %}
-		{% javascripts '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/jBox.js' %}
+		{% javascripts '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/jBox.min.js' %}
 			<script src="{{ asset_url }}"></script>
 		{% endjavascripts %}
 		

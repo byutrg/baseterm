@@ -34,17 +34,35 @@ class JboxController extends Controller
 	/**
      * @Route("/termbase/entry/view/large", name="jbox_large")
      */
-    public function largeAction()
+    public function largeAction(Request $request)
     {
-
+		$nav = $request->query->get('nav');
+		$id = $request->query->get('termbaseId');
 		
+		$entryController = new EntryController($id);
+		$entries_json = $entryController->getAll();
+		$entries = json_decode($entries_json);
 		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		
 		return $this->render(
 			'jbox/large.html.twig',
-			array('i'=>'hello')
+			array('entries'=>$entries, 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'])
 		);
     }
+	
+	/**
+     * @Route("/termbase/entry/view/addNote", name="jbox_addNote")
+     */
+	public function addNoteAction(Request $request)
+	{
+		$nav = $request->query->get('nav');
+		$id = $request->query->get('termbaseId');
+		
+		return $this->render(
+			'jbox/addNote.html.twig',
+			array('entries'=>$entries, 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'])
+		);
+	}
 }

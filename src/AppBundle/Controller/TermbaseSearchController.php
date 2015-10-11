@@ -35,7 +35,7 @@ class TermbaseSearchController extends Controller
 		$entryController = new EntryController($id);
 		$entries_json = $entryController->getAll();
 		$entries = json_decode($entries_json);
-
+		
 		return $this->render( 
 			'default/js/search.js.twig',
 			array('entries'=>$entries,'id'=>$id)

@@ -1,40 +1,76 @@
-<!DOCTYPE html>
-<html>
-	<head>
-	</head>
-	<body>
-		<p>
-			Term: <span>{{entries[e].languages[l].terms[t].term}}</span>
-		</p>
-		<p>
-			Approval: 
-			<span>
-			{% if entries[e].languages[l].terms[t].status is defined %}
-				{% if entries[e].languages[l].terms[t].status == "preferredTerm-admn-sts" %}
-					Preferred
-				{% elseif entries[e].languages[l].terms[t].status == "admittedTerm-admn-sts" %}
-					Admitted
-				{% elseif entries[e].languages[l].terms[t].status == "deprecatedTerm-admn-sts" %}
-					Deprecated
-				{% elseif entries[e].languages[l].terms[t].status == "supersededTerm-admn-sts" %}
-					Superseded
-				{% else %}
-					{{entries[e].languages[l].terms[t].status}}
-				{% endif %}
-			{% else %}
-				---
-			{% endif %}
-			</span>
-		</p>
-		<p>
-			Part of Speech: <span>{{entries[e].languages[l].terms[t].pos}}</span>
-		</p>
-		<p>
-		</p>
-		<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
-	</body>
-</html>
+{% extends 'modals.html.twig' %}
 
+{% block div %}
+<div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}'/>
+	<div class='modalDivValue'>
+		<p>
+		Term: <span class='editText' id='termValue_{{e}}_{{l}}_{{t}}'>{{entries[e].languages[l].terms[t].term}}</span>
+		</p>
+	</div>
+	<div class='modalDivValue'>
+		<p>
+		Approval: 
+		<span class='editList' id='statusValue_{{e}}_{{l}}_{{t}}'>
+		{%- if entries[e].languages[l].terms[t].status is defined -%}
+			{%- if entries[e].languages[l].terms[t].status == "preferredTerm-admn-sts" -%}
+				Preferred
+			{%- elseif entries[e].languages[l].terms[t].status == "admittedTerm-admn-sts" -%}
+				Admitted
+			{%- elseif entries[e].languages[l].terms[t].status == "deprecatedTerm-admn-sts" -%}
+				Deprecated
+			{%- elseif entries[e].languages[l].terms[t].status == "supersededTerm-admn-sts" -%}
+				Superseded
+			{%- else -%}
+				{{entries[e].languages[l].terms[t].status}}
+			{%- endif -%}
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+		</p>
+	</div>
+	<div class='modalDivValue'>
+		<p>
+		Part of Speech: 
+		<span class='editList' id='posValue_{{e}}_{{l}}_{{t}}'>
+		{%- if entries[e].languages[l].terms[t].pos is defined -%}
+			{%- if entries[e].languages[l].terms[t].pos == "noun" -%}
+				Noun
+			{%- elseif entries[e].languages[l].terms[t].pos == "verb" -%}
+				Verb
+			{%- elseif entries[e].languages[l].terms[t].pos == "adjective" -%}
+				Adjective
+			{%- elseif entries[e].languages[l].terms[t].pos == "adverb" -%}
+				Adverb
+			{%- elseif entries[e].languages[l].terms[t].pos == "properNoun" -%}
+				Proper Noun
+			{%- elseif entries[e].languages[l].terms[t].pos == "other" -%}
+				Other
+			{%- else -%}
+				{{entries[e].languages[l].terms[t].pos}}
+			{%- endif -%}
+			
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+		</p>
+	</div>
+	<div class='modalDivValue'>
+		<p>
+		Subject Field:
+		<span class='editText' id='subjectValue_{{e}}_{{l}}_{{t}}'>
+		{%- if entries[e].subject_field is defined -%}
+			{{entries[e].subject_field}}
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+	</div>
+	<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
+	
+	
+	
 <!--var windowContent = $('<div></div>');
 		//window items
 		var expandButton = $('<button></button>');
@@ -57,3 +93,7 @@
 		var languageCode = $('<p></p>');
 		languageCode.text('Language Code: '+entries[e]['languages'][l]['code']);
 		windowContent.append(languageCode);-->
+
+</div>		
+{% endblock %}
+

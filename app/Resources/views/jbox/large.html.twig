@@ -1,0 +1,125 @@
+{% extends 'modals.html.twig' %}
+
+{% block div %}
+<div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}_L'/>
+	<div class='modalDivValue'>
+		<p>
+		Term: <span class='editText' id='termValue_{{e}}_{{l}}_{{t}}_L'>{{entries[e].languages[l].terms[t].term}}</span>
+		</p>
+	</div>
+	<div class='modalDivValue'>
+		<p>
+		Approval: 
+		<span class='editList' id='statusValue_{{e}}_{{l}}_{{t}}_L'>
+		{%- if entries[e].languages[l].terms[t].status is defined -%}
+			{%- if entries[e].languages[l].terms[t].status == "preferredTerm-admn-sts" -%}
+				Preferred
+			{%- elseif entries[e].languages[l].terms[t].status == "admittedTerm-admn-sts" -%}
+				Admitted
+			{%- elseif entries[e].languages[l].terms[t].status == "deprecatedTerm-admn-sts" -%}
+				Deprecated
+			{%- elseif entries[e].languages[l].terms[t].status == "supersededTerm-admn-sts" -%}
+				Superseded
+			{%- else -%}
+				{{entries[e].languages[l].terms[t].status}}
+			{%- endif -%}
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+		</p>
+	</div>
+	<div class='modalDivValue'>
+		<p>
+		Part of Speech: 
+		<span class='editList' id='posValue_{{e}}_{{l}}_{{t}}_L'>
+		{%- if entries[e].languages[l].terms[t].pos is defined -%}
+			{%- if entries[e].languages[l].terms[t].pos == "noun" -%}
+				Noun
+			{%- elseif entries[e].languages[l].terms[t].pos == "verb" -%}
+				Verb
+			{%- elseif entries[e].languages[l].terms[t].pos == "adjective" -%}
+				Adjective
+			{%- elseif entries[e].languages[l].terms[t].pos == "adverb" -%}
+				Adverb
+			{%- elseif entries[e].languages[l].terms[t].pos == "properNoun" -%}
+				Proper Noun
+			{%- elseif entries[e].languages[l].terms[t].pos == "other" -%}
+				Other
+			{%- else -%}
+				{{entries[e].languages[l].terms[t].pos}}
+			{%- endif -%}	
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+		</p>
+	</div>
+	<div class='modalDivValue'>
+		<p>
+		Subject Field:
+		<span class='editText' id='subjectValue_{{e}}_{{l}}_{{t}}_L'>
+		{%- if entries[e].subject_field is defined -%}
+			{{entries[e].subject_field}}
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+	</div>
+	<div class='modalDivValue'>
+		Notes:
+		{%- if entries[e].notes is defined -%}
+			{%- set i = 0 -%}
+			{%- for note in entries[e].notes -%}
+				<p class='notesValue'>
+					Note {{i + 1}}:
+					<span class='editText' id='noteValue_{{i}}'>{{note}}</span>
+				</p>
+				{%- set i = i + 1 -%}
+			{%- endfor -%}
+				<p class='notesValue'>
+					<span class='editText' id='noteValue_new'>Click here to add a note.</span>
+				</p>
+		{%- else -%}
+			<p class='notesValue'>
+				<span class='editText' id='noteValue_new'>Click here to add a note.</span>
+			</p>
+			
+		{%- endif -%}
+	</div>
+	<div>
+		<p class='synonymList'>
+		Synonyms:
+		
+		{% if entries[e].languages[l].terms|length > 1 %}
+			<ul>
+			{% for tig in entries[e].languages[l].terms %}
+				{% if tig.term != entries[e].languages[l].terms[t].term %}
+					<li>{{tig.term}}</li>
+				{% endif %}
+			{% endfor %}
+			</ul>	
+		{% else %}
+			---
+		{% endif %}
+		</p>	
+		<p class='translationList'>
+		
+		Translations:
+		
+		{% if entries[e].languages|length > 1 %}
+			<ul>
+			{% for lang in entries[e].languages %}
+				{% if l != loop.index - 1 %}
+					{% for tig in entries[e].languages[loop.index-1].terms %}
+						<li>{{tig.term}}</li>
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+			</ul>
+		{% endif %}
+		</p>
+	</div>
+	<button class='expandButton' onclick='shrinkModalButton_pressed()'>Fewer Details</button>
+</div>
+{% endblock %}
