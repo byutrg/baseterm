@@ -2,11 +2,13 @@
 
 {% block div %}
 <div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}'/>
+	<!-- ************************TERM ENTRY************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Term: <span class='editText' id='termValue_{{e}}_{{l}}_{{t}}'>{{entries[e].languages[l].terms[t].term}}</span>
 		</p>
 	</div>
+	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Approval: 
@@ -29,6 +31,7 @@
 		</span>
 		</p>
 	</div>
+	<!-- ************************PART OF SPEECH************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Part of Speech: 
@@ -56,6 +59,30 @@
 		</span>
 		</p>
 	</div>
+	<!-- ************************GENDER************************* -->
+	<div class='modalDivValue'>
+		<p>
+		Gender: 
+		<span class='editList' id='genderValue_{{e}}_{{l}}_{{t}}'>
+		{%- if entries[e].languages[l].terms[t].gender is defined -%}
+			{%- if entries[e].languages[l].terms[t].gender == "masculine" -%}
+				Masculine
+			{%- elseif entries[e].languages[l].terms[t].gender == "feminine" -%}
+				Feminine
+			{%- elseif entries[e].languages[l].terms[t].gender == "neuter" -%}
+				Neuter
+			{%- elseif entries[e].languages[l].terms[t].gender == "other" -%}
+				Other
+			{%- else -%}
+				{{entries[e].languages[l].terms[t].gender}}
+			{%- endif -%}
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+		</p>
+	</div>
+	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Subject Field:

@@ -2,11 +2,13 @@
 
 {% block div %}
 <div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}_L'/>
+	<!-- ************************TERM ENTRY************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Term: <span class='editText' id='termValue_{{e}}_{{l}}_{{t}}_L'>{{entries[e].languages[l].terms[t].term}}</span>
 		</p>
 	</div>
+	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Approval: 
@@ -29,6 +31,7 @@
 		</span>
 		</p>
 	</div>
+	<!-- ************************PART OF SPEECH************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Part of Speech: 
@@ -55,6 +58,30 @@
 		</span>
 		</p>
 	</div>
+	<!-- ************************GENDER************************* -->
+	<div class='modalDivValue'>
+		<p>
+		Gender: 
+		<span class='editList' id='genderValue_{{e}}_{{l}}_{{t}}_L'>
+		{%- if entries[e].languages[l].terms[t].gender is defined -%}
+			{%- if entries[e].languages[l].terms[t].gender == "masculine" -%}
+				Masculine
+			{%- elseif entries[e].languages[l].terms[t].gender == "feminine" -%}
+				Feminine
+			{%- elseif entries[e].languages[l].terms[t].gender == "neuter" -%}
+				Neuter
+			{%- elseif entries[e].languages[l].terms[t].gender == "other" -%}
+				Other
+			{%- else -%}
+				{{entries[e].languages[l].terms[t].gender}}
+			{%- endif -%}
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+		</p>
+	</div>
+	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
 		<p>
 		Subject Field:
@@ -66,27 +93,55 @@
 		{%- endif -%}
 		</span>
 	</div>
+	<!-- ************************PROJECTS************************* -->
+	<div class='modalDivValue'>
+		Projects:
+		{%- if entries[e].languages[l].terms[t].projects is defined -%}
+			{%- set i = 0 -%}
+			{%- for project in entries[e].languages[l].terms[t].projects -%}
+				<p class='arrayFormat'>
+					Project {{i + 1}}:
+					<span class='editText' id='projectValue_{{i}}'>{{project}}</span>
+				</p>
+				{%- set i = i + 1 -%}
+			{%- endfor -%}
+				<p class='arrayFormat'>
+					New Project:
+					<span class='editText' id='projectValue_new'>Click here to add a project.</span>
+				</p>
+		{%- else -%}
+			<p class='arrayFormat'>
+				New Project:
+				<span class='editText' id='projectValue_new'>Click here to add a project.</span>
+			</p>
+			
+		{%- endif -%}
+	</div>
+	<!-- ************************NOTES************************* -->
 	<div class='modalDivValue'>
 		Notes:
 		{%- if entries[e].notes is defined -%}
 			{%- set i = 0 -%}
 			{%- for note in entries[e].notes -%}
-				<p class='notesValue'>
+				<p class='arrayFormat'>
 					Note {{i + 1}}:
 					<span class='editText' id='noteValue_{{i}}'>{{note}}</span>
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
-				<p class='notesValue'>
+				<p class='arrayFormat'>
+					New Note:
 					<span class='editText' id='noteValue_new'>Click here to add a note.</span>
 				</p>
 		{%- else -%}
-			<p class='notesValue'>
+			<p class='arrayFormat'>
+				New Note:
 				<span class='editText' id='noteValue_new'>Click here to add a note.</span>
 			</p>
 			
 		{%- endif -%}
 	</div>
+	<!-- ************************SYNONYMS AND TRANSLATIONS******************** -->
 	<div>
 		<p class='synonymList'>
 		Synonyms:
@@ -117,9 +172,115 @@
 				{% endif %}
 			{% endfor %}
 			</ul>
+		{% else %}
+			--- 
 		{% endif %}
 		</p>
 	</div>
-	<button class='expandButton' onclick='shrinkModalButton_pressed()'>Fewer Details</button>
+	<!-- **************ENTRY SPECIFIC MATERIAL********************** -->
+	<div class='entryDiv'>
+		Entry Specific Values:
+		<!-- **********************Definitions******************* -->
+		<div class='modalDivValue'>
+			Definitions:
+			{%- if entries[e].definitions is defined -%}
+				{%- set i = 0 -%}
+				{%- for def in entries[e].definitions -%}
+					<div class='arrayFormat'>
+						Definition {{i + 1}}:
+						<p class='arrayFormat'>
+							Content: <span class='editText' id='defValue_{{i}}_content'>{{def.content}}</span>
+						</p>
+						<p class='arrayFormat'>
+							Source: 
+							<span class='editText' id='defValue_{{i}}_source'>
+							{%- if def.source is defined -%}
+								{{def.source}}
+							{%- else -%}
+								Click here to add a source.
+							{%- endif -%}
+							</span>
+						</p>					
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}
+					<div class='arrayFormat'>
+						New Definition:
+						<p class='arrayFormat'>
+							Content: <span class='editText' id='defValue_new_content'>Click here to add content.</span>
+						</p>
+						<p class='arrayFormat'>
+							Source: <span class='editText' id='defValue_new_source'>Click here to add a source.</span>
+						</p>
+					</div>
+			{%- else -%}
+				<div class='arrayFormat'>
+					New Definition:
+					<p class='arrayFormat'>
+						Content: <span class='editText' id='defValue_new_content'>Click here to add content.</span>
+					</p>
+					<p class='arrayFormat'>
+						Source: <span class='editText' id='defValue_new_source'>Click here to add a source.</span>
+					</p>
+				</div>
+			{%- endif -%}
+		</div>
+		<!-- **********************References******************* -->
+		<div class='modalDivValue'>
+			References:
+			{%- if entries[e].references is defined -%}
+				{%- set i = 0 -%}
+				{%- for ref in entries[e].references -%}
+					<div class='arrayFormat'>
+						Reference {{i + 1}}:
+						<p class='arrayFormat'>
+							Content: <span class='editText' id='refContentValue_{{i}}'>{{ref.content}}</span>
+						</p>
+						<p class='arrayFormat'>
+							Source: 
+							<span class='editText' id='refSourceValue_{{i}}'>
+							{%- if ref.source is defined -%}
+								{{ref.source}}
+							{%- else -%}
+								Click here to add a source.
+							{%- endif -%}
+							</span>
+						</p>
+						
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}
+					<div class='arrayFormat'>
+						New Reference:
+						<p class='arrayFormat'>
+							Content: <span class='editText' id='refContentValue_new'>Click here to add content.</span>
+						</p>
+						<p class='arrayFormat'>
+							Source: <span class='editText' id='refSourceValue_new'>Click here to add a source.</span>
+						</p>
+					</div>
+			{%- else -%}
+				<div class='arrayFormat'>
+					New Reference:
+					<p class='arrayFormat'>
+						Content: <span class='editText' id='refContentValue_new'>Click here to add content.</span>
+					</p>
+					<p class='arrayFormat'>
+						Source: <span class='editText' id='refSourceValue_new'>Click here to add a source.</span>
+					</p>
+				</div>
+			{%- endif -%}
+		</div>
+		<!-- **********************Transactions******************* -->
+		<div class='modalDivValue'>
+	
+		</div>
+		<!-- **********************Images******************* -->
+		<div class='modalDivValue'>
+	
+		</div>
+	<div class='buttonDiv'>
+		<button class='shrinkButton' onclick='shrinkModalButton_pressed()'>Fewer Details</button>
+	</div>
 </div>
 {% endblock %}

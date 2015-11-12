@@ -6,6 +6,44 @@ lucky_number:
     path: /lucky/number
     defaults: { _controller: AppBundle:Lucky:number}
 
+user_check:
+    path: /userCheck
+    defaults: { _controller: AppBundle:Default:userCheck }
+
+objects_entry:
+    path: /objects/entry.{_format}
+    defaults: { _controller: AppBundle:Objects:entry, _format: js }
+    requirements:
+        _format: js
+
+objects_person:
+    path: /objects/person.{_format}
+    defaults: { _controller: AppBundle:Objects:person, _format: js }
+    requirements:
+        _format: js
+
+termbase_list:
+    path: /termbase
+    defaults: { _controller: AppBundle:Default:termbase }
+
+create_termbase:
+    path: /termbase/create
+    defaults: { _controller: AppBundle:TermbaseEdit:create }
+
+create_termbase_js:
+    path: /termbase/create.{_format}
+    defaults: { _controller: AppBundle:TermbaseEdit:script, _format: js }
+    requirements:
+        _format: js|json
+
+save_termbase:
+    path: /termbase/save
+    defaults: { _controller: AppBundle:TermbaseEdit:save }
+
+delete_termbase:
+    path: /termbase/delete
+    defaults: { _controller: AppBundle:TermbaseEdit:delete }
+
 search_termbase:
     path: /termbase/search
     defaults: { _controller: AppBundle:TermbaseSearch:search }
@@ -37,6 +75,22 @@ jbox_addNote:
 entry_update:
     path: /termbase/entry/update
     defaults: { _controller: AppBundle:EditEntry:update }
+
+entry_upload:
+    path: /termbase/entry/upload
+    defaults: { _controller: AppBundle:EditEntry:upload }
+
+entry_new:
+    path: /termbase/entry/new
+    defaults: { _controller: AppBundle:EditEntry:new }
+
+entry_new_entry:
+    path: /termbase/entry/new/entry
+    defaults: { _controller: AppBundle:EditEntry:entry }
+
+entry_new_lang:
+    path: /termbase/entry/new/lang
+    defaults: { _controller: AppBundle:EditEntry:lang }
 
 tablesorter_bg:
     path: /css/bg.{_format}

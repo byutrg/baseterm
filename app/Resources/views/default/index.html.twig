@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheet %}
+
+{% endblock %}
+
 {% block body %}
-	<p>
-		Welcome!  Which termbase would you like to view?
-	</p>
-	{{ render(controller(
-		'AppBundle:TermbasesSelect:getAll'
-	)) }}
+	<div>Welcome to alpha BaseTerm! Please use the Guest account to log in!</div>
+	{{ form_start(form.createView(), {'action': path('user_check'), 'method': 'POST'}) }}
+		<label for='username'>User: </label>
+		<input type='text' id='username' name='username' value='Guest'/>
+		<input type='submit' value='Log In' />
+	{{ form_end(form.createView()) }}
 {% endblock %}

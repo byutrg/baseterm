@@ -8,13 +8,30 @@
 	bottom: 5px;
 }
 
+.buttonDiv {
+	position: absolute;
+	width: 50px;
+	right: 50px;
+	bottom: 25px;
+}
+.shrinkButton {
+	position: fixed;
+	
+}
+
 .noQueriesError {
 	color: red;
 }
 
-.notesValue {
+.arrayFormat {
 	display: block;
 	margin-left: 30px;
+}
+
+.entryEdit {
+	width: 100%;
+	height: 50px;
+	
 }
 </style>
 
@@ -24,6 +41,13 @@
 {% endblock %}
 
 {% block body %}
+	<div id='entryEditOptions' class='entryEdit'>
+		<button type='button' id='addNewEntryButton' onClick='addNewEntry()'>Add a New Entry</button> 
+	<!--
+		{{ form_start(newEntryForm.createView(), {'action': path('entry_new'), 'method': 'POST'}) }}
+		{{ form_end(newEntryForm.createView()) }}
+	-->
+	</div>
 	<div id='searchQueries'>
 		<input type='text' id='term' name='term' placeholder='Term'/>
 		<select id='pos' name='pos'>

@@ -13,8 +13,8 @@ class EntryController extends Controller
 	
 	public function __construct($termbase_id)
 	{
-		$gobals = new GlobalController();
-		$api_address = $gobals->api_address;
+		$globals = new GlobalController();
+		$api_address = $globals->api_address;
 		
 		$this->path = $api_address."/termbases/".$termbase_id."/entries";
 	}
@@ -44,9 +44,8 @@ class EntryController extends Controller
 	
 	public function addEntry($entry)
 	{
-		$entry->clean();
 		$apiController = new apiController();
-		$result_json = $apiController->post($this->path, json_encode($entry));
+		$result_json = $apiController->post($this->path,$entry);
 		
 		return $result_json;
 	}
@@ -55,7 +54,6 @@ class EntryController extends Controller
 	{
 		$apiController = new apiController();
 		$result_json = $apiController->put($this->path_id,$entry);
-		echo(json_encode($entry));
 		return $result_json;
 	}
 	

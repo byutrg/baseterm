@@ -16,14 +16,24 @@ class TermbaseSearchController extends Controller
     public function searchAction(Request $request)
     {
 
-		$id = $request->request->get('form')['id'];
-		
+		if (!empty($request->request->get('form')['id']))
+		{
+			$id = $request->request->get('form')['id'];
+		}
+		else
+		{
+			$id = $request->attributes->get('id');
+		}
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
+		$form = $this->createFormBuilder()
+				->add('termbaseId', 'hidden', array('data' => $id))
+				->add('addEntry', 'submit', array('label' => 'Add a New Entry'))
+				->getForm();
 		
 		return $this->render(
 			'default/search.html.twig',
-			array('id'=>$id)
+			array('id'=>$id, 'newEntryForm'=>$form)
 		);
     }
 	

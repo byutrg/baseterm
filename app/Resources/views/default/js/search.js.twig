@@ -3,6 +3,7 @@ $(document).ready(init);
 var entries;
 var termbaseId;
 var langCodeMaster;
+var langCodeValueList = {};
 var langList = [];
 var tigList = [];
 var termList = [];
@@ -10,6 +11,7 @@ var resultList = [];
 var resultRows = [];
 var activeModal = {};
 var addNoteModal = {};
+var newEntryModal = {};
 var activeIndex = -1;
 var changed = false;
 
@@ -75,9 +77,36 @@ function init()
 		width: 300,
 		closeOnClick: false,
 	});
+	
+	//create new Entry modal
+	newEntryModal = new jBox('Modal',{
+		title: "New Entry:",
+		position: {
+			x: 50,
+			y: 50
+		},
+		ajax: {
+			url: 'entry/new', 
+			data: {
+				'termbaseId':termbaseId, 
+				},
+			reload: true
+			},
+		onClose: function(){
+			
+		}
+	})
+
 }
 
 //***************************Click handlers***************************************
+function addNewEntry()
+{
+	newEntryModal.open();
+}
+
+
+
 function searchForm()
 {	
 	var children = $('#searchQueries').children();
@@ -476,7 +505,7 @@ function checkChanges()
 			confirmButton: "Save Changes",
 			confirm: function(){
 				
-				alert(JSON.stringify(entries[e]));
+				//alert(JSON.stringify(entries[e]));
 				$.ajax({
 					url: 'entry/update',
 					data: {
@@ -484,6 +513,7 @@ function checkChanges()
 						'entry': entries[e],
 					},
 					success: function(result){
+						
 						new jBox('Notice', {
 							theme: 'NoticeBorder',
 							color: 'blue',
@@ -611,6 +641,20 @@ function langCodeLoader(langCodeData)
 {
 	langCodeMaster = langCodeData;
 	var langCodes = [];
+	
+	for (var e = 0; e < langCodeMaster.length; e++)
+	{
+		var codeKey = '';
+		if (langCodeMaster[e].codes[0] != '')
+		{
+			codeKey = langCodeMaster[e].codes[0];
+		}
+		else{
+			codeKey = langCodeMaster[e].codes[2];
+		}
+	
+		langCodeValueList[codeKey] = langCodeMaster[e].name;
+	}
 	
 	for (var i = 0; i < langList.length; i++)
 	{
@@ -998,7 +1042,6 @@ function customerFind(query)
 				}
 				break;
 			case 'noteValue':
-			
 				//warn that Notes are kept at Entry level
 				new jBox('Notice', {
 					color: 'red',
@@ -1022,8 +1065,22 @@ function customerFind(query)
 					currentText = "";
 				}
 				break;
+			case 'projectValue':
+				if ($(this).text() != "Click here to add a project." && $(this).text() != "---")
+				{
+					currentText = $(this).text();
+				}
+				else
+				{
+					currentText = "";
+				}
+				break;
 			default:
-				if ($(this).text() != "---")
+				if (
+					$(this).text() != "---" &&
+					$(this).text() != "Click here to add content." &&
+					$(this).text() != "Click here to add a source."
+					)
 				{
 					currentText = $(this).text();
 				}
@@ -1059,14 +1116,14 @@ function customerFind(query)
 			
 				//update entries
 				var type = input.attr('id').split('_')[0];
+				
 				switch (type)
 				{
 					case 'termValue':
 						entries[e].languages[l].terms[t].term = currentText;
 						break;
 					case 'noteValue':
-						
-						input.attr('class', 'editText notesValue');
+						input.attr('class', 'editText arrayFormat');
 						var noteIndex;
 						(typeof input.attr('id').split('_')[1] != 'undefined') ? noteIndex = input.attr('id').split('_')[1] : noteIndex = 'new';
 						if (currentText == "---")
@@ -1098,6 +1155,138 @@ function customerFind(query)
 					case 'subjectValue':
 						entries[e].subject_field = currentText;
 						break;
+					case 'projectValue':
+						input.attr('class', 'editText arrayFormat');
+						var projectIndex;
+						(typeof input.attr('id').split('_')[1] != 'undefined') ? projectIndex = input.attr('id').split('_')[1] : projectIndex = 'new';
+						if (currentText == "---")
+						{
+							if (projectIndex != 'new') 
+							{
+								entries[e].languages[l].terms[t].projects.splice(projectIndex, 1);
+							}
+						}
+						else
+						{
+							if (projectIndex == 'new')
+							{
+								if (typeof entries[e].languages[l].terms[t].projects != "undefined")
+								{
+									entries[e].languages[l].terms[t].projects.push(currentText);
+								}
+								else
+								{
+									entries[e].languages[l].terms[t].projects = [currentText];
+								}
+							}
+							else
+							{
+								entries[e].languages[l].terms[t].projects[projectIndex] = currentText;
+							}
+						}
+						break;
+					case 'defValue':
+						input.attr('class', 'editText arrayFormat');
+						var projectIndex;
+						(typeof input.attr('id').split('_')[1] != 'undefined') ? projectIndex = input.attr('id').split('_')[1] : projectIndex = 'new';
+						if ($(this).attr('id').split('_')[2] == 'content')
+						{
+							if (currentText != '---')
+							{
+								var sourceVal = ($('#defValue_'+projectIndex+'_source').text() != '---' && $('#defValue_'+projectIndex+'_source').text() != 'Click here to add a source.') ? $('#defValue_'+projectIndex+'_source').text() : '';
+								
+								var defObj = {'content': currentText};
+								if (sourceVal != '') defObj['source'] = sourceVal;
+								
+								if (typeof entries[e].definitions != 'undefined')
+								{
+									if (projectIndex == 'new')
+									{
+										projectIndex = entries[e].definitions.length;
+										entries[e].definitions.push(defObj);
+										input.attr('id', 'defValue_'+projectIndex+'_content');
+										$('#defValue_new_source').attr('id', 'defValue_'+projectIndex+'_source');
+									}
+									else
+									{
+										entries[e].definitions[projectIndex].content = currentText;
+										entries[e].definitions[projectIndex].source = sourceVal;
+									}
+								}
+								else
+								{
+									entries[e]['definitions'] = [defObj];
+									input.attr('id', 'defValue_0_content');
+									$('#defValue_new_source').attr('id', 'defValue_0_source');
+								}
+							}
+							else
+							{
+								if (entries[e].definitions != 'undefined')
+								{
+									if (projectIndex != 'new')
+									{
+										entries[e].definitions.splice(projectIndex, 1);
+									}
+								}
+							}
+						}
+						else if ($(this).attr('id').split('_')[2] == 'source')
+						{
+							if (currentText != '---')
+							{
+								
+								if (typeof entries[e].definitions != 'undefined')
+								{
+									if (projectIndex == 'new')
+									{
+										if($('#defValue_new_source').text() == '---' || $('#defValue_new_source').text() == 'Click here to add content.')
+										{
+											new jBox('Notice', {
+												content: 'Definition will not be saved without content',
+												position: {
+													x: 'left',
+													y: 'center',
+												},
+												offset: {
+													x: 5
+												}
+											});
+										}
+									}
+									else
+									{
+										if (typeof entries[e].definitions[projectIndex] != 'undefined')
+										{
+											entries[e].definitions[projectIndex].source = currentText;
+										}
+									}
+								}
+								else
+								{
+									new jBox('Notice', {
+												content: 'Definition will not be saved without content',
+												position: {
+													x: 'left',
+													y: 'center',
+												},
+												offset: {
+													x: 5
+												}
+											});
+								}
+							}
+							else
+							{
+								if (entries[e].definitions != 'undefined')
+								{
+									if (projectIndex != 'new')
+									{
+										delete entries[e].definitions[projectIndex].source;
+									}
+								}
+							}
+						}
 				}
 			}
 			input.text(currentText);
@@ -1179,6 +1368,39 @@ function customerFind(query)
 				
 				$(this).replaceWith(input);
 				break;
+			case 'genderValue':
+				var optMasc = $("<option value='masculine'>Masculine</option>");
+				var optFem = $("<option value='feminine'>Feminine</option>");
+				var optNeut = $("<option value='neuter'>Neuter</option>");
+				var optOther = $("<option value='other'>Other</option>");
+				var optNone = $("<option value='none'>None</option>");
+				
+				switch($(this).text())
+				{
+					case 'Masculine':
+						optMasc.attr('selected', 'true');
+						break;
+					case 'Feminine':
+						optFem.attr('selected','true');
+						break;
+					case 'Neuter':
+						optNeut.attr('selected','true');
+						break;
+					case 'Other':
+						optOther.attr('selected','true');
+						break;
+					case 'None':
+						optNone.attr('selected','true');
+						break;
+				}
+				input.append(optMasc);
+				input.append(optFem);
+				input.append(optNeut);
+				input.append(optOther);
+				input.append(optNone);
+				
+				$(this).replaceWith(input);
+				break;
 		}
 	
 		input.focus();
@@ -1216,11 +1438,22 @@ function customerFind(query)
 					currentText = "Adverb";
 					break;
 				case 'properNoun':
-					currentText = "properNoun";
+					currentText = "Proper Noun";
+					break;
+				case 'masculine':
+					currentText = "Masculine";
+					break;
+				case 'feminine':
+					currentText = "Feminine";
+					break;
+				case 'neuter':
+					currentText = "Neuter";
 					break;
 				case 'other':
 					currentText = "Other";
 					break;
+				case 'none':
+					currentText = "None";
 			}
 			
 			$(this).replaceWith( input );
@@ -1245,6 +1478,19 @@ function customerFind(query)
 						break;
 					case 'posValue':
 						entries[e].languages[l].terms[t].pos = $(this).val();
+						break;
+					case 'genderValue':
+						if ($(this).val() != 'none')
+						{
+							entries[e].languages[l].terms[t].gender = $(this).val();
+						}
+						else
+						{
+							if (typeof entries[e].languages[l].terms[t].gender != 'undefined')
+							{
+								delete entries[e].languages[l].terms[t]['gender'];
+							}
+						}
 						break;
 				}
 			}
