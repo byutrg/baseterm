@@ -4,19 +4,46 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
 		
+		
 		{% stylesheets '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/jBox.css' %}
 			<link href="{{ asset_url }}" rel="stylesheet">
 		{% endstylesheets %}
+		
 		{% stylesheets '@AppBundle/Resources/js/jquery_ui_plugins/jBox-master/Source/themes/NoticeBorder.css' %}
 			<link href="{{ asset_url }}" rel="stylesheet">
+		{% endstylesheets %}
+		
+		{% stylesheets '@AppBundle/Resources/stylesheets/base.css.twig' %}
+			<link rel="stylesheet" href="{{ asset_url }}" />
 		{% endstylesheets %}
         {% block stylesheets %}{% endblock %}
 		
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-		
+		<header class='mainHeader'>
+			<div class='homeContainer'>
+				<a href="{{ url('homepage') }}" class='home'>Home</a>
+			</div>
+			<div class='siteNameContainer'>
+				<span class='siteName'>BaseTerm</span>
+			</div>
+			<div class='loginOptsContainer'>
+			{% if app.user %}
+				<a href="{{ url('logout') }}" class='logout'>Logout</a>
+				{% if is_granted('ROLE_ADMIN') %}
+					<!--<a href="{{ url('manage_users') }}" class='manage_users'>Users</a>-->
+				{% endif %}
+			{% else %}
+				<a href="{{ url('register') }}" class='register'>Register</a>
+				<a href="{{ url('login') }}" class='login'>Login</a>
+			{% endif %}
+			</div>
+		</header>
+		<div class='mainContainer'>
+			{% block body %}{% endblock %}
+		</div>
+
 		{% javascripts '@AppBundle/Resources/js/jquery-2.1.4.min.js' %}
 			<script src="{{ asset_url }}"></script>
 		{% endjavascripts %}

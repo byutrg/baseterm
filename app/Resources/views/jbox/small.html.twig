@@ -94,6 +94,9 @@
 		{%- endif -%}
 		</span>
 	</div>
+	{% if is_granted('ROLE_ADMIN') %}
+		<button class='deleteEntryButton' onclick="deleteModalButton_pressed('{{e}}')">Delete Entry</button>
+	{% endif %}
 	<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
 	
 	

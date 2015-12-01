@@ -27,7 +27,7 @@ class apiController extends Controller
 		
 		curl_setopt_array($ch, array(
 			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_HTTPHEADER => array('Content-Type: application/json'), //x-www-form-urlencoded
+			//CURLOPT_HTTPHEADER => array('Content-Type: application/json'), //x-www-form-urlencoded
 			CURLOPT_URL => $path,
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => json_encode($data)
@@ -35,7 +35,7 @@ class apiController extends Controller
 	
 		$result = curl_exec($ch);
 		
-		return $result.$path."<br>".json_encode($data);
+		return $result;
 	}
 	
 	public function put($path, $data) //API path, put data array

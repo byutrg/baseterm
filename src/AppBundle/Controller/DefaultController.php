@@ -13,15 +13,12 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-		$form = $this->createFormBuilder()
-				->getForm();
-		
 		return $this->render(
 			'default/index.html.twig',
-			array('form'=>$form)
+			array()
 		);
     }
-	
+
 	/**
      * @Route("/userCheck", name="user_check")
      */

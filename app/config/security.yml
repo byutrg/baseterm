@@ -6,6 +6,16 @@ security:
     providers:
         in_memory:
             memory: ~
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_STAFF:       ROLE_USER
+        ROLE_ADMIN:       ROLE_STAFF
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -14,11 +24,26 @@ security:
             security: false
 
         main:
-            anonymous: ~
+            anonymous:   true
             # activate different ways to authenticate
 
             # http_basic: ~
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
-            # form_login: ~
+            form_login:
+                check_path: /login_check
+                login_path: /login
+                provider: fos_userbundle
+              #  csrf_provider: form.csrf_provider
+            logout:
+                path: /logout
+                target: /
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/termbase$, role: ROLE_USER }
+        - { path: ^/users$, role: ROLE_ADMIN }

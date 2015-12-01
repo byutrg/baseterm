@@ -16,8 +16,8 @@ Class EditEntryController extends Controller
      */
 	public function updateAction(Request $request)
 	{
-		$entryObject = $request->query->get('entry');
-		$id = $request->query->get('termbaseId');
+		$entryObject = $request->request->get('entry');
+		$id = $request->request->get('termbaseId');
 		
 		$entry = new EntryController($id);
 		$entry->setId($entryObject['id']);
@@ -26,6 +26,21 @@ Class EditEntryController extends Controller
 		return new Response(json_encode($response));
 	}
 	
+	/**
+     * @Route("/termbase/entry/delete", name="entry_delete")
+     */
+	public function deleteAction(Request $request)
+	{
+		$entryObject = $request->request->get('entry');
+		$id = $request->request->get('termbaseId');
+		
+		$entry = new EntryController($id);
+		$entry->setId($entryObject['id']);
+		$response = $entry->deleteEntry();
+		
+		return new Response(json_encode($response));
+	}
+
 	/**
 	 * @Route("/termbase/entry/upload", name="entry_upload")
 	 */

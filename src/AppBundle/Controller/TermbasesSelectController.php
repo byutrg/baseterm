@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ServiceBundle\Controller\TermbasesController;
 
@@ -18,15 +20,29 @@ class TermbasesSelectController extends Controller
 		{
 			$form = $this->createFormBuilder($termbase)
 				->add('id', 'hidden')
-				->add('save', 'submit', array('label' => 'View this Termbase'))
+				->add('save', 'submit', array('label' => 'View'))
 				->getForm();
 			
-			array_push($forms, array('form' => $form, 'termbase' => $termbase));
+			
+			array_push($forms, array('form' => $form->createView(), 'termbase' => $termbase));
 		}
 		
 		return $this->render(
 			'forms/termbases_select.html.twig',
 			array('forms'=>$forms)
 		);
+	}
+	
+	/**
+     * @Route("/termbase/export", name="export_termbase")
+     */
+	public function exportAction(Request $request)
+	{
+		$id = $request->query->get('id');
+		
+		$termbase = new TermbasesController();
+		$termbase->get($id);
+		
+		return new Response($termbase->exportToFile());
 	}
 }

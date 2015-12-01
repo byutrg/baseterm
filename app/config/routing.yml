@@ -44,6 +44,12 @@ delete_termbase:
     path: /termbase/delete
     defaults: { _controller: AppBundle:TermbaseEdit:delete }
 
+export_termbase:
+    path: /termbase/export
+    defaults: { _controller: AppBundle:TermbasesSelect:export }
+    requirements:
+        _method:  GET
+
 search_termbase:
     path: /termbase/search
     defaults: { _controller: AppBundle:TermbaseSearch:search }
@@ -75,6 +81,10 @@ jbox_addNote:
 entry_update:
     path: /termbase/entry/update
     defaults: { _controller: AppBundle:EditEntry:update }
+
+entry_delete:
+    path: /termbase/entry/delete
+    defaults: { _controller: AppBundle:EditEntry:delete }
 
 entry_upload:
     path: /termbase/entry/upload
@@ -109,3 +119,23 @@ tablesorter_desc:
     defaults: { _controller: AppBundle:TablesorterCSS:desc, _format: gif }
     requirements:
         _format: gif
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+login:
+    path: /login
+
+register:
+    path: /register
+
+logout:
+    path: /logout
+
+manage_users:
+    path: /users
+    defaults: { _controller: AppBundle:UserEdit:view }
+
+user_role_edit:
+    path: /users/user_role
+    defaults: { _controller: AppBundle:UserEdit:roleUpdate }

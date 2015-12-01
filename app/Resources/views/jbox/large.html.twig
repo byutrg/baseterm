@@ -279,6 +279,9 @@
 		<div class='modalDivValue'>
 	
 		</div>
+	{% if is_granted('ROLE_ADMIN') %}
+		<button class='deleteEntryButtonL' onclick="deleteModalButton_pressed('{{e}}');">Delete Entry</button>
+	{% endif %}
 	<div class='buttonDiv'>
 		<button class='shrinkButton' onclick='shrinkModalButton_pressed()'>Fewer Details</button>
 	</div>

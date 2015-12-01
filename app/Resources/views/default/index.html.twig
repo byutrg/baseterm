@@ -5,10 +5,13 @@
 {% endblock %}
 
 {% block body %}
-	<div>Welcome to alpha BaseTerm! Please use the Guest account to log in!</div>
-	{{ form_start(form.createView(), {'action': path('user_check'), 'method': 'POST'}) }}
-		<label for='username'>User: </label>
-		<input type='text' id='username' name='username' value='Guest'/>
-		<input type='submit' value='Log In' />
-	{{ form_end(form.createView()) }}
+	<div>Welcome to alpha BaseTerm! What would you like to do?</div>
+	
+	{% if app.user %}
+		<div>
+			<a href='termbase'>View Termbases</a>
+		</div>
+	{% else %}
+		<p>Login to view existing termbases.  Register a new account if you don't have one.</p>
+	{% endif %}
 {% endblock %}

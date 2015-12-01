@@ -57,7 +57,7 @@ class EntryController extends Controller
 		return $result_json;
 	}
 	
-	public function deleteEntry($entryId)
+	public function deleteEntry()
 	{
 		$apiController = new apiController();
 		$result_json = $apiController->delete($this->path_id);

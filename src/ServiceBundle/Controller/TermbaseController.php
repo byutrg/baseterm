@@ -45,15 +45,15 @@ class TermbaseController extends Controller
 
 		$this->name = $name;
 
-		$data = json_encode(array(
+		$data = array(
 			'working_language'=>$this->working_language,
 			'name'=>$this->name
-		));
+		);
 		
 		$apiController = new apiController();
 		$result_json = $apiController->post($this->path, $data);
 		$result = json_decode($result_json);
-		
+
 		$this->baseId = $result->created;
 		$this->path_id = $this->path."/termbases/".$result->created;
 		$this->path_export = $this->path_id."/export";

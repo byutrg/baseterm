@@ -1,9 +1,11 @@
 <script>
 $(document).ready(init);
 var entries;
+var tigCount = 0;
 var termbaseId;
 var langCodeMaster;
 var langCodeValueList = {};
+var subjectFields = [];
 var langList = [];
 var tigList = [];
 var termList = [];
@@ -13,6 +15,8 @@ var activeModal = {};
 var addNoteModal = {};
 var newEntryModal = {};
 var activeIndex = -1;
+var displayIndex = 0;
+var showTips = (localStorage['showTips'] == 'false') ? false : true || true;
 var changed = false;
 
 $(document).ready($('#resultsTable').tablesorter());
@@ -21,6 +25,8 @@ function init()
 {
 	entries = $.parseJSON('{{entries|json_encode}}');
 	termbaseId = '{{id|raw}}';
+	
+	if (!showTips){$('#myonoffswitch').prop('checked', false);} 
 	
 	for (var e = 0; e < entries.length; e++)
 	{
@@ -38,6 +44,7 @@ function init()
 				
 			for (var t = 0; t < tigs.length; t++)
 			{
+				tigCount++;
 				var term = tigs[t]['term'];
 				var tig = tigs[t];
 				tigList.push({
@@ -57,10 +64,7 @@ function init()
 		}
 	}
 	
-	//add options to #languageCode select
-	$.getJSON('lang_codes.json', function(data){
-		langCodeLoader(data);;
-	});
+	$('#entry_count').text('This termbase has '+entries.length+' entries ('+tigCount+' terms).');
 	
 	//add options to #subjectField select
 	subjectFieldLoader();
@@ -71,6 +75,12 @@ function init()
 	//add options to #transacPerson select
 	// transacPersonLoader();
 	
+	//add options to #languageCode select
+	$.getJSON('lang_codes.json', function(data){
+		langCodeLoader(data);
+		searchForm(true);
+	});
+
 	//non-unique jBox windows
 	addNoteModal = new jBox('Modal', {
 		height: 300,
@@ -96,8 +106,20 @@ function init()
 			
 		}
 	})
-
 }
+
+//***************************Variable SET/GET*************************************
+function setChanged(bool)
+{
+	changed = bool;
+	
+	if (changed)
+	{
+		//add changes save/cancel window
+	}
+	
+}
+
 
 //***************************Click handlers***************************************
 function addNewEntry()
@@ -105,128 +127,30 @@ function addNewEntry()
 	newEntryModal.open();
 }
 
-
-
-function searchForm()
-{	
-	var children = $('#searchQueries').children();
-	
-	resultList = [];
-	$('.search_result').remove();
-	
-	var results = [];
-	var paramProvided = false;
-	for (var i = 0; i < children.length; i++)
-	{
-		if (children[i].value != '')
-		{
-			paramProvided = true;
-			var resultArray = [];
-			switch(children[i].id){
-				case 'term':
-					resultArray = termFind(children[i].value);
-					break;
-				case 'pos':
-					//resultArray = posFind(children[i].value);
-					resultArray = tigFind(children[i].value, 'pos');
-					break;
-				case 'languageCode':
-					resultArray = langFind(children[i].value, 'code');
-					break;
-				// case 'transacPerson':
-					// resultArray = personFind(children[i].value);
-					// break;
-				case 'subjectField':
-					resultArray = subjectFieldFind(children[i].value);
-					break;
-				case 'approval':
-					//resultArray = approvalFind(children[i].value);
-					resultArray = tigFind(children[i].value, 'status');
-					break;
-				case 'customer':
-					resultArray = customerFind(children[i].value);
-					break;
-				default:
-					break;
-			}
-			if (resultArray.length > 0) results.push(resultArray);
-		}
-	}
-	
-	//narrow results with each additional query provided
-	if (results.length > 0 || paramProvided)
-	{
-		if (results.length > 1)
-		{
-			var rLengthSmall = results[0].length;
-			var narrow = 0;
-			for (var i = 0; i < results.length; i++)
-			{
-				if (results[i].length < rLengthSmall)
-				{
-					rLengthSmall = results[i].length;
-					narrow = i;
-				}
-			}
-			
-			for (var y = 0; y < results[narrow].length; y++)
-			{
-				var exists = true;
-				for (var x = 0; x < results.length; x++)
-				{
-					if (narrow==x) continue;
-					
-					if ($.inArray(results[narrow][y], results[x]) < 0)
-					{
-						exists = false;
-					}
-				}
-				if (exists == true)
-				{
-					resultList.push(results[narrow][y]);
-				}
-			}
-		}
-		else
-		{
-			resultList = results[0];
-		}
-		
-		if (typeof resultList != 'undefined' && resultList.length > 0)
-		{
-			printResults();
-			new jBox('Notice',{
-				autoClose: 2000,
-				content: 'Search complete!  Click a term to see more details',
-				color: 'blue',
-				attributes: {
-					x: 'right',
-					y: 'top'
-				}
-			})
-		}
-		else
-		{
-			var error = $('<tr></tr>');
-			error.attr('class', 'noQueriesError search_result');
-			error.text("No matching terms were found.");
-			$('#resultsTable').append(error);	
-		}
-	}
-	else
-	{
-		var error = $('<tr></tr>');
-		error.attr('class', 'noQueriesError search_result');
-		error.text("No search parameters were entered!");
-		$('#resultsTable').append(error);	
-	}
+function searchClick()
+{
+	searchForm(false);
 }
 
+function nextResultsClick()
+{
+	displayIndex = (displayIndex + 50 < resultList.length - 1) ? displayIndex + 50 : displayIndex;
+	
+	printResults();
+}
 
+function prevResultsClick()
+{
+	displayIndex = (displayIndex - 50 >= 0) ? displayIndex - 50 : displayIndex = 0;
 
+	printResults();
+}
 
-
-
+function toggleTips(toggleswitch)
+{
+	showTips = toggleswitch.checked;
+	localStorage['showTips'] = showTips;
+}
 
 //******************************TEXT OUTPUTS******************************************
 
@@ -241,7 +165,12 @@ function noResultsError()
 function printResults()
 {
 	if (typeof resultList == 'undefined') return false;
-	for (var i = 0; i < resultList.length; i++) 
+	
+	$('.search_result').remove();
+
+	showCount = (displayIndex + 50 < resultList.length) ? 50 : resultList.length - displayIndex;
+	$('#entry_count').text('Showing ' + showCount + ' of '+resultList.length+' result(s) from '+tigCount+' total terms.');
+	for (var i = displayIndex; i < displayIndex + 50 && i < resultList.length; i++) 
 	{	
 		var resultId = resultList[i];
 		var idSplit = resultId.split('_');
@@ -314,7 +243,7 @@ function printResults()
 					{
 						translationsExist = true;
 						var transTerm = $('<p></p>');
-						transTerm.text(entries[e]['languages'][z].terms[x].term);
+						transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+')');
 						resultTranslations.append(transTerm);	
 					}
 					
@@ -451,21 +380,25 @@ function printResults()
 			onOpen: function(){
 				smallWindowConstruct(this);
 				modalListener(this);
-				new jBox('Notice',{
-					autoClose: 15000,
-					content: '<p>Click on a value to edit it!<p>'+
-								'<p>Clicking the shaded area will close the details window.</p>'+
-								'<p>You will be asked if you want to save any changes you made.</p>'+
-								'<p>Clicking on this notice will close it.</p>',
-					color: 'blue',
-					position: {
-						x: 'right',
-						y: 'center'
-					},
-					offset: {
-						x: -20
-					}
-				})
+				
+				if (showTips)
+				{
+					new jBox('Notice',{
+						autoClose: 15000,
+						content: '<p>Click on a value to edit it!<p>'+
+									'<p>Clicking the shaded area will close the details window.</p>'+
+									'<p>You will be asked if you want to save any changes you made.</p>'+
+									'<p>Clicking on this notice will close it.</p>',
+						color: 'blue',
+						position: {
+							x: 'right',
+							y: 'center'
+						},
+						offset: {
+							x: -20
+						}
+					});
+				}
 			},
 			onClose: checkChanges,
 		});
@@ -508,12 +441,12 @@ function checkChanges()
 				//alert(JSON.stringify(entries[e]));
 				$.ajax({
 					url: 'entry/update',
+					method: 'POST',
 					data: {
 						'termbaseId': termbaseId,
 						'entry': entries[e],
 					},
 					success: function(result){
-						
 						new jBox('Notice', {
 							theme: 'NoticeBorder',
 							color: 'blue',
@@ -524,7 +457,7 @@ function checkChanges()
 							}
 						});
 						
-						searchForm();//refresh result list
+						searchForm(true);//refresh result list
 						//sort Table
 						//append some content to the tbody
 					},
@@ -584,7 +517,14 @@ function largeWindowConstruct()
 }
 
 
-//modalWindow listeners
+//*************************modalWindow listeners*****************************************
+//Information pop-ups
+$('body').on('mouseover', '.result_term', function(){
+	$('.result_term').jBox('Mouse', {
+		content: 'Click to view entry!'
+	});
+});
+
 function modalListener(modal)
 {
 	activeModal = modal;
@@ -592,6 +532,70 @@ function modalListener(modal)
 	activeModal.setWidth(300);
 	// $('.expandButton').text('More Details');
 	// $('.expandButton').attr('onClick', 'expandModalButton_pressed()');
+}
+
+function deleteModalButton_pressed(entryIndex)
+{
+	var confirmModal = new jBox('Confirm', {
+		closeOnClick: false,
+		width: 200,
+		height: 20,
+		content: 'Delete this entry?',
+		confirmButton: "Delete",
+		confirm: function(){
+			
+			//alert(JSON.stringify(entries[entryIndex]));
+			$.ajax({
+				url: 'entry/delete',
+				method: "POST",
+				data: {
+					'termbaseId': termbaseId,
+					'entry': entries[entryIndex],
+				},
+				success: function(result){
+					new jBox('Notice', {
+						theme: 'NoticeBorder',
+						color: 'blue',
+						content:'<p>Entry Deleted</p>',
+						attributes: { 
+							x: 'right',
+							y: 'bottom'
+						}
+					});
+					activeModal.close();
+					entries.splice(entryIndex,1);
+					searchForm(true);//refresh result list
+					//sort Table
+					//append some content to the tbody
+				},
+				error: function(result){
+					new jBox('Notice', {
+						theme: 'NoticeBorder',
+						color: 'red',
+						content:'<p>Update Error</p>'+
+								'<p>Entry not deleted!</p>',
+						attributes: { 
+							x: 'right',
+							y: 'bottom'
+						}
+					});
+				}
+			});
+		},
+		cancel: function(){
+			entries = $.parseJSON('{{entries|json_encode}}');
+			new jBox('Notice', {
+				theme: 'NoticeBorder',
+				color: 'green',
+				content:'<p>Changes ignored.</p>',
+				attributes: { 
+					x: 'right',
+					y: 'bottom'
+				}
+			});
+		},
+	});
+	confirmModal.open();
 }
 
 function expandModalButton_pressed()
@@ -741,7 +745,7 @@ function transacLooper(transactions, personList) //used by transacPersonLoader()
 
 function subjectFieldLoader()
 {
-	var subjectFields = [];
+	
 	for (var i = 0; i < entries.length; i++)
 	{
 		var field = entries[i].subject_field;
@@ -792,6 +796,127 @@ function customerLoader()
 
 
 //*******************************Search Functions************************************
+function searchForm(searchAll)
+{	
+	$('.search_result').remove();
+
+	var children = $('#searchQueries').children();
+	displayIndex = 0; //reset displayIndex
+	resultList = [];
+	
+	var results = [];
+	var paramProvided = false;
+	for (var i = 0; i < children.length; i++)
+	{
+		if (children[i].value != '' || searchAll)
+		{
+			paramProvided = true;
+			var resultArray = [];
+			switch(children[i].id){
+				case 'term':
+					query = (searchAll) ? '*' : children[i].value;
+					resultArray = termFind(query);
+					break;
+				case 'pos':
+					//resultArray = posFind(children[i].value);
+					resultArray = tigFind(children[i].value, 'pos');
+					break;
+				case 'languageCode':
+					resultArray = langFind(children[i].value, 'code');
+					break;
+				// case 'transacPerson':
+					// resultArray = personFind(children[i].value);
+					// break;
+				case 'subjectField':
+					resultArray = subjectFieldFind(children[i].value);
+					break;
+				case 'approval':
+					//resultArray = approvalFind(children[i].value);
+					resultArray = tigFind(children[i].value, 'status');
+					break;
+				case 'customer':
+					resultArray = customerFind(children[i].value);
+					break;
+				default:
+					break;
+			}
+			if (resultArray.length > 0) results.push(resultArray);
+		}
+	}
+	
+	//narrow results with each additional query provided
+	if (results.length > 0 || paramProvided)
+	{
+		if (results.length > 1)
+		{
+			var rLengthSmall = results[0].length;
+			var narrow = 0;
+			for (var i = 0; i < results.length; i++)
+			{
+				if (results[i].length < rLengthSmall)
+				{
+					rLengthSmall = results[i].length;
+					narrow = i;
+				}
+			}
+			
+			for (var y = 0; y < results[narrow].length; y++)
+			{
+				var exists = true;
+				for (var x = 0; x < results.length; x++)
+				{
+					if (narrow==x) continue;
+					
+					if ($.inArray(results[narrow][y], results[x]) < 0)
+					{
+						exists = false;
+					}
+				}
+				if (exists == true)
+				{
+					resultList.push(results[narrow][y]);
+				}
+			}
+		}
+		else
+		{
+			resultList = results[0];
+		}
+		
+		if (typeof resultList != 'undefined' && resultList.length > 0)
+		{
+			printResults();
+			
+			if (showTips)
+			{
+				new jBox('Notice',{
+					autoClose: 2000,
+					content: 'Search complete!  Click a term to see more details',
+					color: 'blue',
+					attributes: {
+						x: 'right',
+						y: 'top'
+					}
+				});
+			}
+		}
+		else
+		{
+			var error = $('<tr></tr>');
+			error.attr('class', 'noQueriesError search_result');
+			error.text("No matching terms were found.");
+			$('#resultsTable').append(error);	
+		}
+	}
+	else
+	{
+		var error = $('<tr></tr>');
+		error.attr('class', 'noQueriesError search_result');
+		error.text("No search parameters were entered!");
+		$('#resultsTable').append(error);	
+	}
+}
+
 function termFind(query)
 {
 	var results = [];
@@ -799,7 +924,7 @@ function termFind(query)
 	{
 		var term = termList[t];
 		
-		var re = new RegExp(query, "i");
+		var re = (query != '*') ? new RegExp(query, "i") : new RegExp('.', "i");
 		
 		if (typeof term.term != 'undefined' &&
 			term.term.search(re) > -1)
@@ -978,522 +1103,4 @@ function customerFind(query)
 	return results;
 }
 
-
-
-//******************************Modal JS*****************************
-	var previousText;
-
-	var input;
-
-	//mini-window event handlers
-	
-	
-	
-	//Information pop-ups
-	$('body').on('mouseover', '.result_term', function(){
-		$('.result_term').jBox('Mouse', {
-			content: 'Click to view entry!'
-		});
-	});
-	$('body').on('mouseover', '.modalDivValue span', function(){
-		$('.modalDivValue span').jBox('Mouse', {
-			content: 'Click to edit this value!',
-			closeOnClick: true
-		});
-	});
-	$('body').on('mouseover', '.addNote', function(){
-		$('.addNote').jBox('Mouse', {
-			content: 'Add a new note!'
-		});
-	});
-	
-	
-	//TEXT BOXES
-	$('body').on('click', '.editText', function(){
-		
-		input = $('<input class="inputTextValue" type="text" />');
-		input.attr('id', $(this).attr('id'));
-		var currentText;
-		
-		var type = input.attr('id').split('_')[0];
-		switch(type)
-		{
-			case 'subjectValue':
-				//warn that Notes are kept at Entry level
-				new jBox('Notice', {
-					color: 'red',
-					content: '<p>Subject fields apply to the entire entry. Changing the subject field will apply to all terms of an entry.</p>',
-					position: {
-						x: 'left',
-						y: 'center'
-					},
-					offset: {
-						x: 20
-					}
-				});
-				
-				if ($(this).text() != "---")
-				{
-					currentText = $(this).text();
-				}
-				else
-				{
-					currentText = "";
-				}
-				break;
-			case 'noteValue':
-				//warn that Notes are kept at Entry level
-				new jBox('Notice', {
-					color: 'red',
-					content: '<p>Notes are kept at the entry level.  Any notes added will apply to all terms of an entry.</p>'+
-							'<p>Leave an entry blank to delete it.</p>',
-					position: {
-						x: 'left',
-						y: 'center'
-					},
-					offset: {
-						x: 20
-					}
-				});
-			
-				if ($(this).text() != "Click here to add a note." && $(this).text() != "---")
-				{
-					currentText = $(this).text();
-				}
-				else
-				{
-					currentText = "";
-				}
-				break;
-			case 'projectValue':
-				if ($(this).text() != "Click here to add a project." && $(this).text() != "---")
-				{
-					currentText = $(this).text();
-				}
-				else
-				{
-					currentText = "";
-				}
-				break;
-			default:
-				if (
-					$(this).text() != "---" &&
-					$(this).text() != "Click here to add content." &&
-					$(this).text() != "Click here to add a source."
-					)
-				{
-					currentText = $(this).text();
-				}
-				else
-				{
-					currentText = "";
-				}
-				break;
-		}
-		previousText = currentText;
-		$(this).replaceWith( input );
-		input.attr('value', currentText);
-		input.focus();
-	});
-	$('body').on('focusout', '.inputTextValue', function(){
-			
-			var input = $('<span class="editText"></span>');
-			input.attr('id', $(this).attr('id'));
-			var currentText;
-			($(this).val() != "") ? currentText = $(this).val() : currentText = "---";
-			$(this).replaceWith( input );
-			
-			
-			if (currentText != previousText)
-			{
-				changed = true;
-			
-				var idSplit = activeModal.id.split('_');
-		
-				var e = idSplit[1]; 
-				var l = idSplit[2];
-				var t = idSplit[3];
-			
-				//update entries
-				var type = input.attr('id').split('_')[0];
-				
-				switch (type)
-				{
-					case 'termValue':
-						entries[e].languages[l].terms[t].term = currentText;
-						break;
-					case 'noteValue':
-						input.attr('class', 'editText arrayFormat');
-						var noteIndex;
-						(typeof input.attr('id').split('_')[1] != 'undefined') ? noteIndex = input.attr('id').split('_')[1] : noteIndex = 'new';
-						if (currentText == "---")
-						{
-							if (noteIndex != 'new') 
-							{
-								entries[e].notes.splice(noteIndex, 1);
-							}
-						}
-						else
-						{
-							if (noteIndex == 'new')
-							{
-								if (typeof entries[e].notes != "undefined")
-								{
-									entries[e].notes.push(currentText);
-								}
-								else
-								{
-									entries[e].notes = [currentText];
-								}
-							}
-							else
-							{
-								entries[e].notes[noteindex] = currentText;
-							}
-						}
-						break;
-					case 'subjectValue':
-						entries[e].subject_field = currentText;
-						break;
-					case 'projectValue':
-						input.attr('class', 'editText arrayFormat');
-						var projectIndex;
-						(typeof input.attr('id').split('_')[1] != 'undefined') ? projectIndex = input.attr('id').split('_')[1] : projectIndex = 'new';
-						if (currentText == "---")
-						{
-							if (projectIndex != 'new') 
-							{
-								entries[e].languages[l].terms[t].projects.splice(projectIndex, 1);
-							}
-						}
-						else
-						{
-							if (projectIndex == 'new')
-							{
-								if (typeof entries[e].languages[l].terms[t].projects != "undefined")
-								{
-									entries[e].languages[l].terms[t].projects.push(currentText);
-								}
-								else
-								{
-									entries[e].languages[l].terms[t].projects = [currentText];
-								}
-							}
-							else
-							{
-								entries[e].languages[l].terms[t].projects[projectIndex] = currentText;
-							}
-						}
-						break;
-					case 'defValue':
-						input.attr('class', 'editText arrayFormat');
-						var projectIndex;
-						(typeof input.attr('id').split('_')[1] != 'undefined') ? projectIndex = input.attr('id').split('_')[1] : projectIndex = 'new';
-						if ($(this).attr('id').split('_')[2] == 'content')
-						{
-							if (currentText != '---')
-							{
-								var sourceVal = ($('#defValue_'+projectIndex+'_source').text() != '---' && $('#defValue_'+projectIndex+'_source').text() != 'Click here to add a source.') ? $('#defValue_'+projectIndex+'_source').text() : '';
-								
-								var defObj = {'content': currentText};
-								if (sourceVal != '') defObj['source'] = sourceVal;
-								
-								if (typeof entries[e].definitions != 'undefined')
-								{
-									if (projectIndex == 'new')
-									{
-										projectIndex = entries[e].definitions.length;
-										entries[e].definitions.push(defObj);
-										input.attr('id', 'defValue_'+projectIndex+'_content');
-										$('#defValue_new_source').attr('id', 'defValue_'+projectIndex+'_source');
-									}
-									else
-									{
-										entries[e].definitions[projectIndex].content = currentText;
-										entries[e].definitions[projectIndex].source = sourceVal;
-									}
-								}
-								else
-								{
-									entries[e]['definitions'] = [defObj];
-									input.attr('id', 'defValue_0_content');
-									$('#defValue_new_source').attr('id', 'defValue_0_source');
-								}
-							}
-							else
-							{
-								if (entries[e].definitions != 'undefined')
-								{
-									if (projectIndex != 'new')
-									{
-										entries[e].definitions.splice(projectIndex, 1);
-									}
-								}
-							}
-						}
-						else if ($(this).attr('id').split('_')[2] == 'source')
-						{
-							if (currentText != '---')
-							{
-								
-								if (typeof entries[e].definitions != 'undefined')
-								{
-									if (projectIndex == 'new')
-									{
-										if($('#defValue_new_source').text() == '---' || $('#defValue_new_source').text() == 'Click here to add content.')
-										{
-											new jBox('Notice', {
-												content: 'Definition will not be saved without content',
-												position: {
-													x: 'left',
-													y: 'center',
-												},
-												offset: {
-													x: 5
-												}
-											});
-										}
-									}
-									else
-									{
-										if (typeof entries[e].definitions[projectIndex] != 'undefined')
-										{
-											entries[e].definitions[projectIndex].source = currentText;
-										}
-									}
-								}
-								else
-								{
-									new jBox('Notice', {
-												content: 'Definition will not be saved without content',
-												position: {
-													x: 'left',
-													y: 'center',
-												},
-												offset: {
-													x: 5
-												}
-											});
-								}
-							}
-							else
-							{
-								if (entries[e].definitions != 'undefined')
-								{
-									if (projectIndex != 'new')
-									{
-										delete entries[e].definitions[projectIndex].source;
-									}
-								}
-							}
-						}
-				}
-			}
-			input.text(currentText);
-			
-		});
-	
-	//SELECTION MENUS
-	$('body').on('click', '.editList', function(){
-		
-		input = $('<select class="inputListValue"></select>');
-		input.attr('id',$(this).attr('id'));
-		var type = $(this).attr('id').split('_')[0];
-		previousText = $(this).text();
-		switch(type)
-		{
-			case 'statusValue':
-				var optPref = $('<option value="preferredTerm-admn-sts">Preferred</option>');
-				var optAdm = $("<option value='admittedTerm-admn-sts'>Admitted</option>");
-				var optDep = $("<option value='deprecatedTerm-admn-sts'>Deprecated</option>");
-				var optSup = $("<option value='supersededTerm-admn-sts'>Superseded</option>");
-				
-				switch($(this).text())
-				{
-					case 'Preferred':
-						optPref.attr('selected', 'true');
-						break;
-					case 'Admitted':
-						optAdm.attr('selected','true');
-						break;
-					case 'Deprecated':
-						optDep.attr('selected','true');
-						break;
-					case 'Superseded':
-						optSup.attr('selected','true');
-						break;
-				}
-				input.append(optPref);
-				input.append(optAdm);
-				input.append(optDep);
-				input.append(optSup);
-				
-				$(this).replaceWith(input);
-				break;
-			case 'posValue':
-				var optNoun = $("<option value='noun'>Noun</option>");
-				var optVerb = $("<option value='verb'>Verb</option>");
-				var optAdj = $("<option value='adjective'>Adjective</option>");
-				var optAdv = $("<option value='adverb'>Adverb</option>");
-				var optPropN = $("<option value='properNoun'>Proper Noun</option>");
-				var optOther = $("<option value='other'>Other</option>");
-				
-				switch($(this).text())
-				{
-					case 'Noun':
-						optNoun.attr('selected', 'true');
-						break;
-					case 'Verb':
-						optVerb.attr('selected','true');
-						break;
-					case 'Adjective':
-						optAdj.attr('selected','true');
-						break;
-					case 'Adverb':
-						optAdv.attr('selected','true');
-						break;
-					case 'Proper Noun':
-						optPropN.attr('selected','true');
-						break;
-					case 'Other':
-						optOther.attr('selected','true');
-						break;
-				}
-				input.append(optNoun);
-				input.append(optVerb);
-				input.append(optAdj);
-				input.append(optAdv);
-				input.append(optPropN);
-				input.append(optOther);
-				
-				$(this).replaceWith(input);
-				break;
-			case 'genderValue':
-				var optMasc = $("<option value='masculine'>Masculine</option>");
-				var optFem = $("<option value='feminine'>Feminine</option>");
-				var optNeut = $("<option value='neuter'>Neuter</option>");
-				var optOther = $("<option value='other'>Other</option>");
-				var optNone = $("<option value='none'>None</option>");
-				
-				switch($(this).text())
-				{
-					case 'Masculine':
-						optMasc.attr('selected', 'true');
-						break;
-					case 'Feminine':
-						optFem.attr('selected','true');
-						break;
-					case 'Neuter':
-						optNeut.attr('selected','true');
-						break;
-					case 'Other':
-						optOther.attr('selected','true');
-						break;
-					case 'None':
-						optNone.attr('selected','true');
-						break;
-				}
-				input.append(optMasc);
-				input.append(optFem);
-				input.append(optNeut);
-				input.append(optOther);
-				input.append(optNone);
-				
-				$(this).replaceWith(input);
-				break;
-		}
-	
-		input.focus();
-	});
-	$('body').on('focusout', '.inputListValue', function(){
-			
-			var input = $('<span class="editList"></span>');
-			input.attr('id',$(this).attr('id'));
-			var currentText;
-			
-			switch($(this).val())
-			{
-				case "preferredTerm-admn-sts":
-					currentText = "Preferred";
-					break;
-				case "admittedTerm-admn-sts":
-					currentText = "Admitted";
-					break;
-				case "deprecatedTerm-admn-sts":
-					currentText = "Deprecated";
-					break;
-				case "supersededTerm-admn-sts":
-					currentText = "Superseded";
-					break;
-				case 'noun':
-					currentText = "Noun";
-					break;
-				case 'verb':
-					currentText = "Verb";
-					break;
-				case 'adjective':
-					currentText = "Adjective";
-					break;
-				case 'adverb':
-					currentText = "Adverb";
-					break;
-				case 'properNoun':
-					currentText = "Proper Noun";
-					break;
-				case 'masculine':
-					currentText = "Masculine";
-					break;
-				case 'feminine':
-					currentText = "Feminine";
-					break;
-				case 'neuter':
-					currentText = "Neuter";
-					break;
-				case 'other':
-					currentText = "Other";
-					break;
-				case 'none':
-					currentText = "None";
-			}
-			
-			$(this).replaceWith( input );
-			input.text(currentText);
-			
-			if (currentText != previousText)
-			{
-				changed = true;
-			
-				var idSplit = activeModal.id.split('_');
-		
-				var e = idSplit[1]; 
-				var l = idSplit[2];
-				var t = idSplit[3];
-			
-				//update entries
-				var type = input.attr('id').split('_')[0];
-				switch (type)
-				{
-					case 'statusValue':
-						entries[e].languages[l].terms[t].status = $(this).val();
-						break;
-					case 'posValue':
-						entries[e].languages[l].terms[t].pos = $(this).val();
-						break;
-					case 'genderValue':
-						if ($(this).val() != 'none')
-						{
-							entries[e].languages[l].terms[t].gender = $(this).val();
-						}
-						else
-						{
-							if (typeof entries[e].languages[l].terms[t].gender != 'undefined')
-							{
-								delete entries[e].languages[l].terms[t]['gender'];
-							}
-						}
-						break;
-				}
-			}
-			
-		});
 </script>

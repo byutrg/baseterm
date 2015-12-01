@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use ServiceBundle\Controller\TermbaseController;
 use ServiceBundle\Controller\EntryController;
 
@@ -16,14 +17,10 @@ class TermbaseSearchController extends Controller
     public function searchAction(Request $request)
     {
 
-		if (!empty($request->request->get('form')['id']))
-		{
-			$id = $request->request->get('form')['id'];
-		}
-		else
-		{
-			$id = $request->attributes->get('id');
-		}
+		$id = $request->request->get('form')['id'];
+		$name = $request->request->get('name');
+		$response = 'response';
+
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		$form = $this->createFormBuilder()
@@ -33,7 +30,7 @@ class TermbaseSearchController extends Controller
 		
 		return $this->render(
 			'default/search.html.twig',
-			array('id'=>$id, 'newEntryForm'=>$form)
+			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name)
 		);
     }
 	
@@ -52,7 +49,17 @@ class TermbaseSearchController extends Controller
 		);
 	}
 	
-		/**
+	/**
+     * @Route("/termbase/editFields.js", name="edit_termbase_js")
+     */
+	public function scriptAdminAction()
+	{	
+		return $this->render( 
+			'default/js/editFields.js.twig'
+		);
+	}
+	
+	/**
      * @Route("/termbase/lang_codes.json", name="lang_codes_list")
      */
 	public function jsonLoadAction()
