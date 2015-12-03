@@ -6,12 +6,12 @@
 		{% if is_granted('ROLE_ADMIN') %}
 			<td>
 				<div>
-					<button type='button' onClick='deleteTermbases("{{f.termbase.id}}");'>Delete this Termbase</button>
+					<button type='button' onClick='deleteTermbase("{{f.termbase.id}}");'>Delete</button>
 				<div>
 			</td>
 		{% endif %}
 		<!--<div><span>Id:</span>{{f.termbase.id}}</div>-->
-		<!--<td><button type='button' onClick='exportTermbase("{{f.termbase.id}}")'>Download</button></td>-->
+		<td><button type='button' onClick='exportTermbase("{{f.termbase.id}}")'>Download</button></td>
 		
 		<td>{{ form_widget(f.form.save) }}</td>
 		<input type='hidden' name='name' value='{{f.termbase.name}}'/>

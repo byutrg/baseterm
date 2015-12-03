@@ -16,12 +16,12 @@
 			<span class="onoffswitch-switch"></span>
 		</label>
 	</div>
-	
-	{% if is_granted('ROLE_ADMIN') %}
-		<div id='entryEditOptions' class='entryEdit'>
-			<button type='button' id='addNewEntryButton' onClick='addNewEntry()'>Add a New Entry</button> 
-		</div>
+	<div id='entryEditOptions' class='entryEdit'>
+	{% if is_granted('ROLE_STAFF') %}
+		<button type='button' id='addNewEntryButton' onClick='addNewEntry()'>Add a New Entry</button> 
 	{% endif %}
+	<button type='button' onClick='exportTermbase("{{id}}")'>Download</button>
+	</div>
 	<div class='entry_count'>
 		<p id='entry_count'></p>
 	</div>
@@ -101,7 +101,7 @@
 		{'id':id}
 	)) }}
 	
-	{% if is_granted('ROLE_ADMIN') %}
+	{% if is_granted('ROLE_STAFF') %}
 		{{ render(controller(
 		'AppBundle:TermbaseSearch:scriptAdmin'
 	)) }}

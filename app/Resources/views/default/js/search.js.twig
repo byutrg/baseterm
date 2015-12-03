@@ -14,6 +14,7 @@ var resultRows = [];
 var activeModal = {};
 var addNoteModal = {};
 var newEntryModal = {};
+var saveConfirmModal = {};
 var activeIndex = -1;
 var displayIndex = 0;
 var showTips = (localStorage['showTips'] == 'false') ? false : true || true;
@@ -96,7 +97,7 @@ function init()
 			y: 50
 		},
 		ajax: {
-			url: 'entry/new', 
+			url: "{{path('entry_new')}}", 
 			data: {
 				'termbaseId':termbaseId, 
 				},
@@ -106,6 +107,28 @@ function init()
 			
 		}
 	})
+	
+	//create save modal
+	saveConfirmModal = new jBox('Modal', {
+		closeOnClick: false,
+		closeButton: 'title',
+		repositionOnOpen: true,
+		width: 210,
+		height: 40,
+		title: 'Changes Pending:',
+		position: {
+			x: 10,
+			y: 10
+		},
+		ajax: {
+			url: "{{path('entry_save_page')}}",
+			method: 'POST',
+			data: {
+				'termbaseId':termbaseId, 
+				}, 
+			reload: true
+		}
+	});
 }
 
 //***************************Variable SET/GET*************************************
@@ -116,10 +139,96 @@ function setChanged(bool)
 	if (changed)
 	{
 		//add changes save/cancel window
+		
+		saveConfirmModal.open();
 	}
 	
 }
 
+function saveChanges()
+{
+	navObject = getNavObject()
+	e = navObject.e;
+	l = navObject.l;
+	t = navObject.t;
+	
+	//alert(JSON.stringify(entries[e]));
+	$.ajax({
+		url: "{{path('entry_update')}}",
+		method: 'POST',
+		data: {
+			'termbaseId': termbaseId,
+			'entry': entries[e],
+		},
+		success: function(result){
+			new jBox('Notice', {
+				theme: 'NoticeBorder',
+				color: 'blue',
+				content:'<p>Entry Updated</p>',
+				attributes: { 
+					x: 'right',
+					y: 'bottom'
+				}
+			});
+			
+			searchForm(true);//refresh result list
+			//sort Table
+			//append some content to the tbody
+		},
+		error: function(result){
+			new jBox('Notice', {
+				theme: 'NoticeBorder',
+				color: 'red',
+				content:'<p>Update Error</p>'+
+						'<p>Entry not updated!</p>',
+				attributes: { 
+					x: 'right',
+					y: 'bottom'
+				}
+			});
+		}
+	});
+	
+	setChanged(false);
+}
+
+function cancelChanges()
+{
+	entries = $.parseJSON('{{entries|json_encode}}');
+	new jBox('Notice', {
+		theme: 'NoticeBorder',
+		color: 'green',
+		content:'<p>Changes ignored.</p>',
+		attributes: { 
+			x: 'right',
+			y: 'bottom'
+		}
+	});
+	
+	setChanged(false);
+}
+
+function getNavObject()
+{
+	var idSplit = activeModal.id.split('_');
+			
+	var e = idSplit[1]; 
+	var l = idSplit[2];
+	var t = idSplit[3];
+	
+	var navObject = {
+		'e': e,
+		'l': l,
+		't': t
+	};
+	
+	return navObject;
+}
+
+function closeCofirmModal()
+{
+	saveConfirmModal.close();
+}
 
 //***************************Click handlers***************************************
 function addNewEntry()
@@ -153,6 +262,12 @@ function toggleTips(toggleswitch)
 }
 
 //******************************TEXT OUTPUTS******************************************
+
+function exportTermbase(id)
+{
+	var route = "{{ path('export_termbase', {'id':"PLACEHOLDER"} ) }}";
+	window.location = route.replace("PLACEHOLDER", id);
+}
 
 function noResultsError()
 {
@@ -400,7 +515,10 @@ function printResults()
 					});
 				}
 			},
-			onClose: checkChanges,
+			onClose: function(){
+				closeCofirmModal();
+				checkChanges();
+			}
 		});
 		
 	}
@@ -408,88 +526,20 @@ function printResults()
 	$("#resultsTable").trigger('update');
 }
 
-function saveEntryChanges()
-{
-	alert('1');
-	// alert(activeModal.content);
-}
-
 function checkChanges()
 {
 	if (changed)
 	{	
-		var idSplit = activeModal.id.split('_');
-			
-		var e = idSplit[1]; 
-		var l = idSplit[2];
-		var t = idSplit[3];
-		
-		var navObject = {
-			'e': e,
-			'l': l,
-			't': t
-		};
-		
 		var confirmModal = new jBox('Confirm', {
 			closeOnClick: false,
 			width: 200,
 			height: 100,
 			content: 'Changes have been made to an entry.  Would you like to keep these or discard them?',
 			confirmButton: "Save Changes",
-			confirm: function(){
-				
-				//alert(JSON.stringify(entries[e]));
-				$.ajax({
-					url: 'entry/update',
-					method: 'POST',
-					data: {
-						'termbaseId': termbaseId,
-						'entry': entries[e],
-					},
-					success: function(result){
-						new jBox('Notice', {
-							theme: 'NoticeBorder',
-							color: 'blue',
-							content:'<p>Entry Updated</p>',
-							attributes: { 
-								x: 'right',
-								y: 'bottom'
-							}
-						});
-						
-						searchForm(true);//refresh result list
-						//sort Table
-						//append some content to the tbody
-					},
-					error: function(result){
-						new jBox('Notice', {
-							theme: 'NoticeBorder',
-							color: 'red',
-							content:'<p>Update Error</p>'+
-									'<p>Entry not updated!</p>',
-							attributes: { 
-								x: 'right',
-								y: 'bottom'
-							}
-						});
-					}
-				});
-			},
-			cancel: function(){
-				entries = $.parseJSON('{{entries|json_encode}}');
-				new jBox('Notice', {
-					theme: 'NoticeBorder',
-					color: 'green',
-					content:'<p>Changes ignored.</p>',
-					attributes: { 
-						x: 'right',
-						y: 'bottom'
-					}
-				});
-			},
+			confirm: saveChanges,
+			cancel: cancelChanges,
 		});
 		confirmModal.open();
-		changed = false;
 	}
 }
 
@@ -507,12 +557,12 @@ function smallWindowConstruct(modal)
 		'l': l,
 		't': t
 	};
-	modal.ajax({url: 'entry/view/small', data: {'termbaseId':termbaseId, 'nav': navObject}});
+	modal.ajax({url: "{{path('jbox_small')}}", data: {'termbaseId':termbaseId, 'nav': navObject}});
 }
 
 //large window constructor
 function largeWindowConstruct()
-{
+{ 
 	
 }
 
@@ -546,7 +596,7 @@ function deleteModalButton_pressed(entryIndex)
 			
 			//alert(JSON.stringify(entries[entryIndex]));
 			$.ajax({
-				url: 'entry/delete',
+				url: "{{path('entry_delete')}}",
 				method: "POST",
 				data: {
 					'termbaseId': termbaseId,
@@ -600,18 +650,12 @@ function deleteModalButton_pressed(entryIndex)
 
 function expandModalButton_pressed()
 {
-	var idSplit = activeModal.id.split('_');
+	navObject = getNavObject()
+	e = navObject.e;
+	l = navObject.l;
+	t = navObject.t;
 		
-	var e = idSplit[1]; 
-	var l = idSplit[2];
-	var t = idSplit[3];
-	
-	var navObject = {
-		'e': e,
-		'l': l,
-		't': t
-	};
-	activeModal.ajax({url: 'entry/view/large', data: {'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_large')}}", data: {'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(400);
 	activeModal.setWidth(600);
 	// $('.expandButton').text('Fewer Details');
@@ -620,18 +664,12 @@ function expandModalButton_pressed()
 
 function shrinkModalButton_pressed()
 {
-	var idSplit = activeModal.id.split('_');
-		
-	var e = idSplit[1]; 
-	var l = idSplit[2];
-	var t = idSplit[3];
+	navObject = getNavObject()
+	e = navObject.e;
+	l = navObject.l;
+	t = navObject.t;
 	
-	var navObject = {
-		'e': e,
-		'l': l,
-		't': t
-	};
-	activeModal.ajax({url: 'entry/view/small', data: {'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_small')}}", data: {'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(200);
 	activeModal.setWidth(300);
 	// $('.expandButton').text('More Details');

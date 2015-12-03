@@ -105,16 +105,19 @@
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
+			{% if is_granted('ROLE_ADMIN') %}
 				<p class='arrayFormat'>
 					New Project:
 					<span class='editText' id='projectValue_new'>Click here to add a project.</span>
 				</p>
+			{% endif %}
 		{%- else -%}
+			{% if is_granted('ROLE_ADMIN') %}
 			<p class='arrayFormat'>
 				New Project:
 				<span class='editText' id='projectValue_new'>Click here to add a project.</span>
 			</p>
-			
+			{% endif %}
 		{%- endif -%}
 	</div>
 	<!-- ************************NOTES************************* -->
@@ -129,15 +132,19 @@
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
+				{% if is_granted('ROLE_ADMIN') %}
 				<p class='arrayFormat'>
 					New Note:
 					<span class='editText' id='noteValue_new'>Click here to add a note.</span>
 				</p>
+				{% endif %}
 		{%- else -%}
+			{% if is_granted('ROLE_ADMIN') %}
 			<p class='arrayFormat'>
 				New Note:
 				<span class='editText' id='noteValue_new'>Click here to add a note.</span>
 			</p>
+			{% endif %}
 			
 		{%- endif -%}
 	</div>
@@ -197,7 +204,9 @@
 							{%- if def.source is defined -%}
 								{{def.source}}
 							{%- else -%}
+								{% if is_granted('ROLE_ADMIN') %}
 								Click here to add a source.
+								{% endif %}
 							{%- endif -%}
 							</span>
 						</p>					
@@ -205,6 +214,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
+						{% if is_granted('ROLE_ADMIN') %}
 						New Definition:
 						<p class='arrayFormat'>
 							Content: <span class='editText' id='defValue_new_content'>Click here to add content.</span>
@@ -212,9 +222,11 @@
 						<p class='arrayFormat'>
 							Source: <span class='editText' id='defValue_new_source'>Click here to add a source.</span>
 						</p>
+						{% endif %}
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
+					{% if is_granted('ROLE_ADMIN') %}
 					New Definition:
 					<p class='arrayFormat'>
 						Content: <span class='editText' id='defValue_new_content'>Click here to add content.</span>
@@ -222,6 +234,7 @@
 					<p class='arrayFormat'>
 						Source: <span class='editText' id='defValue_new_source'>Click here to add a source.</span>
 					</p>
+					{% endif %}
 				</div>
 			{%- endif -%}
 		</div>
@@ -242,7 +255,9 @@
 							{%- if ref.source is defined -%}
 								{{ref.source}}
 							{%- else -%}
+								{% if is_granted('ROLE_ADMIN') %}
 								Click here to add a source.
+								{% endif %}
 							{%- endif -%}
 							</span>
 						</p>
@@ -251,6 +266,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
+						{% if is_granted('ROLE_ADMIN') %}
 						New Reference:
 						<p class='arrayFormat'>
 							Content: <span class='editText' id='refContentValue_new'>Click here to add content.</span>
@@ -258,16 +274,19 @@
 						<p class='arrayFormat'>
 							Source: <span class='editText' id='refSourceValue_new'>Click here to add a source.</span>
 						</p>
+						{% endif %}
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
+					{% if is_granted('ROLE_ADMIN') %}
 					New Reference:
 					<p class='arrayFormat'>
 						Content: <span class='editText' id='refContentValue_new'>Click here to add content.</span>
 					</p>
 					<p class='arrayFormat'>
 						Source: <span class='editText' id='refSourceValue_new'>Click here to add a source.</span>
-					</p>
+					</p>	
+					{% endif %}
 				</div>
 			{%- endif -%}
 		</div>
@@ -280,9 +299,11 @@
 	
 		</div>
 	{% if is_granted('ROLE_ADMIN') %}
-		<button class='deleteEntryButtonL' onclick="deleteModalButton_pressed('{{e}}');">Delete Entry</button>
+		<div class='deleteButtonDiv'>
+			<button class='deleteEntryButtonL' onclick="deleteModalButton_pressed('{{e}}');">Delete Entry</button>
+		</div>
 	{% endif %}
-	<div class='buttonDiv'>
+	<div class='shrinkButtonDiv'>
 		<button class='shrinkButton' onclick='shrinkModalButton_pressed()'>Fewer Details</button>
 	</div>
 </div>

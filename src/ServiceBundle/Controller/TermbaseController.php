@@ -60,7 +60,7 @@ class TermbaseController extends Controller
 		
 		return $result_json;
 	}
-	
+
 	public function update()
 	{
 		$data = array(
@@ -94,26 +94,33 @@ class TermbaseController extends Controller
 	
 	public function exportToFile() //returns temp file name for download, is not perfect
 	{
+		$ext = '/\.tbx$/';
+		$fileName = $this->name;
+		if (preg_match($ext, $this->name) == 0)
+		{
+			$fileName .= ".tbx";
+		}
+
 		$result = $this->export();
+		// unset($result);
+		$tmpName = tempnam(sys_get_temp_dir(), $fileName);
 		
-		$tmpName = tempnam(sys_get_temp_dir(), $this->name);
 		$tbxFile = fopen($tmpName, 'w');
-		
 		fwrite($tbxFile, $result);
-		
+		fclose($tbxFile);
+
 		header('Content-Description: File Transfer');
 		header('Content-Type: text/xml');
-		header('Content-Disposition: attachment; filename='.$termbase->name);
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Content-Disposition: attachment; filename='.$fileName);
 		header('Cache-Control: must-revalidate');
 		header('Content-Length: '.filesize($tmpName));
-		
 		ob_clean();
+		// ob_end_clean();
 		flush();
 		readfile($tmpName);
-		
 		unlink($tmpName);
-		
-		return $result;
 	}
 	//end export
 	

@@ -5,13 +5,15 @@
 {% endblock %}
 
 {% block body %}
-	<div>Welcome to alpha BaseTerm! What would you like to do?</div>
+	<div>{%- if not app.user -%}Welcome to alpha BaseTerm!{%- endif -%} What would you like to do?</div>
 	
 	{% if app.user %}
 		<div>
-			<a href='termbase'>View Termbases</a>
+			<a href='{{path('termbase_list')}}'>View Termbases</a>
 		</div>
 	{% else %}
 		<p>Login to view existing termbases.  Register a new account if you don't have one.</p>
 	{% endif %}
+
+	<p>**Please use Google Chrome or Mozilla Firefox.**</p>
 {% endblock %}

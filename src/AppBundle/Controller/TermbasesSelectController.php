@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ServiceBundle\Controller\TermbasesController;
+use ServiceBundle\Controller\TermbaseController;
 
 class TermbasesSelectController extends Controller
 {	
@@ -40,7 +42,7 @@ class TermbasesSelectController extends Controller
 	{
 		$id = $request->query->get('id');
 		
-		$termbase = new TermbasesController();
+		$termbase = new TermbaseController();
 		$termbase->get($id);
 		
 		return new Response($termbase->exportToFile());

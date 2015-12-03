@@ -83,3 +83,15 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: UserBundle\Entity\User
+    profile:
+        form:
+            validation_groups:  [Default] # Here you can also add your own groups if you have extra validation
+    registration:
+        form:
+            validation_groups:  [Default] # Here you can also add your own groups if you have extra validation
+    # registration:
+        # confirmation:
+            # enabled: true
+            # from_email:
+                # address:        registration@certsoftadmin.byu.edu
+                # sender_name:    BaseTerm Registration

@@ -32,7 +32,7 @@
 			{% if app.user %}
 				<a href="{{ url('logout') }}" class='logout'>Logout</a>
 				{% if is_granted('ROLE_ADMIN') %}
-					<!--<a href="{{ url('manage_users') }}" class='manage_users'>Users</a>-->
+					<a href="{{ url('manage_users') }}" class='manage_users'>Users</a>
 				{% endif %}
 			{% else %}
 				<a href="{{ url('register') }}" class='register'>Register</a>
@@ -40,6 +40,20 @@
 			{% endif %}
 			</div>
 		</header>
+		{% if app.user %}
+		<div class='userWelcome'>
+			<p>Welcome {{app.user}}!  Your privilege level is:&nbsp;&nbsp;
+			
+			{%- if is_granted('ROLE_ADMIN') -%}
+				Admin (View, Download, Import, Create, Add, Edit, Delete)
+			{%- elseif is_granted('ROLE_STAFF') -%}
+				Staff (View, Download, Import, Create, Add, Edit)
+			{%- else -%}
+				User (View, Download, Import)
+			{%- endif -%}
+			</p>
+		</div>
+		{% endif %}
 		<div class='mainContainer'>
 			{% block body %}{% endblock %}
 		</div>

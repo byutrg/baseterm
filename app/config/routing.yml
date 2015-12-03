@@ -30,6 +30,14 @@ create_termbase:
     path: /termbase/create
     defaults: { _controller: AppBundle:TermbaseEdit:create }
 
+import_termbase:
+    path: /termbase/import
+    defaults: { _controller: AppBundle:TermbaseEdit:import }
+
+import_view_termbase:
+    path: /termbase/importView
+    defaults: { _controller: AppBundle:TermbaseEdit:importView }
+
 create_termbase_js:
     path: /termbase/create.{_format}
     defaults: { _controller: AppBundle:TermbaseEdit:script, _format: js }
@@ -77,6 +85,10 @@ jbox_large:
 jbox_addNote:
     path: /termbase/entry/view/addNote
     defaults: { _controller: JboxBundle:Jbox:addNote }
+
+entry_save_page:
+    path: /termbase/entry/savePage
+    defaults: { _controller: AppBundle:EditEntry:savePageView }
 
 entry_update:
     path: /termbase/entry/update

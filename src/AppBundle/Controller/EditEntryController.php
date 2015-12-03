@@ -12,6 +12,16 @@ use ServiceBundle\Controller\EntryController;
 Class EditEntryController extends Controller
 {
 	/**
+     * @Route("/termbase/entry/savePage", name="entry_save_page")
+     */
+	public function savePageViewAction(Request $request)
+	{	
+		return $this->render(
+			'jbox/saveChanges.html.twig'
+		);
+	}
+	
+	/**
      * @Route("/termbase/entry/update", name="entry_update")
      */
 	public function updateAction(Request $request)
