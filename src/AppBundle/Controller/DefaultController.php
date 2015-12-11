@@ -45,4 +45,14 @@ class DefaultController extends Controller
 			array('form'=>$form)
 		);
     }
+	
+	/*
+	 * @Route("plus.png", name="plus_image")
+	 */
+	public function plusImageAction(Request $request)
+	{
+		return $this->render(
+			'@AppBundle\Resources\Images\plus_16.png'
+		);
+	}
 }

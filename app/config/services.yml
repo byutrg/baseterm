@@ -19,3 +19,7 @@ services:
         class: ServiceBundle\Controller\PersonController
     entry_controller:
         class: ServiceBundle\Controller\EntryController
+    app.form.registration:
+        class: AppBundle\Form\RegistrationType
+        tags:
+            - { name: form.type, alias: app_user_registration }

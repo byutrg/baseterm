@@ -96,6 +96,7 @@
 	</div>
 	{% if is_granted('ROLE_ADMIN') %}
 		<button class='deleteEntryButton' onclick="deleteModalButton_pressed('{{e}}')">Delete Entry</button>
+		<button class='deleteTermButton' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
 	{% endif %}
 	<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
 	

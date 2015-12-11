@@ -15,12 +15,13 @@ class JboxController extends Controller
      */
     public function smallAction(Request $request)
     {
+		$entries = $request->query->get('entries');
 		$nav = $request->query->get('nav');
 		$id = $request->query->get('termbaseId');
 		
-		$entryController = new EntryController($id);
-		$entries_json = $entryController->getAll();
-		$entries = json_decode($entries_json);
+		// $entryController = new EntryController($id);
+		// $entries_json = $entryController->getAll();
+		// $entries = json_decode($entries_json);
 		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
@@ -36,12 +37,13 @@ class JboxController extends Controller
      */
     public function largeAction(Request $request)
     {
+		$entries = $request->query->get('entries');
 		$nav = $request->query->get('nav');
 		$id = $request->query->get('termbaseId');
 		
-		$entryController = new EntryController($id);
-		$entries_json = $entryController->getAll();
-		$entries = json_decode($entries_json);
+		// $entryController = new EntryController($id);
+		// $entries_json = $entryController->getAll();
+		// $entries = json_decode($entries_json);
 		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);

@@ -98,5 +98,29 @@ Class EditEntryController extends Controller
 		);
 	}
 	
-	
+	/**
+	 * @Route("/termbase/entry/new/term", name="entry_new_term")
+	 */
+	public function termAction(Request $request)
+	{
+		$termbaseId = $request->request->get('termbaseId');
+		$entryIndex = $request->request->get('entryIndex');
+		$langs = $request->request->get('langs');
+		$type = $request->request->get('type');
+
+		return $this->render(
+			'forms/new_term.html.twig',
+			array('termbaseId'=>$termbaseId,'entryIndex'=>$entryIndex,'langs'=>json_encode($langs), 'type'=>$type)
+		);
+	}
+
+	/**
+	 *	@Route("/termbase/entry/new/term/selectLanguage, name="language_quick_select")
+	 */
+	public function quickLangSelectAction()
+	{
+		return $this->render(
+			'jbox/language_quick_select.html.twig'
+		);
+	}	
 }

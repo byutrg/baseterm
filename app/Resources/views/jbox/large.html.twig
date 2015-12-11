@@ -1,7 +1,7 @@
 {% extends 'modals.html.twig' %}
 
 {% block div %}
-<div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}_L'/>
+<div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}_L'>
 	<!-- ************************TERM ENTRY************************* -->
 	<div class='modalDivValue'>
 		<p>
@@ -92,6 +92,7 @@
 			---
 		{%- endif -%}
 		</span>
+		</p>
 	</div>
 	<!-- ************************PROJECTS************************* -->
 	<div class='modalDivValue'>
@@ -105,14 +106,14 @@
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
-			{% if is_granted('ROLE_ADMIN') %}
+			{% if is_granted('ROLE_STAFF') %}
 				<p class='arrayFormat'>
 					New Project:
 					<span class='editText' id='projectValue_new'>Click here to add a project.</span>
 				</p>
 			{% endif %}
 		{%- else -%}
-			{% if is_granted('ROLE_ADMIN') %}
+			{% if is_granted('ROLE_STAFF') %}
 			<p class='arrayFormat'>
 				New Project:
 				<span class='editText' id='projectValue_new'>Click here to add a project.</span>
@@ -132,14 +133,14 @@
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
-				{% if is_granted('ROLE_ADMIN') %}
+				{% if is_granted('ROLE_STAFF') %}
 				<p class='arrayFormat'>
 					New Note:
 					<span class='editText' id='noteValue_new'>Click here to add a note.</span>
 				</p>
 				{% endif %}
 		{%- else -%}
-			{% if is_granted('ROLE_ADMIN') %}
+			{% if is_granted('ROLE_STAFF') %}
 			<p class='arrayFormat'>
 				New Note:
 				<span class='editText' id='noteValue_new'>Click here to add a note.</span>
@@ -148,10 +149,61 @@
 			
 		{%- endif -%}
 	</div>
+	<!-- **********************Contexts******************* -->
+	<div class='modalDivValue'>
+		Context(s):
+		{%- if entries[e].languages[l].terms[t].contexts is defined -%}
+			{%- set i = 0 -%}
+			{%- for ctxt in entries[e].languages[l].terms[t].contexts -%}
+				<div class='arrayFormat'>
+					Context {{i + 1}}:
+					<p class='arrayFormat'>
+						Content: <span class='editText' id='ctxtValue_{{i}}_content'>{{ctxt.content}}</span>
+					</p>
+					<p class='arrayFormat'>
+						Source: 
+						<span class='editText' id='ctxtValue_{{i}}_source'>
+						{%- if ctxt.source is defined -%}
+							{{ctxt.source}}
+						{%- else -%}
+							{%- if is_granted('ROLE_STAFF') -%}
+							Click here to add a source.
+							{%- endif -%}
+						{%- endif -%}
+						</span>
+					</p>					
+				</div>
+				{%- set i = i + 1 -%}
+			{%- endfor -%}
+				<div class='arrayFormat'>
+					{% if is_granted('ROLE_STAFF') %}
+					New Context:
+					<p class='arrayFormat'>
+						Content: <span class='editText' id='ctxtValue_new_content'>Click here to add content.</span>
+					</p>
+					<p class='arrayFormat'>
+						Source: <span class='editText' id='ctxtValue_new_source'>Click here to add a source.</span>
+					</p>
+					{% endif %}
+				</div>
+		{%- else -%}
+			<div class='arrayFormat'>
+				{% if is_granted('ROLE_STAFF') %}
+				New Context:
+				<p class='arrayFormat'>
+					Content: <span class='editText' id='ctxtValue_new_content'>Click here to add content.</span>
+				</p>
+				<p class='arrayFormat'>
+					Source: <span class='editText' id='ctxtValue_new_source'>Click here to add a source.</span>
+				</p>
+				{% endif %}
+			</div>
+		{%- endif -%}
+	</div>
 	<!-- ************************SYNONYMS AND TRANSLATIONS******************** -->
 	<div>
 		<p class='synonymList'>
-		Synonyms:
+		Synonyms: <button type='button' onclick='addTerm({{e}},{{l}},{{t}},"synonym")' class='' href="{{path('entry_new_lang')}}">New Synonym</button>
 		
 		{% if entries[e].languages[l].terms|length > 1 %}
 			<ul>
@@ -162,12 +214,12 @@
 			{% endfor %}
 			</ul>	
 		{% else %}
-			---
+			<p>---</p>
 		{% endif %}
 		</p>	
 		<p class='translationList'>
 		
-		Translations:
+		Translations: <button type='button' onclick='addTerm({{e}},{{l}},{{t}},"translation")' class='' href="{{path('entry_new_lang')}}">New Translation</button>
 		
 		{% if entries[e].languages|length > 1 %}
 			<ul>
@@ -180,13 +232,70 @@
 			{% endfor %}
 			</ul>
 		{% else %}
-			--- 
+			<p>---</p>
 		{% endif %}
 		</p>
 	</div>
+	<!-- **************Language SPECIFIC MATERIAL********************** -->
+	<hr/><hr/>
+	<div class='langDiv'>
+		Language Specific Values: <hr/>
+		<!-- **********************Definitions******************* -->
+		<div class='modalDivValue'>
+			Definitions:
+			{%- if entries[e].languages[l].definitions is defined -%}
+				{%- set i = 0 -%}
+				{%- for def in entries[e].languages[l].definitions -%}
+					<div class='arrayFormat'>
+						Definition {{i + 1}}:
+						<p class='arrayFormat'>
+							Content: <span class='editText' id='defValue_{{i}}_content_langset'>{{def.content}}</span>
+						</p>
+						<p class='arrayFormat'>
+							Source: 
+							<span class='editText' id='defValue_{{i}}_source_langset'>
+							{%- if def.source is defined -%}
+								{{def.source}}
+							{%- else -%}
+								{%- if is_granted('ROLE_STAFF') -%}
+								Click here to add a source.
+								{%- endif -%}
+							{%- endif -%}
+							</span>
+						</p>					
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}
+					<div class='arrayFormat'>
+						{% if is_granted('ROLE_STAFF') %}
+						New Definition:
+						<p class='arrayFormat'>
+							Content: <span class='editText' id='defValue_new_content_langset'>Click here to add content.</span>
+						</p>
+						<p class='arrayFormat'>
+							Source: <span class='editText' id='defValue_new_source_langset'>Click here to add a source.</span>
+						</p>
+						{% endif %}
+					</div>
+			{%- else -%}
+				<div class='arrayFormat'>
+					{% if is_granted('ROLE_STAFF') %}
+					New Definition:
+					<p class='arrayFormat'>
+						Content: <span class='editText' id='defValue_new_content_langset'>Click here to add content.</span>
+					</p>
+					<p class='arrayFormat'>
+						Source: <span class='editText' id='defValue_new_source_langset'>Click here to add a source.</span>
+					</p>
+					{% endif %}
+				</div>
+			{%- endif -%}
+		</div>
+	</div>
 	<!-- **************ENTRY SPECIFIC MATERIAL********************** -->
+	<hr/><hr/>
 	<div class='entryDiv'>
-		Entry Specific Values:
+		Entry Specific Values: <hr/>
 		<!-- **********************Definitions******************* -->
 		<div class='modalDivValue'>
 			Definitions:
@@ -204,9 +313,9 @@
 							{%- if def.source is defined -%}
 								{{def.source}}
 							{%- else -%}
-								{% if is_granted('ROLE_ADMIN') %}
+								{%- if is_granted('ROLE_STAFF') -%}
 								Click here to add a source.
-								{% endif %}
+								{%- endif -%}
 							{%- endif -%}
 							</span>
 						</p>					
@@ -214,7 +323,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
-						{% if is_granted('ROLE_ADMIN') %}
+						{% if is_granted('ROLE_STAFF') %}
 						New Definition:
 						<p class='arrayFormat'>
 							Content: <span class='editText' id='defValue_new_content'>Click here to add content.</span>
@@ -226,7 +335,7 @@
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_ADMIN') %}
+					{% if is_granted('ROLE_STAFF') %}
 					New Definition:
 					<p class='arrayFormat'>
 						Content: <span class='editText' id='defValue_new_content'>Click here to add content.</span>
@@ -239,6 +348,7 @@
 			{%- endif -%}
 		</div>
 		<!-- **********************References******************* -->
+		<!--
 		<div class='modalDivValue'>
 			References:
 			{%- if entries[e].references is defined -%}
@@ -247,49 +357,49 @@
 					<div class='arrayFormat'>
 						Reference {{i + 1}}:
 						<p class='arrayFormat'>
-							Content: <span class='editText' id='refContentValue_{{i}}'>{{ref.content}}</span>
+							Content: <span class='editText' id='refValue_{{i}}_content'>{{ref.content}}</span>
 						</p>
 						<p class='arrayFormat'>
-							Source: 
-							<span class='editText' id='refSourceValue_{{i}}'>
-							{%- if ref.source is defined -%}
-								{{ref.source}}
+							Target: 
+							<span class='editText' id='refValue_{{i}}_target'>
+							{%- if ref.target is defined -%}
+								{{ref.target}}
 							{%- else -%}
-								{% if is_granted('ROLE_ADMIN') %}
-								Click here to add a source.
-								{% endif %}
+								{%- if is_granted('ROLE_STAFF') -%}
+								Click here to add a target.
+								{%- endif -%}
 							{%- endif -%}
 							</span>
-						</p>
-						
+						</p>					
 					</div>
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
-						{% if is_granted('ROLE_ADMIN') %}
+						{% if is_granted('ROLE_STAFF') %}
 						New Reference:
 						<p class='arrayFormat'>
-							Content: <span class='editText' id='refContentValue_new'>Click here to add content.</span>
+							Content: <span class='editText' id='refValue_new_content'>Click here to add content.</span>
 						</p>
 						<p class='arrayFormat'>
-							Source: <span class='editText' id='refSourceValue_new'>Click here to add a source.</span>
+							Target: <span class='editText' id='refValue_new_target'>Click here to add a target.</span>
 						</p>
 						{% endif %}
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_ADMIN') %}
+					{% if is_granted('ROLE_STAFF') %}
 					New Reference:
 					<p class='arrayFormat'>
-						Content: <span class='editText' id='refContentValue_new'>Click here to add content.</span>
+						Content: <span class='editText' id='refValue_new_content'>Click here to add content.</span>
 					</p>
 					<p class='arrayFormat'>
-						Source: <span class='editText' id='refSourceValue_new'>Click here to add a source.</span>
-					</p>	
+						Target: <span class='editText' id='refValue_new_target'>Click here to add a target.</span>
+					</p>
 					{% endif %}
 				</div>
 			{%- endif -%}
 		</div>
+		-->
 		<!-- **********************Transactions******************* -->
 		<div class='modalDivValue'>
 	
@@ -298,9 +408,13 @@
 		<div class='modalDivValue'>
 	
 		</div>
+	</div>
 	{% if is_granted('ROLE_ADMIN') %}
 		<div class='deleteButtonDiv'>
 			<button class='deleteEntryButtonL' onclick="deleteModalButton_pressed('{{e}}');">Delete Entry</button>
+		</div>
+		<div class='deleteTermDiv'>
+			<button class='deleteTermButtonL' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
 		</div>
 	{% endif %}
 	<div class='shrinkButtonDiv'>

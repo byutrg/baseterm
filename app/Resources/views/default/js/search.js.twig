@@ -14,6 +14,7 @@ var resultRows = [];
 var activeModal = {};
 var addNoteModal = {};
 var newEntryModal = {};
+var addTermModal = {};
 var saveConfirmModal = {};
 var activeIndex = -1;
 var displayIndex = 0;
@@ -25,46 +26,11 @@ $(document).ready($('#resultsTable').tablesorter());
 function init()
 {
 	entries = $.parseJSON('{{entries|json_encode}}');
+	getLists();
 	termbaseId = '{{id|raw}}';
 	
 	if (!showTips){$('#myonoffswitch').prop('checked', false);} 
-	
-	for (var e = 0; e < entries.length; e++)
-	{
-		var languages = entries[e]['languages'];
-		//create List structures
-		for (var l = 0; l < languages.length; l++)
-		{
-			var language = languages[l];
-			var tigs = languages[l]['terms'];
-			langList.push({
-					'entry_id':e, 
-					'language_id':l,
-					'language':language
-				});
-				
-			for (var t = 0; t < tigs.length; t++)
-			{
-				tigCount++;
-				var term = tigs[t]['term'];
-				var tig = tigs[t];
-				tigList.push({
-					'entry_id':e,
-					'language_id':l,
-					'tig_id':t,
-					'tig':tig
-				});
-				
-				termList.push({
-					'entry_id':e,
-					'language_id':l,
-					'tig_id':t,
-					'term':term
-				});
-			}
-		}
-	}
-	
+
 	$('#entry_count').text('This termbase has '+entries.length+' entries ('+tigCount+' terms).');
 	
 	//add options to #subjectField select
@@ -132,6 +98,49 @@ function init()
 }
 
 //***************************Variable SET/GET*************************************
+function getLists()
+{
+	langList = [];
+	tigList = [];
+	termList = [];
+
+	for (var e = 0; e < entries.length; e++)
+	{
+		var languages = entries[e]['languages'];
+		//create List structures
+		for (var l = 0; l < languages.length; l++)
+		{
+			var language = languages[l];
+			var tigs = languages[l]['terms'];
+			langList.push({
+					'entry_id':e, 
+					'language_id':l,
+					'language':language
+				});
+				
+			for (var t = 0; t < tigs.length; t++)
+			{
+				tigCount++;
+				var term = tigs[t]['term'];
+				var tig = tigs[t];
+				tigList.push({
+					'entry_id':e,
+					'language_id':l,
+					'tig_id':t,
+					'tig':tig
+				});
+				
+				termList.push({
+					'entry_id':e,
+					'language_id':l,
+					'tig_id':t,
+					'term':term
+				});
+			}
+		}
+	}
+}
+
 function setChanged(bool)
 {
 	changed = bool;
@@ -171,6 +180,7 @@ function saveChanges()
 				}
 			});
 			
+			getLists();
 			searchForm(true);//refresh result list
 			//sort Table
 			//append some content to the tbody
@@ -230,6 +240,17 @@ function closeCofirmModal()
 	saveConfirmModal.close();
 }
 
+function clearSearchQueries()
+{
+	$('#term').val('');
+	$('#pos').val('');
+	$('#languageCode').val('');
+	$('#subjectField').val('');
+	$('#approval').val('');
+	$('#customer').val('');
+	$('#transacPerson').val('');
+}
+
 //***************************Click handlers***************************************
 function addNewEntry()
 {
@@ -259,6 +280,48 @@ function toggleTips(toggleswitch)
 {
 	showTips = toggleswitch.checked;
 	localStorage['showTips'] = showTips;
+}
+
+function addTerm(entryIndex,langIndex,tigIndex, type) //type is "synonym" or "translation"
+{
+	langs = [];
+	
+	for(var i = 0; i < entries[e].languages.length; i++)
+	{
+		switch(type.toUpperCase())
+		{
+			case 'SYNONYM':
+				if (i != l) continue;
+				break;
+			case 'TRANSLATION':
+				if (i == l) continue;
+		}
+		
+		langs.push(entries[e].languages[i].code)
+	}
+	if (typeof addTermModal.destroy != 'undefined') addTermModal.destroy();
+	addTermModal = new jBox('Modal', {
+		closeButton: 'title',
+		repositionOnOpen: true,
+		title: 'Add Term:',
+		position: {
+			x: 50,
+			y: 50
+		},
+		ajax: {
+			url: "{{path('entry_new_term')}}",
+			method: 'POST',
+			data: {
+				'termbaseId':termbaseId, 
+				'entryIndex':entryIndex,
+				'langs':langs,
+				'type':type
+				}, 
+			reload: true
+		}
+	});
+	
+	addTermModal.open();
 }
 
 //******************************TEXT OUTPUTS******************************************
@@ -557,7 +620,7 @@ function smallWindowConstruct(modal)
 		'l': l,
 		't': t
 	};
-	modal.ajax({url: "{{path('jbox_small')}}", data: {'termbaseId':termbaseId, 'nav': navObject}});
+	modal.ajax({url: "{{path('jbox_small')}}", data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
 }
 
 //large window constructor
@@ -648,6 +711,43 @@ function deleteModalButton_pressed(entryIndex)
 	confirmModal.open();
 }
 
+function deleteTermModalButton_pressed(e,l,t)
+{
+	var confirmModal = new jBox('Confirm', {
+		closeOnClick: false,
+		width: 200,
+		height: 20,
+		content: 'Delete this term?',
+		confirmButton: "Delete",
+		confirm: function(){
+			if (entries[e].languages[l].terms.length > 1)
+			{
+				entries[e].languages[l].terms.splice(t,1);
+			}
+			else
+			{
+				entries[e].languages.splice(l,1);
+			}
+
+			saveChanges();
+			activeModal.close();
+		},
+		cancel: function(){
+			entries = $.parseJSON('{{entries|json_encode}}');
+			new jBox('Notice', {
+				theme: 'NoticeBorder',
+				color: 'green',
+				content:'<p>Delete Term canceled.</p>',
+				attributes: { 
+					x: 'right',
+					y: 'bottom'
+				}
+			});
+		},
+	});
+	confirmModal.open();
+}
+
 function expandModalButton_pressed()
 {
 	navObject = getNavObject()
@@ -655,7 +755,7 @@ function expandModalButton_pressed()
 	l = navObject.l;
 	t = navObject.t;
 		
-	activeModal.ajax({url: "{{path('jbox_large')}}", data: {'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_large')}}", data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(400);
 	activeModal.setWidth(600);
 	// $('.expandButton').text('Fewer Details');
@@ -669,7 +769,7 @@ function shrinkModalButton_pressed()
 	l = navObject.l;
 	t = navObject.t;
 	
-	activeModal.ajax({url: "{{path('jbox_small')}}", data: {'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_small')}}", data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(200);
 	activeModal.setWidth(300);
 	// $('.expandButton').text('More Details');

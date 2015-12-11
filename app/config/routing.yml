@@ -6,6 +6,12 @@ lucky_number:
     path: /lucky/number
     defaults: { _controller: AppBundle:Lucky:number}
 
+plus_image:
+    path: /plus.{_format}
+    defaults: { _controller: AppBundle:Default:plusImage, _format: png }
+    requirements:
+        _format: png
+
 user_check:
     path: /userCheck
     defaults: { _controller: AppBundle:Default:userCheck }
@@ -113,6 +119,14 @@ entry_new_entry:
 entry_new_lang:
     path: /termbase/entry/new/lang
     defaults: { _controller: AppBundle:EditEntry:lang }
+
+entry_new_term:
+    path: /termbase/entry/new/term
+    defaults: { _controller: AppBundle:EditEntry:term }
+
+language_quick_select:
+    path: /termbase/entry/new/term/selectLanguage
+    defaults: { _controller: AppBundle:EditEntry:quickLangSelect }
 
 tablesorter_bg:
     path: /css/bg.{_format}

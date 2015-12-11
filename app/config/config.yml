@@ -88,6 +88,7 @@ fos_user:
             validation_groups:  [Default] # Here you can also add your own groups if you have extra validation
     registration:
         form:
+            type: app_user_registration
             validation_groups:  [Default] # Here you can also add your own groups if you have extra validation
     # registration:
         # confirmation:
