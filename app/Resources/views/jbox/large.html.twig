@@ -4,15 +4,12 @@
 <div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}_L'>
 	<!-- ************************TERM ENTRY************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Term: <span class='editText' id='termValue_{{e}}_{{l}}_{{t}}_L'>{{entries[e].languages[l].terms[t].term}}</span>
-		</p>
+		<span class='label label_term'>Term: </span><span class='editText value_term' id='termValue_{{e}}_{{l}}_{{t}}_L'>{{entries[e].languages[l].terms[t].term}}</span>
 	</div>
 	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Approval: 
-		<span class='editList' id='statusValue_{{e}}_{{l}}_{{t}}_L'>
+		<span class='label label_approval'>Approval: </span>
+		<span class='editList value_approval' id='statusValue_{{e}}_{{l}}_{{t}}_L'>
 		{%- if entries[e].languages[l].terms[t].status is defined -%}
 			{%- if entries[e].languages[l].terms[t].status == "preferredTerm-admn-sts" -%}
 				Preferred
@@ -29,13 +26,11 @@
 			---
 		{%- endif -%}
 		</span>
-		</p>
 	</div>
 	<!-- ************************PART OF SPEECH************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Part of Speech: 
-		<span class='editList' id='posValue_{{e}}_{{l}}_{{t}}_L'>
+		<span class='label label_pos'>Part of Speech: </span>
+		<span class='editList value_pos' id='posValue_{{e}}_{{l}}_{{t}}_L'>
 		{%- if entries[e].languages[l].terms[t].pos is defined -%}
 			{%- if entries[e].languages[l].terms[t].pos == "noun" -%}
 				Noun
@@ -56,13 +51,11 @@
 			---
 		{%- endif -%}
 		</span>
-		</p>
 	</div>
 	<!-- ************************GENDER************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Gender: 
-		<span class='editList' id='genderValue_{{e}}_{{l}}_{{t}}_L'>
+		<span class='label label_gender'>Gender: </span>
+		<span class='editList value_gender' id='genderValue_{{e}}_{{l}}_{{t}}_L'>
 		{%- if entries[e].languages[l].terms[t].gender is defined -%}
 			{%- if entries[e].languages[l].terms[t].gender == "masculine" -%}
 				Masculine
@@ -79,30 +72,27 @@
 			---
 		{%- endif -%}
 		</span>
-		</p>
 	</div>
 	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Subject Field:
-		<span class='editText' id='subjectValue_{{e}}_{{l}}_{{t}}_L'>
+		<span class='label label_subject'>Subject Field: </span>
+		<span class='editText value_subject' id='subjectValue_{{e}}_{{l}}_{{t}}_L'>
 		{%- if entries[e].subject_field is defined -%}
 			{{entries[e].subject_field}}
 		{%- else -%}
 			---
 		{%- endif -%}
 		</span>
-		</p>
 	</div>
 	<!-- ************************PROJECTS************************* -->
 	<div class='modalDivValue'>
-		Projects:
+		<span class='label label_projects'>Projects: </span>
 		{%- if entries[e].languages[l].terms[t].projects is defined -%}
 			{%- set i = 0 -%}
 			{%- for project in entries[e].languages[l].terms[t].projects -%}
-				<p class='arrayFormat'>
+				<p class='arrayFormat value_container_projects'>
 					Project {{i + 1}}:
-					<span class='editText' id='projectValue_{{i}}'>{{project}}</span>
+					<span class='editText value_project' id='projectValue_{{i}}'>{{project}}</span>
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
@@ -123,7 +113,7 @@
 	</div>
 	<!-- ************************NOTES************************* -->
 	<div class='modalDivValue'>
-		Notes:
+		<span class='label label_notes'>Notes: </span>
 		{%- if entries[e].notes is defined -%}
 			{%- set i = 0 -%}
 			{%- for note in entries[e].notes -%}
@@ -151,7 +141,7 @@
 	</div>
 	<!-- **********************Contexts******************* -->
 	<div class='modalDivValue'>
-		Context(s):
+		<span class='label label_contexts'>Context(s): </span>
 		{%- if entries[e].languages[l].terms[t].contexts is defined -%}
 			{%- set i = 0 -%}
 			{%- for ctxt in entries[e].languages[l].terms[t].contexts -%}
@@ -202,47 +192,55 @@
 	</div>
 	<!-- ************************SYNONYMS AND TRANSLATIONS******************** -->
 	<div>
-		<p class='synonymList'>
-		Synonyms: <button type='button' onclick='addTerm({{e}},{{l}},{{t}},"synonym")' class='' href="{{path('entry_new_lang')}}">New Synonym</button>
+		<!-- <p class='synonymList'> -->
+		<span class='label label_synonyms'>Synonyms: </span>
+		<button type='button' onclick='addTerm({{e}},{{l}},{{t}},"synonym")' class='' href="{{path('entry_new_lang')}}">New Synonym</button>
 		
 		{% if entries[e].languages[l].terms|length > 1 %}
 			<ul>
+			{% set tigIndex = 0 %}
 			{% for tig in entries[e].languages[l].terms %}
 				{% if tig.term != entries[e].languages[l].terms[t].term %}
-					<li>{{tig.term}}</li>
+					<li id='M_{{e}}_{{l}}_{{tigIndex}}_term' class='term_item'>{{tig.term}}</li>
 				{% endif %}
+				{% set tigIndex = tigIndex + 1 %}
 			{% endfor %}
 			</ul>	
 		{% else %}
 			<p>---</p>
 		{% endif %}
-		</p>	
-		<p class='translationList'>
+		<!--</p>-->
+		<!--<p class='translationList'>-->
 		
-		Translations: <button type='button' onclick='addTerm({{e}},{{l}},{{t}},"translation")' class='' href="{{path('entry_new_lang')}}">New Translation</button>
+		<span class='label label_translations'>Translations: </span>
+		<button type='button' onclick='addTerm({{e}},{{l}},{{t}},"translation")' class='' href="{{path('entry_new_lang')}}">New Translation</button>
 		
 		{% if entries[e].languages|length > 1 %}
 			<ul>
+			{% set langIndex = 0 %}
 			{% for lang in entries[e].languages %}
 				{% if l != loop.index - 1 %}
+					{% set tigIndex = 0 %}
 					{% for tig in entries[e].languages[loop.index-1].terms %}
-						<li>{{tig.term}}</li>
+						<li id='M_{{e}}_{{langIndex}}_{{tigIndex}}_term' class='term_item'>{{tig.term}}</li>
+						{% set tigIndex = tigIndex + 1 %}
 					{% endfor %}
 				{% endif %}
+				{% set langIndex = langIndex + 1 %}
 			{% endfor %}
 			</ul>
 		{% else %}
 			<p>---</p>
 		{% endif %}
-		</p>
+		<!--</p>-->
 	</div>
 	<!-- **************Language SPECIFIC MATERIAL********************** -->
 	<hr/><hr/>
 	<div class='langDiv'>
-		Language Specific Values: <hr/>
+		<span class='partition partition_langset'>Language Specific Values: </span><hr/>
 		<!-- **********************Definitions******************* -->
 		<div class='modalDivValue'>
-			Definitions:
+			<span class='label label_definitions'>Definitions: </span>
 			{%- if entries[e].languages[l].definitions is defined -%}
 				{%- set i = 0 -%}
 				{%- for def in entries[e].languages[l].definitions -%}
@@ -295,10 +293,10 @@
 	<!-- **************ENTRY SPECIFIC MATERIAL********************** -->
 	<hr/><hr/>
 	<div class='entryDiv'>
-		Entry Specific Values: <hr/>
+		<span class='partition partition_entry'>Entry Specific Values: </span><hr/>
 		<!-- **********************Definitions******************* -->
 		<div class='modalDivValue'>
-			Definitions:
+			<span class='label label_definitions'>Definitions: </span>
 			{%- if entries[e].definitions is defined -%}
 				{%- set i = 0 -%}
 				{%- for def in entries[e].definitions -%}

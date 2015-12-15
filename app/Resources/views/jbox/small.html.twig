@@ -3,16 +3,13 @@
 {% block div %}
 <div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}'/>
 	<!-- ************************TERM ENTRY************************* -->
-	<div class='modalDivValue'>
-		<p>
-		Term: <span class='editText' id='termValue_{{e}}_{{l}}_{{t}}'>{{entries[e].languages[l].terms[t].term}}</span>
-		</p>
+	<div class='modalDivValue infoContainer'>
+		<span class='label label_term'>Term: </span><span class='editText value_term' id='termValue_{{e}}_{{l}}_{{t}}'>{{entries[e].languages[l].terms[t].term}}</span>
 	</div>
 	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Approval: 
-		<span class='editList' id='statusValue_{{e}}_{{l}}_{{t}}'>
+		<span class='label label_approval'>Approval: </span>
+		<span class='editList value_approval' id='statusValue_{{e}}_{{l}}_{{t}}'>
 		{%- if entries[e].languages[l].terms[t].status is defined -%}
 			{%- if entries[e].languages[l].terms[t].status == "preferredTerm-admn-sts" -%}
 				Preferred
@@ -29,13 +26,11 @@
 			---
 		{%- endif -%}
 		</span>
-		</p>
 	</div>
 	<!-- ************************PART OF SPEECH************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Part of Speech: 
-		<span class='editList' id='posValue_{{e}}_{{l}}_{{t}}'>
+		<span class='label label_pos'>Part of Speech: </span>
+		<span class='editList value_pos' id='posValue_{{e}}_{{l}}_{{t}}'>
 		{%- if entries[e].languages[l].terms[t].pos is defined -%}
 			{%- if entries[e].languages[l].terms[t].pos == "noun" -%}
 				Noun
@@ -57,13 +52,11 @@
 			---
 		{%- endif -%}
 		</span>
-		</p>
 	</div>
 	<!-- ************************GENDER************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Gender: 
-		<span class='editList' id='genderValue_{{e}}_{{l}}_{{t}}'>
+		<span class='label label_gender'>Gender: </span>
+		<span class='editList value_gender' id='genderValue_{{e}}_{{l}}_{{t}}'>
 		{%- if entries[e].languages[l].terms[t].gender is defined -%}
 			{%- if entries[e].languages[l].terms[t].gender == "masculine" -%}
 				Masculine
@@ -80,13 +73,11 @@
 			---
 		{%- endif -%}
 		</span>
-		</p>
 	</div>
 	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
-		<p>
-		Subject Field:
-		<span class='editText' id='subjectValue_{{e}}_{{l}}_{{t}}'>
+		<span class='label label_subject'>Subject Field: </span>
+		<span class='editText value_gender' id='subjectValue_{{e}}_{{l}}_{{t}}'>
 		{%- if entries[e].subject_field is defined -%}
 			{{entries[e].subject_field}}
 		{%- else -%}

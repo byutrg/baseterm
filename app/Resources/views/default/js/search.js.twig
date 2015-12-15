@@ -12,10 +12,16 @@ var termList = [];
 var resultList = [];
 var resultRows = [];
 var activeModal = {};
+var pendingModal = {};
+var quickLangSelectModal = {};
+var clickToViewTip = {};
+var clickToEditTip = {};
+var clickToAddNoteTip = {};
 var addNoteModal = {};
 var newEntryModal = {};
 var addTermModal = {};
 var saveConfirmModal = {};
+var saveConfirmModalMini = {};
 var activeIndex = -1;
 var displayIndex = 0;
 var showTips = (localStorage['showTips'] == 'false') ? false : true || true;
@@ -73,31 +79,15 @@ function init()
 			
 		}
 	})
-	
-	//create save modal
-	saveConfirmModal = new jBox('Modal', {
-		closeOnClick: false,
-		closeButton: 'title',
-		repositionOnOpen: true,
-		width: 210,
-		height: 40,
-		title: 'Changes Pending:',
-		position: {
-			x: 10,
-			y: 10
-		},
-		ajax: {
-			url: "{{path('entry_save_page')}}",
-			method: 'POST',
-			data: {
-				'termbaseId':termbaseId, 
-				}, 
-			reload: true
-		}
-	});
 }
 
 //***************************Variable SET/GET*************************************
+function getPendingModal()
+{
+	if (typeof pendingModal.open != 'undefined') pendingModal.open();
+	pendingModal = {}; //clear pending
+}
+
 function getLists()
 {
 	langList = [];
@@ -146,10 +136,30 @@ function setChanged(bool)
 	changed = bool;
 	
 	if (changed)
-	{
-		//add changes save/cancel window
-		
-		saveConfirmModal.open();
+	{	
+		if (typeof saveConfirmModalMini.destroy != 'undefined') saveConfirmModalMini.destroy();
+		//create save modal
+		saveConfirmModalMini = new jBox('Modal', {
+			closeOnClick: false,
+			closeButton: 'title',
+			repositionOnOpen: true,
+			addClass: 'saveConfirmModalMini',
+			width: 190,  //should change in CSS too
+			height: 60,
+			position: {
+				x: 10,
+				y: 10
+			},
+			ajax: {
+				url: "{{path('entry_save_page')}}",
+				method: 'POST',
+				data: {
+					'termbaseId':termbaseId, 
+					}, 
+				reload: true
+			}
+		});
+		saveConfirmModalMini.open();
 	}
 	
 }
@@ -200,15 +210,16 @@ function saveChanges()
 	});
 	
 	setChanged(false);
+	getPendingModal();
 }
 
-function cancelChanges()
+function cancelChanges(message)
 {
 	entries = $.parseJSON('{{entries|json_encode}}');
 	new jBox('Notice', {
 		theme: 'NoticeBorder',
 		color: 'green',
-		content:'<p>Changes ignored.</p>',
+		content:'<p>'+message+'</p>',
 		attributes: { 
 			x: 'right',
 			y: 'bottom'
@@ -216,6 +227,7 @@ function cancelChanges()
 	});
 	
 	setChanged(false);
+	getPendingModal();
 }
 
 function getNavObject()
@@ -237,7 +249,7 @@ function getNavObject()
 
 function closeCofirmModal()
 {
-	saveConfirmModal.close();
+	if (typeof saveConfirmModalMini.close != 'undefined') saveConfirmModalMini.close();
 }
 
 function clearSearchQueries()
@@ -252,6 +264,76 @@ function clearSearchQueries()
 }
 
 //***************************Click handlers***************************************
+
+//on hover over a term
+$('body').on('mouseover','.term_item',function(){
+	if(typeof clickToViewTip.destroy != 'undefined') clickToViewTip.destroy();
+	clickToViewTip = new jBox('Mouse', {
+			attach: $(this),
+			content: 'Click to view entry!',
+			addClass: 'clickToViewTip'
+		}).open();
+});
+
+//on click of a term
+$('body').on('click','.term_item',function(){
+	var resultId = $(this).attr('id');
+		var idSplit = resultId.split('_');
+		
+		var e = idSplit[1]; 
+		var l = idSplit[2];
+		var t = idSplit[3];
+		
+	pendingModal = new jBox('Modal', {
+		width: 600,
+		height: 400,
+		id: resultId+'_modal',
+		attach: $('#'+resultId+"_term"),
+		title: 'Term Information',
+		overlay: true,
+		onOpen: function(){
+			smallWindowConstruct(this);
+			modalListener(this);
+			
+			if (showTips)
+			{
+				new jBox('Notice',{
+					autoClose: 15000,
+					content: '<p>Click on a value to edit it!<p>'+
+								'<p>Clicking the shaded area will close the details window.</p>'+
+								'<p>You will be asked if you want to save any changes you made.</p>'+
+								'<p>Clicking on this notice will close it.</p>',
+					color: 'blue',
+					position: {
+						x: 'right',
+						y: 'center'
+					},
+					offset: {
+						x: -20
+					}
+				});
+			}
+		},
+		onClose: function(){
+			closeCofirmModal();
+			checkChanges();
+			
+			if (!changed) setTimeout(getPendingModal(),500);
+		}
+	});
+	
+	if(typeof activeModal.destroy == 'undefined')
+	{
+		pendingModal.open();
+		pendingModal = {}; //clearpending
+	}
+	else
+	{
+		activeModal.close().destroy();
+	}
+});
+
+
 function addNewEntry()
 {
 	newEntryModal.open();
@@ -291,10 +373,10 @@ function addTerm(entryIndex,langIndex,tigIndex, type) //type is "synonym" or "tr
 		switch(type.toUpperCase())
 		{
 			case 'SYNONYM':
-				if (i != l) continue;
+				if (i != langIndex) continue;
 				break;
 			case 'TRANSLATION':
-				if (i == l) continue;
+				if (i == langIndex) continue;
 		}
 		
 		langs.push(entries[e].languages[i].code)
@@ -375,7 +457,7 @@ function printResults()
 		//term
 		var resultTerm = $('<td></td>');
 		resultTerm.attr('id', resultId+'_term');
-		resultTerm.attr('class', 'result_term');
+		resultTerm.attr('class', 'result_term term_item');
 		resultTerm.text(entries[e]['languages'][l]['terms'][t]['term']);
 		
 		//Language
@@ -412,6 +494,8 @@ function printResults()
 						if (x == t) continue;
 						var synonymTerm = $('<p></p>');
 						synonymTerm.text(entries[e]['languages'][z].terms[x].term);
+						synonymTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t); //l and t are added to make these values unique
+						synonymTerm.attr('class', 'term_item');
 						resultSynonym.append(synonymTerm);	
 					}
 				}
@@ -422,6 +506,8 @@ function printResults()
 						translationsExist = true;
 						var transTerm = $('<p></p>');
 						transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+')');
+						transTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t);;
+						transTerm.attr('class', 'term_item');;
 						resultTranslations.append(transTerm);	
 					}
 					
@@ -533,7 +619,7 @@ function printResults()
 		$('#resultTableBody').append(resultRow);
 
 		
-		// <th>Term</th>
+		// <th>Term</th>  
 		// <th>Language</th>
 		// <th>Synonym(s)</th>
 		// <th>Translation(s)</th>
@@ -547,43 +633,6 @@ function printResults()
 		idSpan.text(resultId);
 		idSpan.attr('class', 'idList');
 		idSpan.attr('type', 'hidden');
-				
-		
-		var modal = new jBox('Modal', {
-			width: 600,
-			height: 400,
-			id: resultId+'_modal_'+i,
-			attach: $('#'+resultId+"_term"),
-			title: entries[e]['languages'][l]['terms'][t]['term'],
-			onOpen: function(){
-				smallWindowConstruct(this);
-				modalListener(this);
-				
-				if (showTips)
-				{
-					new jBox('Notice',{
-						autoClose: 15000,
-						content: '<p>Click on a value to edit it!<p>'+
-									'<p>Clicking the shaded area will close the details window.</p>'+
-									'<p>You will be asked if you want to save any changes you made.</p>'+
-									'<p>Clicking on this notice will close it.</p>',
-						color: 'blue',
-						position: {
-							x: 'right',
-							y: 'center'
-						},
-						offset: {
-							x: -20
-						}
-					});
-				}
-			},
-			onClose: function(){
-				closeCofirmModal();
-				checkChanges();
-			}
-		});
-		
 	}
 	//append some content to the tbody
 	$("#resultsTable").trigger('update');
@@ -593,16 +642,20 @@ function checkChanges()
 {
 	if (changed)
 	{	
-		var confirmModal = new jBox('Confirm', {
+		if (typeof saveConfirmModal.destroy != 'undefined') saveConfirmModal.destroy();
+		saveConfirmModal = new jBox('Confirm', {
 			closeOnClick: false,
 			width: 200,
 			height: 100,
 			content: 'Changes have been made to an entry.  Would you like to keep these or discard them?',
 			confirmButton: "Save Changes",
 			confirm: saveChanges,
-			cancel: cancelChanges,
+			cancelButton: "Discard",
+			cancel: function(){
+				cancelChanges('Changes ignored.');
+			},
 		});
-		confirmModal.open();
+		saveConfirmModal.open();
 	}
 }
 
@@ -620,7 +673,7 @@ function smallWindowConstruct(modal)
 		'l': l,
 		't': t
 	};
-	modal.ajax({url: "{{path('jbox_small')}}", data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
+	modal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
 }
 
 //large window constructor
@@ -631,13 +684,6 @@ function largeWindowConstruct()
 
 
 //*************************modalWindow listeners*****************************************
-//Information pop-ups
-$('body').on('mouseover', '.result_term', function(){
-	$('.result_term').jBox('Mouse', {
-		content: 'Click to view entry!'
-	});
-});
-
 function modalListener(modal)
 {
 	activeModal = modal;
@@ -654,8 +700,8 @@ function deleteModalButton_pressed(entryIndex)
 		width: 200,
 		height: 20,
 		content: 'Delete this entry?',
-		confirmButton: "Delete",
-		confirm: function(){
+		cancelButton: "Delete",
+		cancel: function(){
 			
 			//alert(JSON.stringify(entries[entryIndex]));
 			$.ajax({
@@ -695,17 +741,9 @@ function deleteModalButton_pressed(entryIndex)
 				}
 			});
 		},
-		cancel: function(){
-			entries = $.parseJSON('{{entries|json_encode}}');
-			new jBox('Notice', {
-				theme: 'NoticeBorder',
-				color: 'green',
-				content:'<p>Changes ignored.</p>',
-				attributes: { 
-					x: 'right',
-					y: 'bottom'
-				}
-			});
+		confirmButton: 'Cancel',
+		confirm: function(){
+			cancelChanges('Changes ignored.');
 		},
 	});
 	confirmModal.open();
@@ -718,8 +756,8 @@ function deleteTermModalButton_pressed(e,l,t)
 		width: 200,
 		height: 20,
 		content: 'Delete this term?',
-		confirmButton: "Delete",
-		confirm: function(){
+		cancelButton: "Delete",
+		cancel: function(){
 			if (entries[e].languages[l].terms.length > 1)
 			{
 				entries[e].languages[l].terms.splice(t,1);
@@ -732,17 +770,9 @@ function deleteTermModalButton_pressed(e,l,t)
 			saveChanges();
 			activeModal.close();
 		},
-		cancel: function(){
-			entries = $.parseJSON('{{entries|json_encode}}');
-			new jBox('Notice', {
-				theme: 'NoticeBorder',
-				color: 'green',
-				content:'<p>Delete Term canceled.</p>',
-				attributes: { 
-					x: 'right',
-					y: 'bottom'
-				}
-			});
+		confirmButton: 'Cancel',
+		confirm: function(){
+			cancelChanges('Delete Term canceled.');
 		},
 	});
 	confirmModal.open();
@@ -755,7 +785,7 @@ function expandModalButton_pressed()
 	l = navObject.l;
 	t = navObject.t;
 		
-	activeModal.ajax({url: "{{path('jbox_large')}}", data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_large')}}", method: 'POST', data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(400);
 	activeModal.setWidth(600);
 	// $('.expandButton').text('Fewer Details');
@@ -769,7 +799,7 @@ function shrinkModalButton_pressed()
 	l = navObject.l;
 	t = navObject.t;
 	
-	activeModal.ajax({url: "{{path('jbox_small')}}", data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(200);
 	activeModal.setWidth(300);
 	// $('.expandButton').text('More Details');

@@ -15,9 +15,9 @@ class JboxController extends Controller
      */
     public function smallAction(Request $request)
     {
-		$entries = $request->query->get('entries');
-		$nav = $request->query->get('nav');
-		$id = $request->query->get('termbaseId');
+		$entries = $request->request->get('entries');
+		$nav = $request->request->get('nav');
+		$id = $request->request->get('termbaseId');
 		
 		// $entryController = new EntryController($id);
 		// $entries_json = $entryController->getAll();
@@ -37,9 +37,9 @@ class JboxController extends Controller
      */
     public function largeAction(Request $request)
     {
-		$entries = $request->query->get('entries');
-		$nav = $request->query->get('nav');
-		$id = $request->query->get('termbaseId');
+		$entries = $request->request->get('entries');
+		$nav = $request->request->get('nav');
+		$id = $request->request->get('termbaseId');
 		
 		// $entryController = new EntryController($id);
 		// $entries_json = $entryController->getAll();
@@ -59,8 +59,8 @@ class JboxController extends Controller
      */
 	public function addNoteAction(Request $request)
 	{
-		$nav = $request->query->get('nav');
-		$id = $request->query->get('termbaseId');
+		$nav = $request->request->get('nav');
+		$id = $request->request->get('termbaseId');
 		
 		return $this->render(
 			'jbox/addNote.html.twig',
