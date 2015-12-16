@@ -41,6 +41,7 @@
 			{% endif %}
 			</div>
 		</header>
+		<div class='branding'></div>
 		{% if app.user %}
 		<div class='userWelcome'>
 			<p>Welcome {{app.user}}!  Your privilege level is:&nbsp;&nbsp;
@@ -67,5 +68,6 @@
 		{% endjavascripts %}
 		
         {% block javascripts %}{% endblock %}
+		<footer class='footer'></footer>
     </body>
 </html>

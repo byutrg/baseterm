@@ -12,6 +12,21 @@ use ServiceBundle\Controller\EntryController;
 Class EditEntryController extends Controller
 {
 	/**
+     * @Route("/termbase/entry/get", name="entry_get")
+     */
+    public function getAction(Request $request)
+    {
+
+		$id = $request->request->get('id');
+		
+		$entryController = new EntryController($id);
+		$entries_json = $entryController->getAll();
+		
+		return new Response($entries_json);
+    }    
+	
+	
+	/**
      * @Route("/termbase/entry/savePage", name="entry_save_page")
      */
 	public function savePageViewAction(Request $request)

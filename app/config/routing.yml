@@ -92,6 +92,10 @@ jbox_addNote:
     path: /termbase/entry/view/addNote
     defaults: { _controller: JboxBundle:Jbox:addNote }
 
+entry_get:
+    path: /termbase/entry/get
+    defaults: { _controller: AppBundle:EditEntry:get }
+
 entry_save_page:
     path: /termbase/entry/savePage
     defaults: { _controller: AppBundle:EditEntry:savePageView }
@@ -123,6 +127,10 @@ entry_new_lang:
 entry_new_term:
     path: /termbase/entry/new/term
     defaults: { _controller: AppBundle:EditEntry:term }
+
+search_termbase_mini:
+    path: /termbase/search/mini
+    defaults: { _controller: AppBundle:TermbaseSearch:miniSearch }
 
 language_quick_select:
     path: /termbase/entry/new/term/selectLanguage

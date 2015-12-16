@@ -32,6 +32,22 @@ class TermbaseSearchController extends Controller
 			'default/search.html.twig',
 			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name)
 		);
+    }    
+	
+	/**
+     * @Route("/termbase/search/mini", name="search_termbase_mini")
+     */
+    public function miniSearchAction(Request $request)
+    {
+		$e = $request->request->get('e');
+		$l = $request->request->get('l');
+		$t = $request->request->get('t');
+		$targetElementId = $request->request->get('targetElementId');
+		
+		return $this->render(
+			'default/search_mini.html.twig',
+			array('e'=>$e,'l'=>$l,'t'=>$t,'targetElementId'=>$targetElementId)
+		);
     }
 	
 	/**

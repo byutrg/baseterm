@@ -1,7 +1,7 @@
 {% extends 'modals.html.twig' %}
 
 {% block div %}
-<div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}'/>
+<div class='modalDiv' id='div_{{e}}_{{l}}_{{t}}'>
 	<!-- ************************TERM ENTRY************************* -->
 	<div class='modalDivValue infoContainer'>
 		<span class='label label_term'>Term: </span><span class='editText value_term' id='termValue_{{e}}_{{l}}_{{t}}'>{{entries[e].languages[l].terms[t].term}}</span>
@@ -90,32 +90,6 @@
 		<button class='deleteTermButton' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
 	{% endif %}
 	<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
-	
-	
-	
-<!--var windowContent = $('<div></div>');
-		//window items
-		var expandButton = $('<button></button>');
-		expandButton.attr('class', 'expandButton');
-		
-		expandButton.text('More Details');
-		windowContent.append(expandButton);
-		
-		//TERM RELATED ITEMS
-		//pos
-		var posDiv = $('<div></div>');
-		posDiv.attr('class', 'modalInfoBox');
-		var pos = $('<p></p>');
-		pos.text('Part of Speech: '+entries[e]['languages'][l]['terms'][t]['pos']);
-		posDiv.append(pos);
-		windowContent.append(posDiv);
-		
-		expandButton.attr('onClick', 'expandModalButton_pressed('+JSON.stringify(windowContent)+')');
-		
-		var languageCode = $('<p></p>');
-		languageCode.text('Language Code: '+entries[e]['languages'][l]['code']);
-		windowContent.append(languageCode);-->
-
 </div>		
 {% endblock %}
 

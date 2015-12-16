@@ -15,7 +15,7 @@ class JboxController extends Controller
      */
     public function smallAction(Request $request)
     {
-		$entries = $request->request->get('entries');
+		$entries = json_decode($request->request->get('entries'));
 		$nav = $request->request->get('nav');
 		$id = $request->request->get('termbaseId');
 		
@@ -37,7 +37,7 @@ class JboxController extends Controller
      */
     public function largeAction(Request $request)
     {
-		$entries = $request->request->get('entries');
+		$entries = json_decode($request->request->get('entries'));
 		$nav = $request->request->get('nav');
 		$id = $request->request->get('termbaseId');
 		

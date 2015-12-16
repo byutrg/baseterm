@@ -14,9 +14,11 @@ var resultRows = [];
 var activeModal = {};
 var pendingModal = {};
 var quickLangSelectModal = {};
+var targetSelectModal = {};
 var clickToViewTip = {};
 var clickToEditTip = {};
 var clickToAddNoteTip = {};
+var displayRefTargetTip = {};
 var addNoteModal = {};
 var newEntryModal = {};
 var addTermModal = {};
@@ -26,6 +28,7 @@ var activeIndex = -1;
 var displayIndex = 0;
 var showTips = (localStorage['showTips'] == 'false') ? false : true || true;
 var changed = false;
+var activeIsSmall = true;
 
 $(document).ready($('#resultsTable').tablesorter());
 
@@ -209,13 +212,30 @@ function saveChanges()
 		}
 	});
 	
+	
+	(activeIsSmall) ? shrinkModalButton_pressed() : expandModalButton_pressed();
+	
 	setChanged(false);
 	getPendingModal();
 }
 
 function cancelChanges(message)
 {
-	entries = $.parseJSON('{{entries|json_encode}}');
+	//refresh entries and clear all changes
+	$.ajax({
+		async: false,
+		url: '{{path("entry_get")}}',
+		method: 'POST',
+		dataType: 'json',
+		data: {
+			'id': termbaseId
+		},
+		success: function(response){
+			entries = response;
+		}
+	});
+
+	
 	new jBox('Notice', {
 		theme: 'NoticeBorder',
 		color: 'green',
@@ -226,6 +246,8 @@ function cancelChanges(message)
 		}
 	});
 	
+	(activeIsSmall) ? shrinkModalButton_pressed() : expandModalButton_pressed();
+
 	setChanged(false);
 	getPendingModal();
 }
@@ -247,7 +269,7 @@ function getNavObject()
 	return navObject;
 }
 
-function closeCofirmModal()
+function closeConfirmModal()
 {
 	if (typeof saveConfirmModalMini.close != 'undefined') saveConfirmModalMini.close();
 }
@@ -261,6 +283,7 @@ function clearSearchQueries()
 	$('#approval').val('');
 	$('#customer').val('');
 	$('#transacPerson').val('');
+	searchForm(true);
 }
 
 //***************************Click handlers***************************************
@@ -277,6 +300,7 @@ $('body').on('mouseover','.term_item',function(){
 
 //on click of a term
 $('body').on('click','.term_item',function(){
+
 	var resultId = $(this).attr('id');
 		var idSplit = resultId.split('_');
 		
@@ -315,7 +339,7 @@ $('body').on('click','.term_item',function(){
 			}
 		},
 		onClose: function(){
-			closeCofirmModal();
+			closeConfirmModal();
 			checkChanges();
 			
 			if (!changed) setTimeout(getPendingModal(),500);
@@ -426,6 +450,7 @@ function printResults()
 {
 	if (typeof resultList == 'undefined') return false;
 	
+	resultList.sort();
 	$('.search_result').remove();
 
 	showCount = (displayIndex + 50 < resultList.length) ? 50 : resultList.length - displayIndex;
@@ -673,7 +698,9 @@ function smallWindowConstruct(modal)
 		'l': l,
 		't': t
 	};
-	modal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
+	modal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject}});
+	
+	activeIsSmall = true;
 }
 
 //large window constructor
@@ -688,7 +715,7 @@ function modalListener(modal)
 {
 	activeModal = modal;
 	activeModal.setHeight(200);
-	activeModal.setWidth(300);
+	activeModal.setWidth(400);
 	// $('.expandButton').text('More Details');
 	// $('.expandButton').attr('onClick', 'expandModalButton_pressed()');
 }
@@ -785,9 +812,11 @@ function expandModalButton_pressed()
 	l = navObject.l;
 	t = navObject.t;
 		
-	activeModal.ajax({url: "{{path('jbox_large')}}", method: 'POST', data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_large')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(400);
 	activeModal.setWidth(600);
+	
+	activeIsSmall = false;
 	// $('.expandButton').text('Fewer Details');
 	// $('.expandButton').attr('onClick', 'shrinkModalButton_pressed()');
 }
@@ -799,9 +828,11 @@ function shrinkModalButton_pressed()
 	l = navObject.l;
 	t = navObject.t;
 	
-	activeModal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':entries, 'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject}});
 	activeModal.setHeight(200);
-	activeModal.setWidth(300);
+	activeModal.setWidth(400);
+	
+	activeIsSmall = true;
 	// $('.expandButton').text('More Details');
 	// $('.expandButton').attr('onClick', 'expandModalButton_pressed()');
 }
@@ -1097,7 +1128,7 @@ function termFind(query)
 		if (typeof term.term != 'undefined' &&
 			term.term.search(re) > -1)
 		{
-			var resultId = "I_"+term.entry_id+"_"+term.language_id+"_"+term.tig_id;
+			var resultId = "I-"+term.term.replace(/[\'\"_\(\)]/,'').toUpperCase()+"_"+term.entry_id+"_"+term.language_id+"_"+term.tig_id;
 			
 			if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 			{
@@ -1119,7 +1150,7 @@ function tigFind(query, index)
 		if ( query == '*' || (typeof tig.tig[index] != 'undefined' &&
 			tig.tig[index].toUpperCase() == query.toUpperCase()))
 		{
-			var resultId = "I_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
+			var resultId = "I-"+tig.tig.term.replace(/[\'\"_\(\)]/,'').toUpperCase()+"_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
 			
 			if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 			{
@@ -1144,7 +1175,7 @@ function langFind(query, index)
 			
 			for (var t = 0; t < terms.length; t++)
 			{
-				var resultId = "I_"+langList[l].entry_id+"_"+langList[l].language_id+"_"+t;
+				var resultId = "I-"+terms[t].term.replace(/[\'\"_\(\)]/,'').toUpperCase()+"_"+langList[l].entry_id+"_"+langList[l].language_id+"_"+t;
 				
 				
 				if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
@@ -1184,7 +1215,7 @@ function personFind(query)
 				
 				if (!found) found = transactionNameCompare(query, transactions);
 				
-				var resultId = "I_"+e+"_"+l+"_"+t;
+				var resultId = "I-"+tigs[t].term.replace(/[\'\"_\(\)]/,'').toUpperCase()+"_"+e+"_"+l+"_"+t;
 				
 				if (found && $.inArray(resultId, results) < 0)
 				{
@@ -1232,7 +1263,7 @@ function subjectFieldFind(query)
 			{
 				var tig = tigs[t];
 				
-				var resultId = "I_"+e+"_"+l+"_"+t;
+				var resultId = "I-"+tigs[t].term.replace(/[\'\"_\(\)]/,'').toUpperCase()+"_"+e+"_"+l+"_"+t;
 				
 				if (found && $.inArray(resultId, results) < 0)
 				{
@@ -1258,7 +1289,7 @@ function customerFind(query)
 			if ( query == '*' || (typeof tig.tig['customers'][i] != 'undefined' &&
 				tig.tig['customers'][i].toUpperCase() == query.toUpperCase()))
 			{
-				var resultId = "I_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
+				var resultId = "I-"+tig.tig[t].term.replace(/[\'\"_\(\)]/,'').toUpperCase()+"_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
 				
 				if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 				{

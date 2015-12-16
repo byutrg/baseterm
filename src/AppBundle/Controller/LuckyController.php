@@ -15,6 +15,16 @@ class LuckyController extends Controller
     {
         $number = rand(0, 100);
 		
+		 // $message = \Swift_Message::newInstance()
+        // ->setSubject('Hello Email')
+        // ->setFrom('byutrg@gmail.com')
+        // ->setTo('james.s.hayes@gmail.com')
+        // ->setBody(
+            // 'hello','text/html'
+				// )
+			// ;
+			// $this->get('mailer')->send($message);
+		
         return new Response(
             '<html><body>Lucky number: '.$number.'</body></html>'
         );
