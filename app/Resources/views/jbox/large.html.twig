@@ -73,12 +73,28 @@
 		{%- endif -%}
 		</span>
 	</div>
+	<!-- ************************GEOGRAPHIC REGION************************* -->
+	<div class='modalDivValue'>
+		<span class='label label_geo'>Region: </span>
+		<span class='editGeo value_geo' id='geoValue_{{e}}_{{l}}_{{t}}_L'></span>
+	</div>
 	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_subject'>Subject Field: </span>
 		<span class='editText value_subject' id='subjectValue_{{e}}_{{l}}_{{t}}_L'>
 		{%- if entries[e].subject_field is defined -%}
 			{{entries[e].subject_field}}
+		{%- else -%}
+			---
+		{%- endif -%}
+		</span>
+	</div>
+	<!-- ************************TERM SOURCE************************* -->
+	<div class='modalDivValue'>
+		<span class='label label_term'>Source: </span>
+		<span class='editText value_term' id='termSourceValue_{{e}}_{{l}}_{{t}}_L'>
+		{%- if entries[e].languages[l].terms[t].source is defined -%}
+			{{entries[e].languages[l].terms[t].source}}
 		{%- else -%}
 			---
 		{%- endif -%}
@@ -217,6 +233,38 @@
 				New Reference:
 				<p class='arrayFormat'>
 					<span class='editReference' id='refValue_new_content_tig'>Click here to add a reference.</span>
+				</p>
+				{% endif %}
+			</div>
+		{%- endif -%}
+	</div>
+	<!-- **********************External References******************* -->
+	<div class='modalDivValue'>
+		External References:
+		{%- if entries[e].external_references is defined -%}
+			{%- set i = 0 -%}
+			{%- for ref in entries[e].external_references -%}
+				<div class='arrayFormat'>
+					External Reference {{i + 1}}:
+						<span class='extRefContent' id='extRefValue_{{i}}_content_tig'>{{ref.content}}</span>
+						<span id='extRefValue_{{i}}_content_tig_delete' class='noQueriesError' hidden>*Will be deleted if saved.*</span>
+				</div>
+				{%- set i = i + 1 -%}
+			{%- endfor -%}
+				<div class='arrayFormat'>
+					{% if is_granted('ROLE_STAFF') %}
+					New External Reference:
+					<p class='arrayFormat'>
+						<span class='editExtRef' id='extRefValue_new_content_tig'>Click here to add a reference.</span>
+					</p>
+					{% endif %}
+				</div>
+		{%- else -%}
+			<div class='arrayFormat'>
+				{% if is_granted('ROLE_STAFF') %}
+				New External Reference:
+				<p class='arrayFormat'>
+					<span class='editExtRef' id='extRefValue_new_content_tig'>Click here to add a reference.</span>
 				</p>
 				{% endif %}
 			</div>
@@ -409,13 +457,73 @@
 				</div>
 			{%- endif -%}
 		</div>
+		<!-- **********************External References******************* -->
+		<div class='modalDivValue'>
+			External References:
+			{%- if entries[e].external_references is defined -%}
+				{%- set i = 0 -%}
+				{%- for ref in entries[e].external_references -%}
+					<div class='arrayFormat'>
+						External Reference {{i + 1}}:
+							<span class='extRefContent' id='extRefValue_{{i}}_content_termEntry'>{{ref.content}}</span>
+							<span id='extRefValue_{{i}}_content_termEntry_delete' class='noQueriesError' hidden>*Will be deleted if saved.*</span>
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}
+					<div class='arrayFormat'>
+						{% if is_granted('ROLE_STAFF') %}
+						New External Reference:
+						<p class='arrayFormat'>
+							<span class='editExtRef' id='extRefValue_new_content_termEntry'>Click here to add a reference.</span>
+						</p>
+						{% endif %}
+					</div>
+			{%- else -%}
+				<div class='arrayFormat'>
+					{% if is_granted('ROLE_STAFF') %}
+					New External Reference:
+					<p class='arrayFormat'>
+						<span class='editExtRef' id='extRefValue_new_content_termEntry'>Click here to add a reference.</span>
+					</p>
+					{% endif %}
+				</div>
+			{%- endif -%}
+		</div>
 		<!-- **********************Transactions******************* -->
 		<div class='modalDivValue'>
 	
 		</div>
 		<!-- **********************Images******************* -->
 		<div class='modalDivValue'>
-	
+			Images:
+			{%- if entries[e].images is defined -%}
+				{%- set i = 0 -%}
+				{%- for img in entries[e].images -%}
+					<div class='arrayFormat'>
+						Image {{i + 1}}:
+							<span class='imgContent' id='imgValue_{{i}}_content_termEntry'>{{img.content}}</span>
+							<span id='imgValue_{{i}}_content_termEntry_delete' class='noQueriesError' hidden>*Will be deleted if saved.*</span>
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}
+					<div class='arrayFormat'>
+						{% if is_granted('ROLE_STAFF') %}
+						New Image:
+						<p class='arrayFormat'>
+							<span class='editImgRef' id='imgValue_new_content_termEntry'>Click here to add a reference.</span>
+						</p>
+						{% endif %}
+					</div>
+			{%- else -%}
+				<div class='arrayFormat'>
+					{% if is_granted('ROLE_STAFF') %}
+					New Image:
+					<p class='arrayFormat'>
+						<span class='editImgRef' id='imgValue_new_content_termEntry'>Click here to add a reference.</span>
+					</p>
+					{% endif %}
+				</div>
+			{%- endif -%}
 		</div>
 	</div>
 	{% if is_granted('ROLE_ADMIN') %}
@@ -430,4 +538,17 @@
 		<button class='shrinkButton' onclick='shrinkModalButton_pressed()'>Fewer Details</button>
 	</div>
 </div>
+<script type='text/javascript'>
+$(function(){
+	
+	if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
+	{
+		$('#geoValue_{{e}}_{{l}}_{{t}}_L').text(
+			regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
+		);
+	}
+	else $('#geoValue_{{e}}_{{l}}_{{t}}_L').text('---');
+
+});
+</script>
 {% endblock %}

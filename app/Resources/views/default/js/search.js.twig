@@ -5,8 +5,10 @@ var tigCount = 0;
 var termbaseId;
 var langCodeMaster;
 var langCodeValueList = {};
+var regionCodeValueList = {};
 var subjectFields = [];
 var langList = [];
+var regionList =[];
 var tigList = [];
 var termList = [];
 var resultList = [];
@@ -15,15 +17,22 @@ var activeModal = {};
 var pendingModal = {};
 var quickLangSelectModal = {};
 var targetSelectModal = {};
+var extRefSelectModal = {};
+var geoSelectModal = {};
+var imgSelectModal = {};
 var clickToViewTip = {};
 var clickToEditTip = {};
 var clickToAddNoteTip = {};
 var displayRefTargetTip = {};
+var displayExtRefTargetTip = {};
+var displayImgTargetTip = {};
+var geoEditTip = {};
 var addNoteModal = {};
 var newEntryModal = {};
 var addTermModal = {};
 var saveConfirmModal = {};
 var saveConfirmModalMini = {};
+var regionCodeMaster = [];
 var activeIndex = -1;
 var displayIndex = 0;
 var showTips = (localStorage['showTips'] == 'false') ? false : true || true;
@@ -52,10 +61,23 @@ function init()
 	// transacPersonLoader();
 	
 	//add options to #languageCode select
-	$.getJSON('lang_codes.json', function(data){
+	$.getJSON('{{path("lang_codes_list")}}', function(data){
 		langCodeLoader(data);
 		searchForm(true);
 	});
+	
+	//load region codes
+	$.ajax({
+		dataType: "json",
+		url: '{{path("region_codes_list")}}',
+		async: false,
+		success: function(data){
+			regionCodeLoader(data);
+		}
+	});
+	//$.getJSON('{{path("region_codes_list")}}', function(data){
+	//	regionCodeLoader(data);
+	//});
 
 	//non-unique jBox windows
 	addNoteModal = new jBox('Modal', {
@@ -81,7 +103,7 @@ function init()
 		onClose: function(){
 			
 		}
-	})
+	});
 }
 
 //***************************Variable SET/GET*************************************
@@ -500,7 +522,15 @@ function printResults()
 		}
 		if (!exists) langName = code;
 		var resultLangCode = $('<td></td>');
-		resultLangCode.text(langName);
+		if(typeof entries[e]['languages'][l]['terms'][t].geo != 'undefined')
+		{
+			region = regionCodeValueList[entries[e]['languages'][l]['terms'][t].geo];
+			resultLangCode.text(langName+" --- "+region);
+		}
+		else
+		{
+			resultLangCode.text(langName);
+		}
 		
 		//Synonyms + Translations
 		var resultSynonym = $('<td></td>');
@@ -518,9 +548,18 @@ function printResults()
 						synonymsExist = true;
 						if (x == t) continue;
 						var synonymTerm = $('<p></p>');
-						synonymTerm.text(entries[e]['languages'][z].terms[x].term);
 						synonymTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t); //l and t are added to make these values unique
 						synonymTerm.attr('class', 'term_item');
+						
+						if (typeof entries[e]['languages'][z].terms[x].geo == 'undefined')
+						{
+							synonymTerm.text(entries[e]['languages'][z].terms[x].term);
+						}
+						else
+						{
+							region = regionCodeValueList[entries[e]['languages'][z].terms[x].geo];
+							synonymTerm.text(entries[e]['languages'][z].terms[x].term+" --- "+region);
+						}
 						resultSynonym.append(synonymTerm);	
 					}
 				}
@@ -530,9 +569,18 @@ function printResults()
 					{
 						translationsExist = true;
 						var transTerm = $('<p></p>');
-						transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+')');
 						transTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t);;
 						transTerm.attr('class', 'term_item');;
+						
+						if (typeof entries[e]['languages'][z].terms[x].geo == 'undefined')
+						{
+							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+')');
+						}
+						else
+						{
+							region = regionCodeValueList[entries[e]['languages'][z].terms[x].geo];
+							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+') --- '+region);
+						}
 						resultTranslations.append(transTerm);	
 					}
 					
@@ -892,6 +940,16 @@ function langCodeLoader(langCodeData)
 			opt.text(code);
 			$('#languageCode').append(opt);
 		}
+	}
+}
+
+function regionCodeLoader(regionCodeData)
+{
+	regionCodeMaster = regionCodeData;
+	for (var e = 0; e < regionCodeMaster.length; e++)
+	{
+		var codeKey = regionCodeMaster[e].code;
+		regionCodeValueList[codeKey] = regionCodeMaster[e].regionName;
 	}
 }
 

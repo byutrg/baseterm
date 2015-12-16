@@ -78,10 +78,20 @@ class TermbaseSearchController extends Controller
 	/**
      * @Route("/termbase/lang_codes.json", name="lang_codes_list")
      */
-	public function jsonLoadAction()
+	public function langJsonLoadAction()
 	{
 		return $this->render( 
 			'default/js/isoLangCodes.json'
+		);
+	}
+	
+	/**
+     * @Route("/termbase/region_codes.json", name="region_codes_list")
+     */
+	public function regionJsonLoadAction()
+	{
+		return $this->render( 
+			'default/js/regionCodes.json'
 		);
 	}
 }

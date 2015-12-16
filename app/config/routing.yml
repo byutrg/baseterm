@@ -76,7 +76,13 @@ search_termbase_js:
 
 lang_codes_list:
     path: /termbase/lang_codes.{_format}
-    defaults: { _controller: AppBundle:TermbaseSearch:jsonLoad, _format: json}
+    defaults: { _controller: AppBundle:TermbaseSearch:langJsonLoad, _format: json}
+    requirements:
+        _format: js|json
+
+region_codes_list:
+    path: /termbase/region_codes.{_format}
+    defaults: { _controller: AppBundle:TermbaseSearch:regionJsonLoad, _format: json}
     requirements:
         _format: js|json
 
@@ -127,6 +133,18 @@ entry_new_lang:
 entry_new_term:
     path: /termbase/entry/new/term
     defaults: { _controller: AppBundle:EditEntry:term }
+
+entry_new_ext_ref:
+    path: /termbase/entry/new/ext_ref
+    defaults: { _controller: AppBundle:EditEntry:extRef }
+
+entry_term_geo:
+    path: /termbase/entry/term/geo
+    defaults: { _controller: AppBundle:EditEntry:geo }
+
+entry_new_image:
+    path: /termbase/entry/new/image
+    defaults: { _controller: AppBundle:EditEntry:image }
 
 search_termbase_mini:
     path: /termbase/search/mini

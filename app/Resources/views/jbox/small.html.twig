@@ -74,6 +74,11 @@
 		{%- endif -%}
 		</span>
 	</div>
+	<!-- ************************GEOGRAPHIC REGION************************* -->
+	<div class='modalDivValue'>
+		<span class='label label_geo'>Region: </span>
+		<span class='editGeo value_geo' id='geoValue_{{e}}_{{l}}_{{t}}'></span>
+	</div>
 	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_subject'>Subject Field: </span>
@@ -90,6 +95,19 @@
 		<button class='deleteTermButton' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
 	{% endif %}
 	<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
-</div>		
+</div>
+<script type='text/javascript'>
+$(function(){
+	
+	if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
+	{
+		$('#geoValue_{{e}}_{{l}}_{{t}}').text(
+			regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
+		);
+	}
+	else $('#geoValue_{{e}}_{{l}}_{{t}}').text('---');
+
+});
+</script>
 {% endblock %}
 

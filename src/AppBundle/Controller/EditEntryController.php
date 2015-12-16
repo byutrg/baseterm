@@ -128,7 +128,55 @@ Class EditEntryController extends Controller
 			array('termbaseId'=>$termbaseId,'entryIndex'=>$entryIndex,'langs'=>json_encode($langs), 'type'=>$type)
 		);
 	}
+	
+	/**
+	 * @Route("/termbase/entry/new/ext_ref", name="entry_new_ext_ref")
+	 */
+	public function extRefAction(Request $request)
+	{
+		$e = $request->request->get('e');
+		$l = $request->request->get('l');
+		$t = $request->request->get('t');
+		$extRefElementId = $request->request->get('extRefElementId');
 
+		return $this->render(
+			'forms/ext_ref.html.twig',
+			array('e'=>$e,'l'=>$l,'t'=>$t,'extRefElementId'=>$extRefElementId)
+		);
+	}
+	
+	/**
+	 * @Route("/termbase/entry/new/image", name="entry_new_image")
+	 */
+	public function imageAction(Request $request)
+	{
+		$e = $request->request->get('e');
+		$l = $request->request->get('l');
+		$t = $request->request->get('t');
+		$imgElementId = $request->request->get('imgElementId');
+
+		return $this->render(
+			'forms/image.html.twig',
+			array('e'=>$e,'l'=>$l,'t'=>$t,'imgElementId'=>$imgElementId)
+		);
+	}
+	
+	/**
+	 * @Route("/termbase/entry/term/geo", name="entry_term_geo")
+	 */
+	public function geoAction(Request $request)
+	{
+		$e = $request->request->get('e');
+		$l = $request->request->get('l');
+		$t = $request->request->get('t');
+		$geoElementId = $request->request->get('geoElementId');
+
+		return $this->render(
+			'forms/geo.html.twig',
+			array('e'=>$e,'l'=>$l,'t'=>$t,'geoElementId'=>$geoElementId)
+		);
+	}
+	
 	/**
 	 *	@Route("/termbase/entry/new/term/selectLanguage, name="language_quick_select")
 	 */
