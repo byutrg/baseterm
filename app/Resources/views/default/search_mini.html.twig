@@ -1,0 +1,573 @@
+<!--<div class='referenceContentContainer'>
+	<label id='errorRefLabel' class='noQueriesError' for='referenceContentMini' hidden>Reference content is required.</label>
+	<input type='text' id='referenceContentMini' class='referenceContentMini' placeholder='Reference content...'/>
+</div>-->
+<div class='miniSearchContainer'>
+	<div class='miniSearchQueriesContainer'>
+		<input type='text' id='termMini' class='searchMiniQuery'/>
+		<select id='langCodeMini' class='searchMiniQuery'>
+			<option value='---'>Language...</option>
+		</select>
+		<select id='subjectFieldMini' class='searchMiniQuery'>
+			<option value='---'>Subject Field...</option>
+		</select>
+	</div>
+	<div class='miniSearchResults'>
+		<span id='entry_count_mini'></span>
+		<table id='miniSearchResultsTable' class='miniSearchResultsTable'>
+			<thead>
+				<th>Term</th>
+				<th>Language</th>
+				<th>Synonyms</th>
+				<th>Translations</th>
+				<th>Subject Field</th>
+				<th>Target</th>
+			</thead>
+			<tbody id='search_results_mini' class='search_results_mini'>
+			</tbody>
+		</table>
+	</div>
+	<button type='button' onclick='prevResultsMiniClick()'>Previous</button>
+	<button type='button' onclick='nextResultsMiniClick()'>Next</button>
+	<button type='button' id='deleteReferenceBtn' class='deleteReferenceBtn' onclick='deleteReference()'></button>
+</div>
+
+{{ render(controller(
+	'AppBundle:Objects:entry'
+)) }}
+
+<script>
+
+var dispalyIndexMini = 0;
+var resultListMini = [];
+
+$(function(){
+	var langCodes = [];
+	
+	for (var i = 0; i < langList.length; i++)
+	{
+		var code = langList[i].language.code;
+		
+		if ($.inArray(code, langCodes) < 0)
+		{
+			langCodes.push(code);
+		}
+	}
+
+	for (var i = 0; i < langCodes.length; i++)
+	{
+		var code = langCodes[i];
+		var exists;
+		for (var e = 0; e < langCodeMaster.length; e++)
+		{
+			if ($.inArray(code.toLowerCase(),langCodeMaster[e].codes) > -1)
+			{
+				exists = true;
+				
+				var opt = $('<option></option>');
+				opt.attr('value', code);
+				opt.text(langCodeMaster[e].name);
+				$('#langCodeMini').append(opt);
+				break;
+			}
+		}
+		if (!exists)
+		{
+			var opt = $('<option></option>');
+			opt.attr('value', code);
+			opt.text(code);
+			$('#langCodeMini').append(opt);
+		}
+	}
+	
+	for (var i = 0; i < subjectFields.length; i++)
+	{
+		var field = subjectFields[i];
+		var opt = $('<option></option>');
+		opt.attr('value', field);
+		opt.text(field);
+		$('#subjectFieldMini').append(opt);
+	}
+	
+	($('#{{targetElementId}}').attr('id').split('_')[1] == 'new')
+		?	$('#deleteReferenceBtn').text('Cancel')
+		:	$('#deleteReferenceBtn').text('Delete');
+	
+	
+	searchFormMini(true);
+});
+
+$('.searchMiniQuery').on('change', function(){
+	searchFormMini(false);
+});
+
+function searchFormMini(searchAll)
+{	
+	$('.search_results_mini tr').remove();
+	$('#entry_count_mini').text('');
+	var queries = $('.searchMiniQuery');
+	dispalyIndexMini = 0;
+	resultListMini = [];
+	
+	var results = [];
+	var paramProvided = false;
+	for (var i = 0; i < queries.length; i++)
+	{
+		if (queries[i].value != '' || searchAll)
+		{
+			paramProvided = true;
+			var resultArray = [];
+			switch(queries[i].id){
+				case 'termMini':
+					query = (searchAll) ? '*' : queries[i].value;
+					resultArray = termFindMini(query);
+					break;
+				case 'langCodeMini':
+					if (queries[i].value == '---') continue;
+					resultArray = langFindMini(queries[i].value, 'code');
+					break;
+				case 'subjectFieldMini':
+					if (queries[i].value == '---') continue;
+					resultArray = subjectFieldFindMini(queries[i].value);
+					break;
+			}
+			if (resultArray.length > 0) results.push(resultArray);
+		}
+	}
+	
+	//narrow results with each additional query provided
+	if (results.length > 0 || paramProvided)
+	{
+		if (results.length > 1)
+		{
+			var rLengthSmall = results[0].length;
+			var narrow = 0;
+			for (var i = 0; i < results.length; i++)
+			{
+				if (results[i].length < rLengthSmall)
+				{
+					rLengthSmall = results[i].length;
+					narrow = i;
+				}
+			}
+			
+			for (var y = 0; y < results[narrow].length; y++)
+			{
+				var exists = true;
+				for (var x = 0; x < results.length; x++)
+				{
+					if (narrow==x) continue;
+					
+					if ($.inArray(results[narrow][y], results[x]) < 0)
+					{
+						exists = false;
+					}
+				}
+				if (exists == true)
+				{
+					resultListMini.push(results[narrow][y]);
+				}
+			}
+		}
+		else
+		{
+			resultListMini = results[0];
+		}
+		
+		if (typeof resultListMini != 'undefined' && resultListMini.length > 0)
+		{
+			printResultsMini();
+		}
+		else
+		{
+			var error = $('<tr></tr>');
+			error.attr('class', 'noQueriesError search_results_mini');
+			error.text("No matching terms were found.");
+			$('#search_results_mini').append(error);	
+		}
+	}
+	else
+	{
+		var error = $('<tr></tr>');
+		error.attr('class', 'noQueriesError search_result');
+		error.text("No search parameters were entered!");
+		$('#search_results_mini').append(error);	
+	}
+}
+
+function printResultsMini()
+{	
+	if (typeof resultListMini == 'undefined') return false;
+
+	$('#search_results_mini tr').remove();
+	
+	showCount = (dispalyIndexMini + 6 < resultListMini.length) ? 6 : resultListMini.length - dispalyIndexMini;
+	$('#entry_count_mini').text('Showing ' + showCount + ' of '+resultListMini.length+' result(s).');
+	for (var i = dispalyIndexMini; i < dispalyIndexMini + 6 && i < resultListMini.length; i++) 
+	{	
+		var resultId = resultListMini[i];
+		var idSplit = resultId.split('_');
+		
+		var e = idSplit[1]; 
+		var l = idSplit[2];
+		var t = idSplit[3];
+		
+				
+		// <th>Term</th>
+		// <th>Language</th>
+		// <th>Synonym(s)</th>
+		// <th>Translation(s)</th>
+		// <th>Subject Field</th>
+		// <th>Part of Speech</th>
+		// <th>Approval Status</th>
+		// <th>Customer(s)</th>
+		// <th>Project</th>
+		
+		var resultRow = $('<tr></tr>');
+		resultRow.attr('id', resultId+'_mini');
+		resultRow.attr('class', 'search_result term_item_mini');
+		
+		//term
+		var resultTerm = $('<td></td>');
+		resultTerm.attr('id', resultId+'_term_mini');
+		resultTerm.attr('class', 'result_term_mini term_item_mini');
+		resultTerm.text(entries[e]['languages'][l]['terms'][t]['term']);
+		
+		//Language
+		//lang
+		var code = entries[e]['languages'][l]['code'];
+		var langName = "";
+		var exists = false;
+		for (var z = 0; z < langCodeMaster.length; z++)
+		{
+			if ($.inArray(code.toLowerCase(),langCodeMaster[z].codes) > -1)
+			{
+				exists = true;
+				langName = langCodeMaster[z].name;
+			}
+		}
+		if (!exists) langName = code;
+		var resultLangCode = $('<td></td>');
+		resultLangCode.text(langName);
+		
+		//Synonyms + Translations
+		var resultSynonym = $('<td></td>');
+		var resultTranslations = $('<td></td>');
+		var synonymsExist = false;
+		var translationsExist = false;
+		for (var z = 0; z < entries[e]['languages'].length; z++)
+		{		
+			for (var x = 0; x < entries[e]['languages'][z].terms.length; x++)
+			{
+				if (z == l) //synonyms
+				{
+					if (entries[e]['languages'][z].terms.length - 1 > 0)
+					{
+						synonymsExist = true;
+						if (x == t) continue;
+						var synonymTerm = $('<span></span>');
+						synonymTerm.text(entries[e]['languages'][z].terms[x].term);
+						synonymTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t+'mini'); //l and t are added to make these values unique
+						synonymTerm.attr('class', 'term_item_mini alt_term_mini');
+						resultSynonym.append(synonymTerm);	
+					}
+				}
+				else //translations
+				{
+					if (entries[e]['languages'][z].terms.length > 0)
+					{
+						translationsExist = true;
+						var transTerm = $('<span></span>');
+						transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+')');
+						transTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t+'mini');
+						transTerm.attr('class', 'term_item_mini alt_term_mini');;
+						resultTranslations.append(transTerm);	
+					}
+					
+				}
+				
+			}
+		}
+		if (!synonymsExist) resultSynonym.text('---');
+		if (!translationsExist) resultTranslations.text('---');
+		
+		//Subject Field
+		var resultSubject = $('<td></td>');
+		var subject = (typeof entries[e]['subject_field'] != 'undefined') ? entries[e]['subject_field'] : '---';
+		resultSubject.text(subject);
+		
+		var useAsRefBtn = $('<button>Use</button>');
+		useAsRefBtn.attr('id', resultId+'_mini_use');
+		useAsRefBtn.attr('class','useAsRefBtn');
+		useAsRefBtn.click(function(){
+			saveRef(this.id)
+		});
+		
+		
+		resultRow.append(resultTerm);
+		resultRow.append(resultLangCode);
+		resultRow.append(resultSynonym);
+		resultRow.append(resultTranslations);
+		resultRow.append(resultSubject);
+		resultRow.append(useAsRefBtn);
+		
+		$('#search_results_mini').append(resultRow);
+	}
+}
+
+function saveRef(id)
+{
+	//if ($('#referenceContentMini').val() == '')
+	//{
+	//	$('#errorRefLabel').attr('hidden',false);
+	//	return false;
+	//}
+	var e = id.split('_')[1];
+	var l = id.split('_')[2];
+	var t = id.split('_')[3];
+	
+	
+	var type = $('#{{targetElementId}}').attr('id').split('_')[0];
+	var refIndex = $('#{{targetElementId}}').attr('id').split('_')[1];
+	var subtype = $('#{{targetElementId}}').attr('id').split('_')[2];
+	var level = $('#{{targetElementId}}').attr('id').split('_')[3];
+	
+	
+	var content = entries[e].languages[l].terms[t].term;
+	var target = '';
+	var ref = {};
+	
+	switch(level.toUpperCase())
+	{
+		case 'TERMENTRY':
+			target = entries[e].id
+			ref = new Reference(content,target);
+			
+			if (typeof entries[{{e}}].references != 'undefined')
+			{
+				if (refIndex == 'new')
+				{
+					entries[{{e}}].references.push(ref);
+					refIndex = entries[{{e}}].references.length-1;
+				}
+				else
+				{
+					entries[{{e}}].references[refIndex] = ref;
+				}
+			}
+			else
+			{
+				entries[{{e}}]['references'] = [ref];
+				refIndex = entries[{{e}}].references.length-1;
+			}
+			break;
+		case 'LANGSET':
+			//target = entries[e].languages[l].id
+			target = entries[e].id
+			
+			ref = new Reference(content,target);
+			
+			if (typeof entries[{{e}}].languages[{{l}}].references != 'undefined')
+			{
+				if (refIndex == 'new')
+				{
+					entries[{{e}}].languages[{{l}}].references.push(ref);
+					refIndex = entries[{{e}}].languages[{{l}}].references.length-1;
+				}
+				else
+				{
+					entries[{{e}}].languages[{{l}}].references[refIndex] = ref;
+				}
+			}
+			else
+			{
+				entries[{{e}}].languages[{{l}}]['references'] = [ref];
+				refIndex = entries[{{e}}].languages[{{l}}].references.length-1;
+			}
+			
+		 	break;
+		case 'TIG':
+			//target = entries[e].languages[l].terms[t].id
+			target = entries[e].id
+
+			ref = new Reference(content,target);
+			
+			if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].references != 'undefined')
+			{
+				if (refIndex == 'new')
+				{
+					entries[{{e}}].languages[{{l}}].terms[{{t}}].references.push(ref);
+					refIndex = entries[{{e}}].languages[{{l}}].terms[{{t}}].references.length-1;
+				}
+				else
+				{
+					entries[{{e}}].languages[{{l}}].terms[{{t}}].references[refIndex] = ref;
+				}
+			}
+			else
+			{
+				entries[{{e}}].languages[{{l}}].terms[{{t}}]['references'] = [ref];
+				refIndex = entries[{{e}}].languages[{{l}}].terms[{{t}}].references.length-1;
+			}
+			break;
+	}
+	var newId = type+"_"+refIndex+"_"+subtype+"_"+level;
+	var refElement = $('#{{targetElementId}}');
+	refElement.text(content);
+	refElement.attr('class','refContent');
+	refElement.prop('id', newId);
+	setChanged(true);
+	targetSelectModal.close();
+}
+
+function nextResultsMiniClick()
+{
+	dispalyIndexMini = (dispalyIndexMini + 6 < resultListMini.length - 1) ? dispalyIndexMini + 6 : dispalyIndexMini;
+	
+	printResultsMini();
+}
+
+function prevResultsMiniClick()
+{
+	dispalyIndexMini = (dispalyIndexMini - 6 >= 0) ? dispalyIndexMini - 6 : dispalyIndexMini = 0;
+
+	printResultsMini();
+}
+
+function termFindMini(query)
+{
+	var results = [];
+	for (var t = 0; t < termList.length; t++)
+	{
+		var term = termList[t];
+		
+		var re = (query != '*') ? new RegExp(query, "i") : new RegExp('.', "i");
+		
+		if (typeof term.term != 'undefined' &&
+			term.term.search(re) > -1)
+		{
+			var resultId = "I_"+term.entry_id+"_"+term.language_id+"_"+term.tig_id;
+			
+			if ($.inArray(resultId, resultListMini) < 0 && $.inArray(resultId, results) < 0)
+			{
+				results.push(resultId);
+			}
+		}
+	}
+	
+	return results;
+}
+
+function langFindMini(query, index)
+{
+	var results = [];
+	for (var l = 0; l < langList.length; l++)
+	{
+		var language = langList[l].language;
+		if ( typeof language[index] != 'undefined' &&
+			language[index].toUpperCase() == query.toUpperCase())
+		{
+			var terms = language.terms;
+			
+			for (var t = 0; t < terms.length; t++)
+			{
+				var resultId = "I_"+langList[l].entry_id+"_"+langList[l].language_id+"_"+t;
+				
+				
+				if ($.inArray(resultId, resultListMini) < 0 && $.inArray(resultId, results) < 0)
+				{
+					results.push(resultId);
+				}
+			}
+		}
+	}
+	
+	return results;
+}
+
+
+function subjectFieldFindMini(query)
+{
+	var results = [];
+	
+	for (var e = 0; e < entries.length; e++)
+	{
+		var subjectField = (typeof entries[e]['subject_field'] != 'undefined') ? entries[e]['subject_field'] : "";
+		
+		var found = (subjectField != "" && subjectField.toUpperCase() == query.toUpperCase()) ? true : false;
+		
+		var languages = entries[e]['languages'];
+		for (var l = 0; l < languages.length; l++)
+		{
+			var language = languages[l];	
+			var tigs = language['terms'];
+			for (var t = 0; t < tigs.length; t++)
+			{
+				var tig = tigs[t];
+				
+				var resultId = "I_"+e+"_"+l+"_"+t;
+				
+				if (found && $.inArray(resultId, results) < 0)
+				{
+					results.push(resultId);
+				}
+				
+			}
+		}
+
+	}
+	return results;
+}
+
+function deleteReference()
+{
+	if ($('#{{targetElementId}}').attr('id').split('_')[1] == 'new') 
+	{	
+		targetSelectModal.close();
+	}
+	else
+	{
+		var index = $('#{{targetElementId}}').attr('id').split('_')[1];
+		var level = $('#{{targetElementId}}').attr('id').split('_')[3];
+		switch(level.toUpperCase())
+		{
+			case 'TERMENTRY':
+				if(entries[e].references.length > 1)
+				{
+					entries[e].references.splice(index, 1);
+				}
+				else
+				{
+					delete entries[e].references;
+				}
+				break;
+			case 'LANGSET':
+				if(entries[e].languages[l].references.length > 1)
+				{
+					entries[e].languages[l].references.splice(index, 1);
+				}
+				else
+				{
+					delete entries[e].languages[l].references;
+				}
+				break;
+			case 'TIG':
+				if(entries[e].languages[l].terms[t].references.length > 1)
+				{
+					entries[e].languages[l].terms[t].references.splice(index, 1);
+				}
+				else
+				{
+					delete entries[e].languages[l].terms[t].references;
+				}
+				break;
+		}
+		
+		$('#{{targetElementId}}_delete').prop('hidden', false);
+		setChanged(true);
+	}
+	
+	targetSelectModal.close();
+}
+
+</script>

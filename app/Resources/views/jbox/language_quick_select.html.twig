@@ -1,0 +1,52 @@
+<div>
+	<select id='quickLanguageList'>
+	</select>
+	<button type='button' onclick='addQuickLang()'>Add Selected Language</button>
+</div>
+
+<script type='text/javascript'>
+
+$(function(){quickLanguageLoader();});
+
+function quickLanguageLoader()
+{
+	$('#quickLanguageList option').remove();
+	
+	for (var e = 0; e < langCodeMaster.length; e++)
+	{
+		var code = '';
+		var skip = false;
+		if (langCodeMaster[e].codes[0] != '')
+		{
+			code = langCodeMaster[e].codes[0];
+		}
+		else{
+			code = langCodeMaster[e].codes[2];
+		}
+		
+		for(var c = 0; c < entryLangList.length; c++)
+		{
+			if (entryLangList[c] == code)
+			{
+				skip = true;
+			}
+		}
+		
+		if(!skip)
+		{
+			var opt = $('<option></option>');
+			opt.attr('value', code);
+			opt.text(langCodeMaster[e].name);
+			$('#quickLanguageList').append(opt);
+		}
+	};
+}
+
+function addQuickLang()
+{
+	entryLangList.push($('#quickLanguageList').val());
+	loadLanguageList(true,$('#quickLanguageList').val());
+	quickLangSelectModal.close();
+}
+
+</script>

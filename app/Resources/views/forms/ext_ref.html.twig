@@ -1,0 +1,184 @@
+<div class='extRefContainer'>
+	<span class='noQueriesError refRequired' for='extRefContent_{{e}}_{{l}}_{{t}}' hidden>Both content and target are required.</span>
+	<input type='text' id='extRefContent_{{e}}_{{l}}_{{t}}' placeholder='External Reference Content...'/>
+	<input type='text' id='extRefTarget_{{e}}_{{l}}_{{t}}' placeholder='External Reference Target...'/>
+	<button type='button' id='extRefBtn' onclick='saveExtRef()'></button>
+	<button type='button' id='deleteRefBtn' onclick='deleteExtRef()'></button>
+</div>
+
+{{ render(controller(
+	'AppBundle:Objects:entry'
+)) }}
+
+<script type='text/javascript'>
+
+$(function(){
+	if ($('#{{extRefElementId}}').text() != 'Click here to add a reference.')
+	{
+		var type = $('#{{extRefElementId}}').attr('id').split('_')[0];
+		var refIndex = $('#{{extRefElementId}}').attr('id').split('_')[1];
+		var subtype = $('#{{extRefElementId}}').attr('id').split('_')[2];
+		var level = $('#{{extRefElementId}}').attr('id').split('_')[3];
+	
+		if (refIndex != 'new')
+		{	
+			$('#extRefBtn').text('Save Change');
+			
+			if (level.toUpperCase() == 'TERMENTRY')
+			{
+				$('#extRefContent_{{e}}_{{l}}_{{t}}').val(entries[{{e}}].external_references[refIndex].content);
+				$('#extRefTarget_{{e}}_{{l}}_{{t}}').val(entries[{{e}}].external_references[refIndex].target);
+			}
+			else if (level.toUpperCase() == 'TIG')
+			{
+				$('#extRefContent_{{e}}_{{l}}_{{t}}').val(entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references[refIndex].content);
+				$('#extRefTarget_{{e}}_{{l}}_{{t}}').val(entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references[refIndex].target);
+			}
+		}
+		$('#deleteRefBtn').text('Delete');
+	}
+	else
+	{
+		$('#extRefBtn').text('Add Reference');
+		$('#deleteRefBtn').text('Cancel');
+	}
+});
+
+function saveExtRef()
+{	
+	if($('#extRefContent_{{e}}_{{l}}_{{t}}').val() == '' || $('#extRefTarget_{{e}}_{{l}}_{{t}}').val() == '')
+	{
+		$('.refRequired').prop('hidden',false);
+		return false;
+	}
+	else
+	{
+		var type = $('#{{extRefElementId}}').attr('id').split('_')[0];
+		var refIndex = $('#{{extRefElementId}}').attr('id').split('_')[1];
+		var subtype = $('#{{extRefElementId}}').attr('id').split('_')[2];
+		var level = $('#{{extRefElementId}}').attr('id').split('_')[3];
+		
+		var content = $('#extRefContent_{{e}}_{{l}}_{{t}}').val();
+		var target = $('#extRefTarget_{{e}}_{{l}}_{{t}}').val();
+		
+		switch(level.toUpperCase())
+		{
+			case 'TERMENTRY':
+				ref = new External_Reference(content,target);
+			
+				if (typeof entries[{{e}}].external_references != 'undefined')
+				{
+					if (refIndex == 'new')
+					{
+						if (typeof entries[{{e}}].external_references != 'undefined')
+						{
+							entries[{{e}}].external_references.push(ref);
+						}
+						else
+						{
+							entries[{{e}}]['external_references'] = [ref];
+						}
+						refIndex = entries[{{e}}].external_references.length-1;
+					}
+					else
+					{
+						entries[{{e}}].external_references[refIndex] = ref;
+					}
+				}
+				else
+				{
+					entries[{{e}}]['external_references'] = [ref];
+					refIndex = entries[{{e}}].external_references.length-1;
+				}
+				break;
+			case 'TIG':
+				ref = new External_Reference(content,target);
+			
+				if (typeof entries[{{e}}].external_references != 'undefined')
+				{
+					if (refIndex != 'new')
+					{
+						if (typeof entries[{{e}}].external_references != 'undefined')
+						{
+							entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references.push(ref);
+						}
+						else
+						{
+							entries[{{e}}].languages[{{l}}].terms[{{t}}]['external_references'] = [ref];
+						}
+						refIndex = entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references.length-1;
+					}
+					else
+					{
+						entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references[refIndex] = ref;
+					}
+				}
+				else
+				{
+					entries[{{e}}].languages[{{l}}].terms[{{t}}]['external_references'] = [ref];
+					refIndex = entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references.length-1;
+				}
+				break;
+		}
+		
+		var newId = type+"_"+refIndex+"_"+subtype+"_"+level;
+		var extRefElement = $('#{{extRefElementId}}');
+		extRefElement.text(content);
+		extRefElement.attr('class','extRefContent');
+		extRefElement.prop('id', newId);
+		setChanged(true);
+		extRefSelectModal.close();
+	}
+}
+
+function deleteExtRef()
+{
+	if ($('#{{extRefElementId}}').attr('id').split('_')[1] == 'new') 
+	{	
+		extRefSelectModal.close();
+	}
+	else
+	{
+		var index = $('#{{extRefElementId}}').attr('id').split('_')[1];
+		var level = $('#{{extRefElementId}}').attr('id').split('_')[3];
+		switch(level.toUpperCase())
+		{
+			case 'TERMENTRY':
+				if(entries[e].external_references.length > 1)
+				{
+					entries[e].external_references.splice(index, 1);
+				}
+				else
+				{
+					delete entries[e].external_references;
+				}
+				break;
+			case 'LANGSET':
+				if(entries[e].languages[l].external_references.length > 1)
+				{
+					entries[e].languages[l].external_references.splice(index, 1);
+				}
+				else
+				{
+					delete entries[e].languages[l].external_references;
+				}
+				break;
+			case 'TIG':
+				if(entries[e].languages[l].terms[t].external_references.length > 1)
+				{
+					entries[e].languages[l].terms[t].external_references.splice(index, 1);
+				}
+				else
+				{
+					delete entries[e].languages[l].terms[t].external_references;
+				}
+				break;
+		}
+		
+		$('#{{extRefElementId}}_delete').prop('hidden', false);
+		setChanged(true);
+	}
+	
+	extRefSelectModal.close();
+}
+</script>

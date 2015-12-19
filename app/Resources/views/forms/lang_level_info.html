@@ -1,0 +1,88 @@
+<div id='tigInfoBlock'>
+	<label for='langSelect'>Select a language to add terms to:</label>
+	<select id='langSelect'></select>
+	
+	
+	<hr/>
+	<div>
+		<label for='termsDiv'>Terms: (terms added here are synonyms)</label>
+		<div id='termsList'></div>
+		<br/>
+		<div id='termsDiv'>
+			<div>
+				<label for='td_term'>Term:</label>
+				<input type='text' id='td_term' placeholder='enter term value here'/>
+			</div>
+			<div>
+				<label for='td_context'>Context(s) (optional):</label>
+				<div id='contextList'></div>
+				<textarea id='td_context' placeholder='Context here'></textarea>				
+				<input type='text' id='td_contextSource' placeholder='Context Source (optional)' />
+				<button type='button' onClick='addContextToTig()'>Add Context</button>
+			</div>
+			<div>
+				<label for='td_gender'>Gender:</label>
+				<select id='td_gender'>
+					<option value='---' selected>Unspecified</option>
+					<option value='masculine'>Masculine</option>
+					<option value='feminine'>Feminine</option>
+					<option value='neuter'>Neuter</option>
+					<option value='other'>Other</option>
+				</select>
+			</div>
+			<div>
+				<label for='td_pos'>Part of Speech:</label>
+				<select id='td_pos'>
+					<option value='---'>Unspecified</option>
+					<option value='noun' selected>Noun</option>
+					<option value='verb'>Verb</option>
+					<option value='adjective'>Adjective</option>
+					<option value='adverb'>Adverb</option>
+					<option value='properNoun'>Proper Noun</option>
+					<option value='other'>Other</option>
+				</select>
+			</div>
+			<div>
+				<label for='td_status'>Term Status:</label>
+				<select id='td_status'>
+					<option value='preferredTerm-admn-sts'>Preferred</option>
+					<option value='admittedTerm-admn-sts'>Admitted</option>
+					<option value='deprecatedTerm-admn-sts'>Deprecated</option>
+					<option value='supersededTerm-admn-sts'>Superseded</option>
+				</select>
+			</div>
+			<button type='button' class='addTermButton' onClick='addTig()'>Add Term</button>
+		</div>
+	<hr />	
+	<div>
+		<label for='definitionsDiv'>Language specific definitition(s) (optional):</label>
+		<div id='definitionsList'></div>
+		<div id='definitionsDiv'>
+			<textarea id='definitionText' placeholder='Definition here'></textarea>
+			<input type='text' id='definitionSource' placeholder='Definition Source (optional)' />
+			<button type='button' onClick='addDefinition("lang")'>Add Definition</button>
+		</div>
+	</div>
+		
+		<div>
+			<button id='saveEntryBtn' type='button' class='nextFormButton' onClick='saveLang()' hidden>Save Entry</button>
+		</div>
+	</div>
+	
+	
+</div>
+
+<script>
+	$(function(){
+		if (languageList.length > 1) $('.nextFormButton').text('Next Language');
+	
+		for (var i = 0; i < languageList.length; i++)
+		{
+			var opt = $('<option></option>');
+			opt.attr('value', languageList[i].code);
+			opt.text(langCodeValueList[languageList[i].code]);
+			if (i == 0) {opt.attr('selected', true);}
+			$('#langSelect').append(opt);
+		}
+	});
+</script>

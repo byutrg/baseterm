@@ -1,0 +1,239 @@
+
+
+{% block body %}
+
+{{id}}
+<div id='modalContentDiv'>
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ render(controller(
+		'AppBundle:Objects:entry'
+	)) }}
+	
+	{{ render(controller(
+		'AppBundle:Objects:person'
+	)) }}
+	
+	<script type='text/javascript'>
+		$(document).ready(newEntryInit());
+		var entry = new Entry();
+		languageList = [];
+		langDefinitions = [];
+		tigContexts = [];
+		
+		function newEntryInit()
+		{
+			$.ajax({
+				url: '{{path("entry_new_entry")}}',
+				success: function(data){
+					$('#modalContentDiv').append(data);
+				}
+			});
+		}
+		
+		function saveEntryLevel()
+		{
+			entry.subject_field = $('#entrySubjectField').val();
+			
+			$('#modalContentDiv div').remove();
+			if (languageList.length < 1)
+			{
+				$.ajax({
+						url: '{{path("entry_new")}}',
+						method: 'POST',
+						data: {'termbaseId':termbaseId},
+						success: function(data){
+						$('#modalContentDiv').append(data);
+					}});
+			}
+			else
+			{			
+				$.ajax({
+					url: '{{path("entry_new_lang")}}',
+					success: function(data){
+						$('#modalContentDiv').append(data);
+					}
+				});
+			}
+		}
+		
+		function addLanguageToEntry()
+		{
+			$('#languagesList').append($('#entryLanguagesField option:selected').text()+' ('+$('#entryLanguagesField').val()+'),');
+			
+			languageList.push({
+				'index': languageList.length,
+				'code' : $('#entryLanguagesField').val()
+				});
+			
+			var lang = new Language($('#entryLanguagesField').val());
+			
+			entry.languages.push(lang);
+			$('#addEntryLvlBtn').attr('hidden', false);
+		}
+	
+		function addDefinition(level) //level: entry, or lang
+		{
+			if ($('#definitionText').val() == '') return;
+			definitionSource;
+			($('#definitionSource').val() != '') ? definitionSource = $('#definitionSource').val() : definitionSource = '---';
+			
+			definitionValue = $('#definitionText').val() + ' (Source: '+definitionSource+')';
+			
+			definition = new Definition($('#definitionText').val());
+			if (definitionSource != '---') definition.source = definitionSource;
+			
+			$('#definitionsList').append('<p>'+definitionValue+'</p>');
+			$('#definitionSource').val('');
+			$('#definitionText').val('');
+			
+			switch(level)
+			{
+				case 'entry':
+					entry.definitions.push(definition);
+					break;
+				case 'lang':
+					langDefinitions.push(definition);
+					break;
+			}
+		}
+		
+		function addContextToTig()
+		{
+			if ($('#td_context').val() == '') return;
+			td_contextSource;
+			($('#td_contextSource').val() != '') ? td_contextSource = $('#td_contextSource').val() : td_contextSource = '---';
+			
+			contextValue = $('#td_context').val() + ' (Source: '+td_contextSource+')';
+			
+			context = new Context($('#td_context').val());
+			if (td_contextSource != '---') context.source = td_contextSource;
+			
+			$('#contextList').append('<p>'+contextValue+'</p>');
+			$('#td_contextSource').val('');
+			$('#td_context').val('');
+			
+			entry.tigContexts.push(context);
+		}
+		
+		function addTig()
+		{
+			var tig = new Term();
+			if ($('#td_term').val() == '') return false;
+			
+			tig.term = $('#td_term').val();
+			for (i = 0; i < tigContexts.length; i++)
+			{
+				tig.contexts.push(tigContexts[i]);
+			}
+			if ($('#td_gender').val() != '---') 
+			{
+				tig.gender = $('#td_gender').val();
+			}
+			
+			if ($('#td_pos').val() != '---') 
+			{
+				tig.pos = $('#td_pos').val();
+			}
+			
+			tig.status = $('#td_status').val();
+			
+			for (i = 0; i < entry.languages.length; i++)
+			{
+				if (entry.languages[i].code == $('#langSelect').val())
+				{
+					entry.languages[i].terms.push(tig);
+					$('#termsList').append('<p>'+tig.term+' ('+tig.pos+')</p>');
+				}
+			}
+			$('#saveEntryBtn').attr('hidden',false);
+			//clear all fields
+			$('#td_term').val('');
+			$('#contextList p').remove();
+			$('#td_contextSource').val('');
+			$('#td_context').val('');
+			$('#td_gender').val('---').change();
+			$('#td_pos').val('noun').change();
+			$('#td_status').val('preferredTerm-admn-sts').change();
+			
+		}
+		
+		function saveLang()
+		{
+			if ($('#termsList p').length < 1) return false;
+			
+			for(var i = 0; i < entry.languages.length; i++)
+			{
+				if ($('#langSelect').val() == entry.languages[i].code)
+				{
+					entry.languages[i].definitions = langDefinitions;
+					
+				}
+			}
+			
+			if (languageList.length - 1 > 0)
+			{
+				for (i = 0; i < languageList.length; i++)
+				{
+					if (languageList[i].code == $('#langSelect').val())
+					{
+						languageList.splice(i,1);
+					}					
+				}
+				langDefinitions.splice(0, langDefinitions.length);
+				$.ajax({
+					url: 'entry/new/lang',
+					success: function(data){
+						$('#modalContentDiv div').remove();
+						$('#modalContentDiv').append(data);
+					}
+				});
+			}
+			else
+			{
+				entry = cleanEntry(entry);
+
+				$.ajax({
+					url: 'entry/upload',
+					data: {
+						'entry': entry,
+						'termbaseId': termbaseId
+					},
+					success: function(data){
+						newEntryModal.close();
+						new jBox('Notice', {
+							theme: 'NoticeBorder',
+							color: 'blue',
+							content:'<p>Entry Created</p>',
+							attributes: { 
+								x: 'right',
+								y: 'bottom'
+							}
+						});
+						
+						location.reload();
+					},
+					error: function(result){
+						new jBox('Notice', {
+							theme: 'NoticeBorder',
+							color: 'red',
+							content:'<p>Update Error</p>'+
+									'<p>Entry not created!</p>',
+							attributes: { 
+								x: 'right',
+								y: 'bottom'
+							}
+						});
+						
+						location.reload();
+					}
+				})
+			}
+		}
+	</script>
+	
+{% endblock %}

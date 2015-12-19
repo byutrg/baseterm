@@ -1,0 +1,5198 @@
+[
+    {
+        "code": "AF",
+        "regionName": "Afghanistan",
+        "lists": [
+            [
+                "AF",
+                null
+            ],
+            [
+                "AFG",
+                null,
+                "AF"
+            ],
+            [
+                "004",
+                null,
+                "AF"
+            ]
+        ]
+    },
+    {
+        "code": "AX",
+        "regionName": "Åland Islands",
+        "lists": [
+            [
+                "AX",
+                "Åland Islands",
+                null
+            ],
+            [
+                "ALA",
+                null,
+                "AX"
+            ],
+            [
+                "248",
+                null,
+                "AX"
+            ]
+        ]
+    },
+    {
+        "code": "AL",
+        "regionName": "Albania",
+        "lists": [
+            [
+                "AL",
+                null
+            ],
+            [
+                "ALB",
+                null,
+                "AL"
+            ],
+            [
+                "008",
+                null,
+                "AL"
+            ]
+        ]
+    },
+    {
+        "code": "DZ",
+        "regionName": "Algeria",
+        "lists": [
+            [
+                "DZ",
+                null
+            ],
+            [
+                "DZA",
+                null,
+                "DZ"
+            ],
+            [
+                "012",
+                null,
+                "DZ"
+            ]
+        ]
+    },
+    {
+        "code": "AS",
+        "regionName": "American Samoa",
+        "lists": [
+            [
+                "AS",
+                "American Samoa",
+                null
+            ],
+            [
+                "ASM",
+                null,
+                "AS"
+            ],
+            [
+                "016",
+                null,
+                "AS"
+            ]
+        ]
+    },
+    {
+        "code": "AD",
+        "regionName": "Andorra",
+        "lists": [
+            [
+                "AD",
+                null
+            ],
+            [
+                "AND",
+                null,
+                "AD"
+            ],
+            [
+                "020",
+                null,
+                "AD"
+            ]
+        ]
+    },
+    {
+        "code": "AO",
+        "regionName": "Angola",
+        "lists": [
+            [
+                "AO",
+                null
+            ],
+            [
+                "AGO",
+                null,
+                "AO"
+            ],
+            [
+                "024",
+                null,
+                "AO"
+            ]
+        ]
+    },
+    {
+        "code": "AI",
+        "regionName": "Anguilla",
+        "lists": [
+            [
+                "AI",
+                null
+            ],
+            [
+                "AIA",
+                null,
+                "AI"
+            ],
+            [
+                "660",
+                null,
+                "AI"
+            ]
+        ]
+    },
+    {
+        "code": "AQ",
+        "regionName": "Antarctica",
+        "lists": [
+            [
+                "AQ",
+                null
+            ],
+            [
+                "ATA",
+                null,
+                "AQ"
+            ],
+            [
+                "010",
+                null,
+                "AQ"
+            ]
+        ]
+    },
+    {
+        "code": "AG",
+        "regionName": "Antigua and Barbuda",
+        "lists": [
+            [
+                "AG",
+                "Antigua and Barbuda",
+                null
+            ],
+            [
+                "ATG",
+                null,
+                "AG"
+            ],
+            [
+                "028",
+                null,
+                "AG"
+            ]
+        ]
+    },
+    {
+        "code": "AR",
+        "regionName": "Argentina",
+        "lists": [
+            [
+                "AR",
+                null
+            ],
+            [
+                "ARG",
+                null,
+                "AR"
+            ],
+            [
+                "032",
+                null,
+                "AR"
+            ]
+        ]
+    },
+    {
+        "code": "AM",
+        "regionName": "Armenia",
+        "lists": [
+            [
+                "AM",
+                null
+            ],
+            [
+                "ARM",
+                null,
+                "AM"
+            ],
+            [
+                "051",
+                null,
+                "AM"
+            ]
+        ]
+    },
+    {
+        "code": "AW",
+        "regionName": "Aruba",
+        "lists": [
+            [
+                "AW",
+                null
+            ],
+            [
+                "ABW",
+                null,
+                "AW"
+            ],
+            [
+                "533",
+                null,
+                "AW"
+            ]
+        ]
+    },
+    {
+        "code": "AU",
+        "regionName": "Australia",
+        "lists": [
+            [
+                "AU",
+                null
+            ],
+            [
+                "AUS",
+                null,
+                "AU"
+            ],
+            [
+                "036",
+                null,
+                "AU"
+            ]
+        ]
+    },
+    {
+        "code": "AT",
+        "regionName": "Austria",
+        "lists": [
+            [
+                "AT",
+                null
+            ],
+            [
+                "AUT",
+                null,
+                "AT"
+            ],
+            [
+                "040",
+                null,
+                "AT"
+            ]
+        ]
+    },
+    {
+        "code": "AZ",
+        "regionName": "Azerbaijan",
+        "lists": [
+            [
+                "AZ",
+                null
+            ],
+            [
+                "AZE",
+                null,
+                "AZ"
+            ],
+            [
+                "031",
+                null,
+                "AZ"
+            ]
+        ]
+    },
+    {
+        "code": "BS",
+        "regionName": "Bahamas",
+        "lists": [
+            [
+                "BS",
+                null
+            ],
+            [
+                "BHS",
+                null,
+                "BS"
+            ],
+            [
+                "044",
+                null,
+                "BS"
+            ]
+        ]
+    },
+    {
+        "code": "BH",
+        "regionName": "Bahrain",
+        "lists": [
+            [
+                "BH",
+                null
+            ],
+            [
+                "BHR",
+                null,
+                "BH"
+            ],
+            [
+                "048",
+                null,
+                "BH"
+            ]
+        ]
+    },
+    {
+        "code": "BD",
+        "regionName": "Bangladesh",
+        "lists": [
+            [
+                "BD",
+                null
+            ],
+            [
+                "BGD",
+                null,
+                "BD"
+            ],
+            [
+                "050",
+                null,
+                "BD"
+            ]
+        ]
+    },
+    {
+        "code": "BB",
+        "regionName": "Barbados",
+        "lists": [
+            [
+                "BB",
+                null
+            ],
+            [
+                "BRB",
+                null,
+                "BB"
+            ],
+            [
+                "052",
+                null,
+                "BB"
+            ]
+        ]
+    },
+    {
+        "code": "BY",
+        "regionName": "Belarus",
+        "lists": [
+            [
+                "BY",
+                null
+            ],
+            [
+                "BLR",
+                null,
+                "BY"
+            ],
+            [
+                "112",
+                null,
+                "BY"
+            ]
+        ]
+    },
+    {
+        "code": "BE",
+        "regionName": "Belgium",
+        "lists": [
+            [
+                "BE",
+                null
+            ],
+            [
+                "BEL",
+                null,
+                "BE"
+            ],
+            [
+                "056",
+                null,
+                "BE"
+            ]
+        ]
+    },
+    {
+        "code": "BZ",
+        "regionName": "Belize",
+        "lists": [
+            [
+                "BZ",
+                null
+            ],
+            [
+                "BLZ",
+                null,
+                "BZ"
+            ],
+            [
+                "084",
+                null,
+                "BZ"
+            ]
+        ]
+    },
+    {
+        "code": "BJ",
+        "regionName": "Benin",
+        "lists": [
+            [
+                "BJ",
+                null
+            ],
+            [
+                "BEN",
+                null,
+                "BJ"
+            ],
+            [
+                "204",
+                null,
+                "BJ"
+            ]
+        ]
+    },
+    {
+        "code": "BM",
+        "regionName": "Bermuda",
+        "lists": [
+            [
+                "BM",
+                null
+            ],
+            [
+                "BMU",
+                null,
+                "BM"
+            ],
+            [
+                "060",
+                null,
+                "BM"
+            ]
+        ]
+    },
+    {
+        "code": "BT",
+        "regionName": "Bhutan",
+        "lists": [
+            [
+                "BT",
+                null
+            ],
+            [
+                "BTN",
+                null,
+                "BT"
+            ],
+            [
+                "064",
+                null,
+                "BT"
+            ]
+        ]
+    },
+    {
+        "code": "BO",
+        "regionName": "Bolivia",
+        "lists": [
+            [
+                "BO",
+                null
+            ],
+            [
+                "BOL",
+                null,
+                "BO"
+            ],
+            [
+                "068",
+                null,
+                "BO"
+            ]
+        ]
+    },
+    {
+        "code": "BQ",
+        "regionName": "Bonaire, Sint Eustatius and Saba",
+        "lists": [
+            [
+                "BQ",
+                "Bonaire, Sint Eustatius and Saba",
+                null
+            ],
+            [
+                "BES",
+                null,
+                "BQ"
+            ],
+            [
+                "535",
+                null,
+                "BQ"
+            ]
+        ]
+    },
+    {
+        "code": "BA",
+        "regionName": "Bosnia and Herzegovina",
+        "lists": [
+            [
+                "BA",
+                "Bosnia and Herzegovina",
+                null
+            ],
+            [
+                "BIH",
+                null,
+                "BA"
+            ],
+            [
+                "070",
+                null,
+                "BA"
+            ]
+        ]
+    },
+    {
+        "code": "BW",
+        "regionName": "Botswana",
+        "lists": [
+            [
+                "BW",
+                null
+            ],
+            [
+                "BWA",
+                null,
+                "BW"
+            ],
+            [
+                "072",
+                null,
+                "BW"
+            ]
+        ]
+    },
+    {
+        "code": "BV",
+        "regionName": "Bouvet Island",
+        "lists": [
+            [
+                "BV",
+                "Bouvet Island",
+                null
+            ],
+            [
+                "BVT",
+                null,
+                "BV"
+            ],
+            [
+                "074",
+                null,
+                "BV"
+            ]
+        ]
+    },
+    {
+        "code": "BR",
+        "regionName": "Brazil",
+        "lists": [
+            [
+                "BR",
+                null
+            ],
+            [
+                "BRA",
+                null,
+                "BR"
+            ],
+            [
+                "076",
+                null,
+                "BR"
+            ]
+        ]
+    },
+    {
+        "code": "IO",
+        "regionName": "British Indian Ocean Territory",
+        "lists": [
+            [
+                "IO",
+                "British Indian Ocean Territory",
+                null
+            ],
+            [
+                "IOT",
+                null,
+                "IO"
+            ],
+            [
+                "086",
+                null,
+                "IO"
+            ]
+        ]
+    },
+    {
+        "code": "BN",
+        "regionName": "Brunei Darussalam",
+        "lists": [
+            [
+                "BN",
+                "Brunei Darussalam",
+                null
+            ],
+            [
+                "BRN",
+                null,
+                "BN"
+            ],
+            [
+                "096",
+                null,
+                "BN"
+            ]
+        ]
+    },
+    {
+        "code": "BG",
+        "regionName": "Bulgaria",
+        "lists": [
+            [
+                "BG",
+                null
+            ],
+            [
+                "BGR",
+                null,
+                "BG"
+            ],
+            [
+                "100",
+                null,
+                "BG"
+            ]
+        ]
+    },
+    {
+        "code": "BF",
+        "regionName": "Burkina Faso",
+        "lists": [
+            [
+                "BF",
+                "Burkina Faso",
+                null
+            ],
+            [
+                "BFA",
+                null,
+                "BF"
+            ],
+            [
+                "854",
+                null,
+                "BF"
+            ]
+        ]
+    },
+    {
+        "code": "BI",
+        "regionName": "Burundi",
+        "lists": [
+            [
+                "BI",
+                null
+            ],
+            [
+                "BDI",
+                null,
+                "BI"
+            ],
+            [
+                "108",
+                null,
+                "BI"
+            ]
+        ]
+    },
+    {
+        "code": "CV",
+        "regionName": "Cabo Verde",
+        "lists": [
+            [
+                "CV",
+                "Cabo Verde",
+                null
+            ],
+            [
+                "CPV",
+                null,
+                "CV"
+            ],
+            [
+                "132",
+                null,
+                "CV"
+            ]
+        ]
+    },
+    {
+        "code": "KH",
+        "regionName": "Cambodia",
+        "lists": [
+            [
+                "KH",
+                null
+            ],
+            [
+                "KHM",
+                null,
+                "KH"
+            ],
+            [
+                "116",
+                null,
+                "KH"
+            ]
+        ]
+    },
+    {
+        "code": "CM",
+        "regionName": "Cameroon",
+        "lists": [
+            [
+                "CM",
+                null
+            ],
+            [
+                "CMR",
+                null,
+                "CM"
+            ],
+            [
+                "120",
+                null,
+                "CM"
+            ]
+        ]
+    },
+    {
+        "code": "CA",
+        "regionName": "Canada",
+        "lists": [
+            [
+                "CA",
+                null
+            ],
+            [
+                "CAN",
+                null,
+                "CA"
+            ],
+            [
+                "124",
+                null,
+                "CA"
+            ]
+        ]
+    },
+    {
+        "code": "KY",
+        "regionName": "Cayman Islands",
+        "lists": [
+            [
+                "KY",
+                "Cayman Islands",
+                null
+            ],
+            [
+                "CYM",
+                null,
+                "KY"
+            ],
+            [
+                "136",
+                null,
+                "KY"
+            ]
+        ]
+    },
+    {
+        "code": "CF",
+        "regionName": "Central African Republic",
+        "lists": [
+            [
+                "CF",
+                "Central African Republic",
+                null
+            ],
+            [
+                "CAF",
+                null,
+                "CF"
+            ],
+            [
+                "140",
+                null,
+                "CF"
+            ]
+        ]
+    },
+    {
+        "code": "TD",
+        "regionName": "Chad",
+        "lists": [
+            [
+                "TD",
+                null
+            ],
+            [
+                "TCD",
+                null,
+                "TD"
+            ],
+            [
+                "148",
+                null,
+                "TD"
+            ]
+        ]
+    },
+    {
+        "code": "CL",
+        "regionName": "Chile",
+        "lists": [
+            [
+                "CL",
+                null
+            ],
+            [
+                "CHL",
+                null,
+                "CL"
+            ],
+            [
+                "152",
+                null,
+                "CL"
+            ]
+        ]
+    },
+    {
+        "code": "CN",
+        "regionName": "China",
+        "lists": [
+            [
+                "CN",
+                null
+            ],
+            [
+                "CHN",
+                null,
+                "CN"
+            ],
+            [
+                "156",
+                null,
+                "CN"
+            ]
+        ]
+    },
+    {
+        "code": "CX",
+        "regionName": "Christmas Island",
+        "lists": [
+            [
+                "CX",
+                "Christmas Island",
+                null
+            ],
+            [
+                "CXR",
+                null,
+                "CX"
+            ],
+            [
+                "162",
+                null,
+                "CX"
+            ]
+        ]
+    },
+    {
+        "code": "CC",
+        "regionName": "Cocos [Keeling] Islands",
+        "lists": [
+            [
+                "CC",
+                "Cocos [Keeling] Islands",
+                null
+            ],
+            [
+                "CCK",
+                null,
+                "CC"
+            ],
+            [
+                "166",
+                null,
+                "CC"
+            ]
+        ]
+    },
+    {
+        "code": "CO",
+        "regionName": "Colombia",
+        "lists": [
+            [
+                "CO",
+                null
+            ],
+            [
+                "COL",
+                null,
+                "CO"
+            ],
+            [
+                "170",
+                null,
+                "CO"
+            ]
+        ]
+    },
+    {
+        "code": "KM",
+        "regionName": "Comoros",
+        "lists": [
+            [
+                "KM",
+                null
+            ],
+            [
+                "COM",
+                null,
+                "KM"
+            ],
+            [
+                "174",
+                null,
+                "KM"
+            ]
+        ]
+    },
+    {
+        "code": "CD",
+        "regionName": "Congo, Democratic Republic of the",
+        "lists": [
+            [
+                "CD",
+                "Congo, Democratic Republic of the",
+                null
+            ],
+            [
+                "COD",
+                null,
+                "CD"
+            ],
+            [
+                "180",
+                null,
+                "CD"
+            ]
+        ]
+    },
+    {
+        "code": "CG",
+        "regionName": "Congo",
+        "lists": [
+            [
+                "CG",
+                null
+            ],
+            [
+                "COG",
+                null,
+                "CG"
+            ],
+            [
+                "178",
+                null,
+                "CG"
+            ]
+        ]
+    },
+    {
+        "code": "CK",
+        "regionName": "Cook Islands",
+        "lists": [
+            [
+                "CK",
+                "Cook Islands",
+                null
+            ],
+            [
+                "COK",
+                null,
+                "CK"
+            ],
+            [
+                "184",
+                null,
+                "CK"
+            ]
+        ]
+    },
+    {
+        "code": "CR",
+        "regionName": "Costa Rica",
+        "lists": [
+            [
+                "CR",
+                "Costa Rica",
+                null
+            ],
+            [
+                "CRI",
+                null,
+                "CR"
+            ],
+            [
+                "188",
+                null,
+                "CR"
+            ]
+        ]
+    },
+    {
+        "code": "CI",
+        "regionName": "Côte d",
+        "lists": [
+            [
+                "CI",
+                "Côte d''Ivoire",
+                null
+            ],
+            [
+                "CIV",
+                null,
+                "CI"
+            ],
+            [
+                "384",
+                null,
+                "CI"
+            ]
+        ]
+    },
+    {
+        "code": "HR",
+        "regionName": "Croatia",
+        "lists": [
+            [
+                "HR",
+                null
+            ],
+            [
+                "HRV",
+                null,
+                "HR"
+            ],
+            [
+                "191",
+                null,
+                "HR"
+            ]
+        ]
+    },
+    {
+        "code": "CU",
+        "regionName": "Cuba",
+        "lists": [
+            [
+                "CU",
+                null
+            ],
+            [
+                "CUB",
+                null,
+                "CU"
+            ],
+            [
+                "192",
+                null,
+                "CU"
+            ]
+        ]
+    },
+    {
+        "code": "CW",
+        "regionName": "Curaçao",
+        "lists": [
+            [
+                "CW",
+                null
+            ],
+            [
+                "CUW",
+                null,
+                "CW"
+            ],
+            [
+                "531",
+                null,
+                "CW"
+            ]
+        ]
+    },
+    {
+        "code": "CY",
+        "regionName": "Cyprus",
+        "lists": [
+            [
+                "CY",
+                null
+            ],
+            [
+                "CYP",
+                null,
+                "CY"
+            ],
+            [
+                "196",
+                null,
+                "CY"
+            ]
+        ]
+    },
+    {
+        "code": "CZ",
+        "regionName": "Czech Republic",
+        "lists": [
+            [
+                "CZ",
+                "Czech Republic",
+                null
+            ],
+            [
+                "CZE",
+                null,
+                "CZ"
+            ],
+            [
+                "203",
+                null,
+                "CZ"
+            ]
+        ]
+    },
+    {
+        "code": "DK",
+        "regionName": "Denmark",
+        "lists": [
+            [
+                "DK",
+                null
+            ],
+            [
+                "DNK",
+                null,
+                "DK"
+            ],
+            [
+                "208",
+                null,
+                "DK"
+            ]
+        ]
+    },
+    {
+        "code": "DJ",
+        "regionName": "Djibouti",
+        "lists": [
+            [
+                "DJ",
+                null
+            ],
+            [
+                "DJI",
+                null,
+                "DJ"
+            ],
+            [
+                "262",
+                null,
+                "DJ"
+            ]
+        ]
+    },
+    {
+        "code": "DM",
+        "regionName": "Dominica",
+        "lists": [
+            [
+                "DM",
+                null
+            ],
+            [
+                "DMA",
+                null,
+                "DM"
+            ],
+            [
+                "212",
+                null,
+                "DM"
+            ]
+        ]
+    },
+    {
+        "code": "DO",
+        "regionName": "Dominican Republic",
+        "lists": [
+            [
+                "DO",
+                "Dominican Republic",
+                null
+            ],
+            [
+                "DOM",
+                null,
+                "DO"
+            ],
+            [
+                "214",
+                null,
+                "DO"
+            ]
+        ]
+    },
+    {
+        "code": "EC",
+        "regionName": "Ecuador",
+        "lists": [
+            [
+                "EC",
+                null
+            ],
+            [
+                "ECU",
+                null,
+                "EC"
+            ],
+            [
+                "218",
+                null,
+                "EC"
+            ]
+        ]
+    },
+    {
+        "code": "EG",
+        "regionName": "Egypt",
+        "lists": [
+            [
+                "EG",
+                null
+            ],
+            [
+                "EGY",
+                null,
+                "EG"
+            ],
+            [
+                "818",
+                null,
+                "EG"
+            ]
+        ]
+    },
+    {
+        "code": "SV",
+        "regionName": "El Salvador",
+        "lists": [
+            [
+                "SV",
+                "El Salvador",
+                null
+            ],
+            [
+                "SLV",
+                null,
+                "SV"
+            ],
+            [
+                "222",
+                null,
+                "SV"
+            ]
+        ]
+    },
+    {
+        "code": "GQ",
+        "regionName": "Equatorial Guinea",
+        "lists": [
+            [
+                "GQ",
+                "Equatorial Guinea",
+                null
+            ],
+            [
+                "GNQ",
+                null,
+                "GQ"
+            ],
+            [
+                "226",
+                null,
+                "GQ"
+            ]
+        ]
+    },
+    {
+        "code": "ER",
+        "regionName": "Eritrea",
+        "lists": [
+            [
+                "ER",
+                null
+            ],
+            [
+                "ERI",
+                null,
+                "ER"
+            ],
+            [
+                "232",
+                null,
+                "ER"
+            ]
+        ]
+    },
+    {
+        "code": "EE",
+        "regionName": "Estonia",
+        "lists": [
+            [
+                "EE",
+                null
+            ],
+            [
+                "EST",
+                null,
+                "EE"
+            ],
+            [
+                "233",
+                null,
+                "EE"
+            ]
+        ]
+    },
+    {
+        "code": "ET",
+        "regionName": "Ethiopia",
+        "lists": [
+            [
+                "ET",
+                null
+            ],
+            [
+                "ETH",
+                null,
+                "ET"
+            ],
+            [
+                "231",
+                null,
+                "ET"
+            ]
+        ]
+    },
+    {
+        "code": "FK",
+        "regionName": "Falkland Islands [Malvinas]",
+        "lists": [
+            [
+                "FK",
+                "Falkland Islands [Malvinas]",
+                null
+            ],
+            [
+                "FLK",
+                null,
+                "FK"
+            ],
+            [
+                "238",
+                null,
+                "FK"
+            ]
+        ]
+    },
+    {
+        "code": "FO",
+        "regionName": "Faroe Islands",
+        "lists": [
+            [
+                "FO",
+                "Faroe Islands",
+                null
+            ],
+            [
+                "FRO",
+                null,
+                "FO"
+            ],
+            [
+                "234",
+                null,
+                "FO"
+            ]
+        ]
+    },
+    {
+        "code": "FJ",
+        "regionName": "Fiji",
+        "lists": [
+            [
+                "FJ",
+                null
+            ],
+            [
+                "FJI",
+                null,
+                "FJ"
+            ],
+            [
+                "242",
+                null,
+                "FJ"
+            ]
+        ]
+    },
+    {
+        "code": "FI",
+        "regionName": "Finland",
+        "lists": [
+            [
+                "FI",
+                null
+            ],
+            [
+                "FIN",
+                null,
+                "FI"
+            ],
+            [
+                "246",
+                null,
+                "FI"
+            ]
+        ]
+    },
+    {
+        "code": "FR",
+        "regionName": "France",
+        "lists": [
+            [
+                "FR",
+                null
+            ],
+            [
+                "FRA",
+                null,
+                "FR"
+            ],
+            [
+                "250",
+                null,
+                "FR"
+            ]
+        ]
+    },
+    {
+        "code": "GF",
+        "regionName": "French Guiana",
+        "lists": [
+            [
+                "GF",
+                "French Guiana",
+                null
+            ],
+            [
+                "GUF",
+                null,
+                "GF"
+            ],
+            [
+                "254",
+                null,
+                "GF"
+            ]
+        ]
+    },
+    {
+        "code": "PF",
+        "regionName": "French Polynesia",
+        "lists": [
+            [
+                "PF",
+                "French Polynesia",
+                null
+            ],
+            [
+                "PYF",
+                null,
+                "PF"
+            ],
+            [
+                "258",
+                null,
+                "PF"
+            ]
+        ]
+    },
+    {
+        "code": "TF",
+        "regionName": "French Southern Territories",
+        "lists": [
+            [
+                "TF",
+                "French Southern Territories",
+                null
+            ],
+            [
+                "ATF",
+                null,
+                "TF"
+            ],
+            [
+                "260",
+                null,
+                "TF"
+            ]
+        ]
+    },
+    {
+        "code": "GA",
+        "regionName": "Gabon",
+        "lists": [
+            [
+                "GA",
+                null
+            ],
+            [
+                "GAB",
+                null,
+                "GA"
+            ],
+            [
+                "266",
+                null,
+                "GA"
+            ]
+        ]
+    },
+    {
+        "code": "GM",
+        "regionName": "Gambia",
+        "lists": [
+            [
+                "GM",
+                null
+            ],
+            [
+                "GMB",
+                null,
+                "GM"
+            ],
+            [
+                "270",
+                null,
+                "GM"
+            ]
+        ]
+    },
+    {
+        "code": "GE",
+        "regionName": "Georgia",
+        "lists": [
+            [
+                "GE",
+                null
+            ],
+            [
+                "GEO",
+                null,
+                "GE"
+            ],
+            [
+                "268",
+                null,
+                "GE"
+            ]
+        ]
+    },
+    {
+        "code": "DE",
+        "regionName": "Germany",
+        "lists": [
+            [
+                "DE",
+                null
+            ],
+            [
+                "DEU",
+                null,
+                "DE"
+            ],
+            [
+                "276",
+                null,
+                "DE"
+            ]
+        ]
+    },
+    {
+        "code": "GH",
+        "regionName": "Ghana",
+        "lists": [
+            [
+                "GH",
+                null
+            ],
+            [
+                "GHA",
+                null,
+                "GH"
+            ],
+            [
+                "288",
+                null,
+                "GH"
+            ]
+        ]
+    },
+    {
+        "code": "GI",
+        "regionName": "Gibraltar",
+        "lists": [
+            [
+                "GI",
+                null
+            ],
+            [
+                "GIB",
+                null,
+                "GI"
+            ],
+            [
+                "292",
+                null,
+                "GI"
+            ]
+        ]
+    },
+    {
+        "code": "GR",
+        "regionName": "Greece",
+        "lists": [
+            [
+                "GR",
+                null
+            ],
+            [
+                "GRC",
+                null,
+                "GR"
+            ],
+            [
+                "300",
+                null,
+                "GR"
+            ]
+        ]
+    },
+    {
+        "code": "GL",
+        "regionName": "Greenland",
+        "lists": [
+            [
+                "GL",
+                null
+            ],
+            [
+                "GRL",
+                null,
+                "GL"
+            ],
+            [
+                "304",
+                null,
+                "GL"
+            ]
+        ]
+    },
+    {
+        "code": "GD",
+        "regionName": "Grenada",
+        "lists": [
+            [
+                "GD",
+                null
+            ],
+            [
+                "GRD",
+                null,
+                "GD"
+            ],
+            [
+                "308",
+                null,
+                "GD"
+            ]
+        ]
+    },
+    {
+        "code": "GP",
+        "regionName": "Guadeloupe",
+        "lists": [
+            [
+                "GP",
+                null
+            ],
+            [
+                "GLP",
+                null,
+                "GP"
+            ],
+            [
+                "312",
+                null,
+                "GP"
+            ]
+        ]
+    },
+    {
+        "code": "GU",
+        "regionName": "Guam",
+        "lists": [
+            [
+                "GU",
+                null
+            ],
+            [
+                "GUM",
+                null,
+                "GU"
+            ],
+            [
+                "316",
+                null,
+                "GU"
+            ]
+        ]
+    },
+    {
+        "code": "GT",
+        "regionName": "Guatemala",
+        "lists": [
+            [
+                "GT",
+                null
+            ],
+            [
+                "GTM",
+                null,
+                "GT"
+            ],
+            [
+                "320",
+                null,
+                "GT"
+            ]
+        ]
+    },
+    {
+        "code": "GG",
+        "regionName": "Guernsey",
+        "lists": [
+            [
+                "GG",
+                null
+            ],
+            [
+                "GGY",
+                null,
+                "GG"
+            ],
+            [
+                "831",
+                null,
+                "GG"
+            ]
+        ]
+    },
+    {
+        "code": "GN",
+        "regionName": "Guinea",
+        "lists": [
+            [
+                "GN",
+                null
+            ],
+            [
+                "GIN",
+                null,
+                "GN"
+            ],
+            [
+                "324",
+                null,
+                "GN"
+            ]
+        ]
+    },
+    {
+        "code": "GW",
+        "regionName": "Guinea-Bissau",
+        "lists": [
+            [
+                "GW",
+                "Guinea-Bissau",
+                null
+            ],
+            [
+                "GNB",
+                null,
+                "GW"
+            ],
+            [
+                "624",
+                null,
+                "GW"
+            ]
+        ]
+    },
+    {
+        "code": "GY",
+        "regionName": "Guyana",
+        "lists": [
+            [
+                "GY",
+                null
+            ],
+            [
+                "GUY",
+                null,
+                "GY"
+            ],
+            [
+                "328",
+                null,
+                "GY"
+            ]
+        ]
+    },
+    {
+        "code": "HT",
+        "regionName": "Haiti",
+        "lists": [
+            [
+                "HT",
+                null
+            ],
+            [
+                "HTI",
+                null,
+                "HT"
+            ],
+            [
+                "332",
+                null,
+                "HT"
+            ]
+        ]
+    },
+    {
+        "code": "HM",
+        "regionName": "Heard Island and McDonald Islands",
+        "lists": [
+            [
+                "HM",
+                "Heard Island and McDonald Islands",
+                null
+            ],
+            [
+                "HMD",
+                null,
+                "HM"
+            ],
+            [
+                "334",
+                null,
+                "HM"
+            ]
+        ]
+    },
+    {
+        "code": "VA",
+        "regionName": "Holy See",
+        "lists": [
+            [
+                "VA",
+                "Holy See",
+                null
+            ],
+            [
+                "VAT",
+                null,
+                "VA"
+            ],
+            [
+                "336",
+                null,
+                "VA"
+            ]
+        ]
+    },
+    {
+        "code": "HN",
+        "regionName": "Honduras",
+        "lists": [
+            [
+                "HN",
+                null
+            ],
+            [
+                "HND",
+                null,
+                "HN"
+            ],
+            [
+                "340",
+                null,
+                "HN"
+            ]
+        ]
+    },
+    {
+        "code": "HK",
+        "regionName": "Hong Kong",
+        "lists": [
+            [
+                "HK",
+                "Hong Kong",
+                null
+            ],
+            [
+                "HKG",
+                null,
+                "HK"
+            ],
+            [
+                "344",
+                null,
+                "HK"
+            ]
+        ]
+    },
+    {
+        "code": "HU",
+        "regionName": "Hungary",
+        "lists": [
+            [
+                "HU",
+                null
+            ],
+            [
+                "HUN",
+                null,
+                "HU"
+            ],
+            [
+                "348",
+                null,
+                "HU"
+            ]
+        ]
+    },
+    {
+        "code": "IS",
+        "regionName": "Iceland",
+        "lists": [
+            [
+                "IS",
+                null
+            ],
+            [
+                "ISL",
+                null,
+                "IS"
+            ],
+            [
+                "352",
+                null,
+                "IS"
+            ]
+        ]
+    },
+    {
+        "code": "IN",
+        "regionName": "India",
+        "lists": [
+            [
+                "IN",
+                null
+            ],
+            [
+                "IND",
+                null,
+                "IN"
+            ],
+            [
+                "356",
+                null,
+                "IN"
+            ]
+        ]
+    },
+    {
+        "code": "ID",
+        "regionName": "Indonesia",
+        "lists": [
+            [
+                "ID",
+                null
+            ],
+            [
+                "IDN",
+                null,
+                "ID"
+            ],
+            [
+                "360",
+                null,
+                "ID"
+            ]
+        ]
+    },
+    {
+        "code": "IR",
+        "regionName": "Iran",
+        "lists": [
+            [
+                "IR",
+                null
+            ],
+            [
+                "IRN",
+                null,
+                "IR"
+            ],
+            [
+                "364",
+                null,
+                "IR"
+            ]
+        ]
+    },
+    {
+        "code": "IQ",
+        "regionName": "Iraq",
+        "lists": [
+            [
+                "IQ",
+                null
+            ],
+            [
+                "IRQ",
+                null,
+                "IQ"
+            ],
+            [
+                "368",
+                null,
+                "IQ"
+            ]
+        ]
+    },
+    {
+        "code": "IE",
+        "regionName": "Ireland",
+        "lists": [
+            [
+                "IE",
+                null
+            ],
+            [
+                "IRL",
+                null,
+                "IE"
+            ],
+            [
+                "372",
+                null,
+                "IE"
+            ]
+        ]
+    },
+    {
+        "code": "IM",
+        "regionName": "Isle of Man",
+        "lists": [
+            [
+                "IM",
+                "Isle of Man",
+                null
+            ],
+            [
+                "IMN",
+                null,
+                "IM"
+            ],
+            [
+                "833",
+                null,
+                "IM"
+            ]
+        ]
+    },
+    {
+        "code": "IL",
+        "regionName": "Israel",
+        "lists": [
+            [
+                "IL",
+                null
+            ],
+            [
+                "ISR",
+                null,
+                "IL"
+            ],
+            [
+                "376",
+                null,
+                "IL"
+            ]
+        ]
+    },
+    {
+        "code": "IT",
+        "regionName": "Italy",
+        "lists": [
+            [
+                "IT",
+                null
+            ],
+            [
+                "ITA",
+                null,
+                "IT"
+            ],
+            [
+                "380",
+                null,
+                "IT"
+            ]
+        ]
+    },
+    {
+        "code": "JM",
+        "regionName": "Jamaica",
+        "lists": [
+            [
+                "JM",
+                null
+            ],
+            [
+                "JAM",
+                null,
+                "JM"
+            ],
+            [
+                "388",
+                null,
+                "JM"
+            ]
+        ]
+    },
+    {
+        "code": "JP",
+        "regionName": "Japan",
+        "lists": [
+            [
+                "JP",
+                null
+            ],
+            [
+                "JPN",
+                null,
+                "JP"
+            ],
+            [
+                "392",
+                null,
+                "JP"
+            ]
+        ]
+    },
+    {
+        "code": "JE",
+        "regionName": "Jersey",
+        "lists": [
+            [
+                "JE",
+                null
+            ],
+            [
+                "JEY",
+                null,
+                "JE"
+            ],
+            [
+                "832",
+                null,
+                "JE"
+            ]
+        ]
+    },
+    {
+        "code": "JO",
+        "regionName": "Jordan",
+        "lists": [
+            [
+                "JO",
+                null
+            ],
+            [
+                "JOR",
+                null,
+                "JO"
+            ],
+            [
+                "400",
+                null,
+                "JO"
+            ]
+        ]
+    },
+    {
+        "code": "KZ",
+        "regionName": "Kazakhstan",
+        "lists": [
+            [
+                "KZ",
+                null
+            ],
+            [
+                "KAZ",
+                null,
+                "KZ"
+            ],
+            [
+                "398",
+                null,
+                "KZ"
+            ]
+        ]
+    },
+    {
+        "code": "KE",
+        "regionName": "Kenya",
+        "lists": [
+            [
+                "KE",
+                null
+            ],
+            [
+                "KEN",
+                null,
+                "KE"
+            ],
+            [
+                "404",
+                null,
+                "KE"
+            ]
+        ]
+    },
+    {
+        "code": "KI",
+        "regionName": "Kiribati",
+        "lists": [
+            [
+                "KI",
+                null
+            ],
+            [
+                "KIR",
+                null,
+                "KI"
+            ],
+            [
+                "296",
+                null,
+                "KI"
+            ]
+        ]
+    },
+    {
+        "code": "KP",
+        "regionName": "Korea, Democratic People's Republic of",
+        "lists": [
+            [
+                "KP",
+                "Korea, Democratic People's Republic of",
+                null
+            ],
+            [
+                "PRK",
+                null,
+                "KP"
+            ],
+            [
+                "408",
+                null,
+                "KP"
+            ]
+        ]
+    },
+    {
+        "code": "KR",
+        "regionName": "Korea, Republic of",
+        "lists": [
+            [
+                "KR",
+                "Korea, Republic of",
+                null
+            ],
+            [
+                "KOR",
+                null,
+                "KR"
+            ],
+            [
+                "410",
+                null,
+                "KR"
+            ]
+        ]
+    },
+    {
+        "code": "KW",
+        "regionName": "Kuwait",
+        "lists": [
+            [
+                "KW",
+                null
+            ],
+            [
+                "KWT",
+                null,
+                "KW"
+            ],
+            [
+                "414",
+                null,
+                "KW"
+            ]
+        ]
+    },
+    {
+        "code": "KG",
+        "regionName": "Kyrgyzstan",
+        "lists": [
+            [
+                "KG",
+                null
+            ],
+            [
+                "KGZ",
+                null,
+                "KG"
+            ],
+            [
+                "417",
+                null,
+                "KG"
+            ]
+        ]
+    },
+    {
+        "code": "LA",
+        "regionName": "Laos",
+        "lists": [
+            [
+                "LA",
+                null
+            ],
+            [
+                "LAO",
+                null,
+                "LA"
+            ],
+            [
+                "418",
+                null,
+                "LA"
+            ]
+        ]
+    },
+    {
+        "code": "LV",
+        "regionName": "Latvia",
+        "lists": [
+            [
+                "LV",
+                null
+            ],
+            [
+                "LVA",
+                null,
+                "LV"
+            ],
+            [
+                "428",
+                null,
+                "LV"
+            ]
+        ]
+    },
+    {
+        "code": "LB",
+        "regionName": "Lebanon",
+        "lists": [
+            [
+                "LB",
+                null
+            ],
+            [
+                "LBN",
+                null,
+                "LB"
+            ],
+            [
+                "422",
+                null,
+                "LB"
+            ]
+        ]
+    },
+    {
+        "code": "LS",
+        "regionName": "Lesotho",
+        "lists": [
+            [
+                "LS",
+                null
+            ],
+            [
+                "LSO",
+                null,
+                "LS"
+            ],
+            [
+                "426",
+                null,
+                "LS"
+            ]
+        ]
+    },
+    {
+        "code": "LR",
+        "regionName": "Liberia",
+        "lists": [
+            [
+                "LR",
+                null
+            ],
+            [
+                "LBR",
+                null,
+                "LR"
+            ],
+            [
+                "430",
+                null,
+                "LR"
+            ]
+        ]
+    },
+    {
+        "code": "LY",
+        "regionName": "Libya",
+        "lists": [
+            [
+                "LY",
+                null
+            ],
+            [
+                "LBY",
+                null,
+                "LY"
+            ],
+            [
+                "434",
+                null,
+                "LY"
+            ]
+        ]
+    },
+    {
+        "code": "LI",
+        "regionName": "Liechtenstein",
+        "lists": [
+            [
+                "LI",
+                null
+            ],
+            [
+                "LIE",
+                null,
+                "LI"
+            ],
+            [
+                "438",
+                null,
+                "LI"
+            ]
+        ]
+    },
+    {
+        "code": "LT",
+        "regionName": "Lithuania",
+        "lists": [
+            [
+                "LT",
+                null
+            ],
+            [
+                "LTU",
+                null,
+                "LT"
+            ],
+            [
+                "440",
+                null,
+                "LT"
+            ]
+        ]
+    },
+    {
+        "code": "LU",
+        "regionName": "Luxembourg",
+        "lists": [
+            [
+                "LU",
+                null
+            ],
+            [
+                "LUX",
+                null,
+                "LU"
+            ],
+            [
+                "442",
+                null,
+                "LU"
+            ]
+        ]
+    },
+    {
+        "code": "MO",
+        "regionName": "Macao",
+        "lists": [
+            [
+                "MO",
+                null
+            ],
+            [
+                "MAC",
+                null,
+                "MO"
+            ],
+            [
+                "446",
+                null,
+                "MO"
+            ]
+        ]
+    },
+    {
+        "code": "MK",
+        "regionName": "Macedonia, Republic of",
+        "lists": [
+            [
+                "MK",
+                "Macedonia, Republic of",
+                null
+            ],
+            [
+                "MKD",
+                null,
+                "MK"
+            ],
+            [
+                "807",
+                null,
+                "MK"
+            ]
+        ]
+    },
+    {
+        "code": "MG",
+        "regionName": "Madagascar",
+        "lists": [
+            [
+                "MG",
+                null
+            ],
+            [
+                "MDG",
+                null,
+                "MG"
+            ],
+            [
+                "450",
+                null,
+                "MG"
+            ]
+        ]
+    },
+    {
+        "code": "MW",
+        "regionName": "Malawi",
+        "lists": [
+            [
+                "MW",
+                null
+            ],
+            [
+                "MWI",
+                null,
+                "MW"
+            ],
+            [
+                "454",
+                null,
+                "MW"
+            ]
+        ]
+    },
+    {
+        "code": "MY",
+        "regionName": "Malaysia",
+        "lists": [
+            [
+                "MY",
+                null
+            ],
+            [
+                "MYS",
+                null,
+                "MY"
+            ],
+            [
+                "458",
+                null,
+                "MY"
+            ]
+        ]
+    },
+    {
+        "code": "MV",
+        "regionName": "Maldives",
+        "lists": [
+            [
+                "MV",
+                null
+            ],
+            [
+                "MDV",
+                null,
+                "MV"
+            ],
+            [
+                "462",
+                null,
+                "MV"
+            ]
+        ]
+    },
+    {
+        "code": "ML",
+        "regionName": "Mali",
+        "lists": [
+            [
+                "ML",
+                null
+            ],
+            [
+                "MLI",
+                null,
+                "ML"
+            ],
+            [
+                "466",
+                null,
+                "ML"
+            ]
+        ]
+    },
+    {
+        "code": "MT",
+        "regionName": "Malta",
+        "lists": [
+            [
+                "MT",
+                null
+            ],
+            [
+                "MLT",
+                null,
+                "MT"
+            ],
+            [
+                "470",
+                null,
+                "MT"
+            ]
+        ]
+    },
+    {
+        "code": "MH",
+        "regionName": "Marshall Islands",
+        "lists": [
+            [
+                "MH",
+                "Marshall Islands",
+                null
+            ],
+            [
+                "MHL",
+                null,
+                "MH"
+            ],
+            [
+                "584",
+                null,
+                "MH"
+            ]
+        ]
+    },
+    {
+        "code": "MQ",
+        "regionName": "Martinique",
+        "lists": [
+            [
+                "MQ",
+                null
+            ],
+            [
+                "MTQ",
+                null,
+                "MQ"
+            ],
+            [
+                "474",
+                null,
+                "MQ"
+            ]
+        ]
+    },
+    {
+        "code": "MR",
+        "regionName": "Mauritania",
+        "lists": [
+            [
+                "MR",
+                null
+            ],
+            [
+                "MRT",
+                null,
+                "MR"
+            ],
+            [
+                "478",
+                null,
+                "MR"
+            ]
+        ]
+    },
+    {
+        "code": "MU",
+        "regionName": "Mauritius",
+        "lists": [
+            [
+                "MU",
+                null
+            ],
+            [
+                "MUS",
+                null,
+                "MU"
+            ],
+            [
+                "480",
+                null,
+                "MU"
+            ]
+        ]
+    },
+    {
+        "code": "YT",
+        "regionName": "Mayotte",
+        "lists": [
+            [
+                "YT",
+                null
+            ],
+            [
+                "MYT",
+                null,
+                "YT"
+            ],
+            [
+                "175",
+                null,
+                "YT"
+            ]
+        ]
+    },
+    {
+        "code": "MX",
+        "regionName": "Mexico",
+        "lists": [
+            [
+                "MX",
+                null
+            ],
+            [
+                "MEX",
+                null,
+                "MX"
+            ],
+            [
+                "484",
+                null,
+                "MX"
+            ]
+        ]
+    },
+    {
+        "code": "FM",
+        "regionName": "Micronesia",
+        "lists": [
+            [
+                "FM",
+                null
+            ],
+            [
+                "FSM",
+                null,
+                "FM"
+            ],
+            [
+                "583",
+                null,
+                "FM"
+            ]
+        ]
+    },
+    {
+        "code": "MD",
+        "regionName": "Moldova",
+        "lists": [
+            [
+                "MD",
+                null
+            ],
+            [
+                "MDA",
+                null,
+                "MD"
+            ],
+            [
+                "498",
+                null,
+                "MD"
+            ]
+        ]
+    },
+    {
+        "code": "MC",
+        "regionName": "Monaco",
+        "lists": [
+            [
+                "MC",
+                null
+            ],
+            [
+                "MCO",
+                null,
+                "MC"
+            ],
+            [
+                "492",
+                null,
+                "MC"
+            ]
+        ]
+    },
+    {
+        "code": "MN",
+        "regionName": "Mongolia",
+        "lists": [
+            [
+                "MN",
+                null
+            ],
+            [
+                "MNG",
+                null,
+                "MN"
+            ],
+            [
+                "496",
+                null,
+                "MN"
+            ]
+        ]
+    },
+    {
+        "code": "ME",
+        "regionName": "Montenegro",
+        "lists": [
+            [
+                "ME",
+                null
+            ],
+            [
+                "MNE",
+                null,
+                "ME"
+            ],
+            [
+                "499",
+                null,
+                "ME"
+            ]
+        ]
+    },
+    {
+        "code": "MS",
+        "regionName": "Montserrat",
+        "lists": [
+            [
+                "MS",
+                null
+            ],
+            [
+                "MSR",
+                null,
+                "MS"
+            ],
+            [
+                "500",
+                null,
+                "MS"
+            ]
+        ]
+    },
+    {
+        "code": "MA",
+        "regionName": "Morocco",
+        "lists": [
+            [
+                "MA",
+                null
+            ],
+            [
+                "MAR",
+                null,
+                "MA"
+            ],
+            [
+                "504",
+                null,
+                "MA"
+            ]
+        ]
+    },
+    {
+        "code": "MZ",
+        "regionName": "Mozambique",
+        "lists": [
+            [
+                "MZ",
+                null
+            ],
+            [
+                "MOZ",
+                null,
+                "MZ"
+            ],
+            [
+                "508",
+                null,
+                "MZ"
+            ]
+        ]
+    },
+    {
+        "code": "MM",
+        "regionName": "Myanmar",
+        "lists": [
+            [
+                "MM",
+                null
+            ],
+            [
+                "MMR",
+                null,
+                "MM"
+            ],
+            [
+                "104",
+                null,
+                "MM"
+            ]
+        ]
+    },
+    {
+        "code": "NA",
+        "regionName": "Namibia",
+        "lists": [
+            [
+                "NA",
+                null
+            ],
+            [
+                "NAM",
+                null,
+                "NA"
+            ],
+            [
+                "516",
+                null,
+                "NA"
+            ]
+        ]
+    },
+    {
+        "code": "NR",
+        "regionName": "Nauru",
+        "lists": [
+            [
+                "NR",
+                null
+            ],
+            [
+                "NRU",
+                null,
+                "NR"
+            ],
+            [
+                "520",
+                null,
+                "NR"
+            ]
+        ]
+    },
+    {
+        "code": "NP",
+        "regionName": "Nepal",
+        "lists": [
+            [
+                "NP",
+                null
+            ],
+            [
+                "NPL",
+                null,
+                "NP"
+            ],
+            [
+                "524",
+                null,
+                "NP"
+            ]
+        ]
+    },
+    {
+        "code": "NL",
+        "regionName": "Netherlands",
+        "lists": [
+            [
+                "NL",
+                null
+            ],
+            [
+                "NLD",
+                null,
+                "NL"
+            ],
+            [
+                "528",
+                null,
+                "NL"
+            ]
+        ]
+    },
+    {
+        "code": "NC",
+        "regionName": "New Caledonia",
+        "lists": [
+            [
+                "NC",
+                "New Caledonia",
+                null
+            ],
+            [
+                "NCL",
+                null,
+                "NC"
+            ],
+            [
+                "540",
+                null,
+                "NC"
+            ]
+        ]
+    },
+    {
+        "code": "NZ",
+        "regionName": "New Zealand",
+        "lists": [
+            [
+                "NZ",
+                "New Zealand",
+                null
+            ],
+            [
+                "NZL",
+                null,
+                "NZ"
+            ],
+            [
+                "554",
+                null,
+                "NZ"
+            ]
+        ]
+    },
+    {
+        "code": "NI",
+        "regionName": "Nicaragua",
+        "lists": [
+            [
+                "NI",
+                null
+            ],
+            [
+                "NIC",
+                null,
+                "NI"
+            ],
+            [
+                "558",
+                null,
+                "NI"
+            ]
+        ]
+    },
+    {
+        "code": "NE",
+        "regionName": "Niger",
+        "lists": [
+            [
+                "NE",
+                null
+            ],
+            [
+                "NER",
+                null,
+                "NE"
+            ],
+            [
+                "562",
+                null,
+                "NE"
+            ]
+        ]
+    },
+    {
+        "code": "NG",
+        "regionName": "Nigeria",
+        "lists": [
+            [
+                "NG",
+                null
+            ],
+            [
+                "NGA",
+                null,
+                "NG"
+            ],
+            [
+                "566",
+                null,
+                "NG"
+            ]
+        ]
+    },
+    {
+        "code": "NU",
+        "regionName": "Niue",
+        "lists": [
+            [
+                "NU",
+                null
+            ],
+            [
+                "NIU",
+                null,
+                "NU"
+            ],
+            [
+                "570",
+                null,
+                "NU"
+            ]
+        ]
+    },
+    {
+        "code": "NF",
+        "regionName": "Norfolk Island",
+        "lists": [
+            [
+                "NF",
+                "Norfolk Island",
+                null
+            ],
+            [
+                "NFK",
+                null,
+                "NF"
+            ],
+            [
+                "574",
+                null,
+                "NF"
+            ]
+        ]
+    },
+    {
+        "code": "MP",
+        "regionName": "Northern Mariana Islands",
+        "lists": [
+            [
+                "MP",
+                "Northern Mariana Islands",
+                null
+            ],
+            [
+                "MNP",
+                null,
+                "MP"
+            ],
+            [
+                "580",
+                null,
+                "MP"
+            ]
+        ]
+    },
+    {
+        "code": "NO",
+        "regionName": "Norway",
+        "lists": [
+            [
+                "NO",
+                null
+            ],
+            [
+                "NOR",
+                null,
+                "NO"
+            ],
+            [
+                "578",
+                null,
+                "NO"
+            ]
+        ]
+    },
+    {
+        "code": "OM",
+        "regionName": "Oman",
+        "lists": [
+            [
+                "OM",
+                null
+            ],
+            [
+                "OMN",
+                null,
+                "OM"
+            ],
+            [
+                "512",
+                null,
+                "OM"
+            ]
+        ]
+    },
+    {
+        "code": "PK",
+        "regionName": "Pakistan",
+        "lists": [
+            [
+                "PK",
+                null
+            ],
+            [
+                "PAK",
+                null,
+                "PK"
+            ],
+            [
+                "586",
+                null,
+                "PK"
+            ]
+        ]
+    },
+    {
+        "code": "PW",
+        "regionName": "Palau",
+        "lists": [
+            [
+                "PW",
+                null
+            ],
+            [
+                "PLW",
+                null,
+                "PW"
+            ],
+            [
+                "585",
+                null,
+                "PW"
+            ]
+        ]
+    },
+    {
+        "code": "PS",
+        "regionName": "Palestine",
+        "lists": [
+            [
+                "PS",
+                null
+            ],
+            [
+                "PSE",
+                null,
+                "PS"
+            ],
+            [
+                "275",
+                null,
+                "PS"
+            ]
+        ]
+    },
+    {
+        "code": "PA",
+        "regionName": "Panama",
+        "lists": [
+            [
+                "PA",
+                null
+            ],
+            [
+                "PAN",
+                null,
+                "PA"
+            ],
+            [
+                "591",
+                null,
+                "PA"
+            ]
+        ]
+    },
+    {
+        "code": "PG",
+        "regionName": "Papua New Guinea",
+        "lists": [
+            [
+                "PG",
+                "Papua New Guinea",
+                null
+            ],
+            [
+                "PNG",
+                null,
+                "PG"
+            ],
+            [
+                "598",
+                null,
+                "PG"
+            ]
+        ]
+    },
+    {
+        "code": "PY",
+        "regionName": "Paraguay",
+        "lists": [
+            [
+                "PY",
+                null
+            ],
+            [
+                "PRY",
+                null,
+                "PY"
+            ],
+            [
+                "600",
+                null,
+                "PY"
+            ]
+        ]
+    },
+    {
+        "code": "PE",
+        "regionName": "Peru",
+        "lists": [
+            [
+                "PE",
+                null
+            ],
+            [
+                "PER",
+                null,
+                "PE"
+            ],
+            [
+                "604",
+                null,
+                "PE"
+            ]
+        ]
+    },
+    {
+        "code": "PH",
+        "regionName": "Philippines",
+        "lists": [
+            [
+                "PH",
+                null
+            ],
+            [
+                "PHL",
+                null,
+                "PH"
+            ],
+            [
+                "608",
+                null,
+                "PH"
+            ]
+        ]
+    },
+    {
+        "code": "PN",
+        "regionName": "Pitcairn",
+        "lists": [
+            [
+                "PN",
+                null
+            ],
+            [
+                "PCN",
+                null,
+                "PN"
+            ],
+            [
+                "612",
+                null,
+                "PN"
+            ]
+        ]
+    },
+    {
+        "code": "PL",
+        "regionName": "Poland",
+        "lists": [
+            [
+                "PL",
+                null
+            ],
+            [
+                "POL",
+                null,
+                "PL"
+            ],
+            [
+                "616",
+                null,
+                "PL"
+            ]
+        ]
+    },
+    {
+        "code": "PT",
+        "regionName": "Portugal",
+        "lists": [
+            [
+                "PT",
+                null
+            ],
+            [
+                "PRT",
+                null,
+                "PT"
+            ],
+            [
+                "620",
+                null,
+                "PT"
+            ]
+        ]
+    },
+    {
+        "code": "PR",
+        "regionName": "Puerto Rico",
+        "lists": [
+            [
+                "PR",
+                "Puerto Rico",
+                null
+            ],
+            [
+                "PRI",
+                null,
+                "PR"
+            ],
+            [
+                "630",
+                null,
+                "PR"
+            ]
+        ]
+    },
+    {
+        "code": "QA",
+        "regionName": "Qatar",
+        "lists": [
+            [
+                "QA",
+                null
+            ],
+            [
+                "QAT",
+                null,
+                "QA"
+            ],
+            [
+                "634",
+                null,
+                "QA"
+            ]
+        ]
+    },
+    {
+        "code": "RE",
+        "regionName": "Réunion",
+        "lists": [
+            [
+                "RE",
+                null
+            ],
+            [
+                "REU",
+                null,
+                "RE"
+            ],
+            [
+                "638",
+                null,
+                "RE"
+            ]
+        ]
+    },
+    {
+        "code": "RO",
+        "regionName": "Romania",
+        "lists": [
+            [
+                "RO",
+                null
+            ],
+            [
+                "ROU",
+                null,
+                "RO"
+            ],
+            [
+                "642",
+                null,
+                "RO"
+            ]
+        ]
+    },
+    {
+        "code": "RU",
+        "regionName": "Russian Federation",
+        "lists": [
+            [
+                "RU",
+                "Russian Federation",
+                null
+            ],
+            [
+                "RUS",
+                null,
+                "RU"
+            ],
+            [
+                "643",
+                null,
+                "RU"
+            ]
+        ]
+    },
+    {
+        "code": "RW",
+        "regionName": "Rwanda",
+        "lists": [
+            [
+                "RW",
+                null
+            ],
+            [
+                "RWA",
+                null,
+                "RW"
+            ],
+            [
+                "646",
+                null,
+                "RW"
+            ]
+        ]
+    },
+    {
+        "code": "BL",
+        "regionName": "Saint Barthélemy",
+        "lists": [
+            [
+                "BL",
+                "Saint Barthélemy",
+                null
+            ],
+            [
+                "BLM",
+                null,
+                "BL"
+            ],
+            [
+                "652",
+                null,
+                "BL"
+            ]
+        ]
+    },
+    {
+        "code": "SH",
+        "regionName": "Saint Helena, Ascension and Tristan da Cunha",
+        "lists": [
+            [
+                "SH",
+                "Saint Helena, Ascension and Tristan da Cunha",
+                null
+            ],
+            [
+                "SHN",
+                null,
+                "SH"
+            ],
+            [
+                "654",
+                null,
+                "SH"
+            ]
+        ]
+    },
+    {
+        "code": "KN",
+        "regionName": "Saint Kitts and Nevis",
+        "lists": [
+            [
+                "KN",
+                "Saint Kitts and Nevis",
+                null
+            ],
+            [
+                "KNA",
+                null,
+                "KN"
+            ],
+            [
+                "659",
+                null,
+                "KN"
+            ]
+        ]
+    },
+    {
+        "code": "LC",
+        "regionName": "Saint Lucia",
+        "lists": [
+            [
+                "LC",
+                "Saint Lucia",
+                null
+            ],
+            [
+                "LCA",
+                null,
+                "LC"
+            ],
+            [
+                "662",
+                null,
+                "LC"
+            ]
+        ]
+    },
+    {
+        "code": "MF",
+        "regionName": "Saint Martin [French]",
+        "lists": [
+            [
+                "MF",
+                "Saint Martin [French]",
+                null
+            ],
+            [
+                "MAF",
+                null,
+                "MF"
+            ],
+            [
+                "663",
+                null,
+                "MF"
+            ]
+        ]
+    },
+    {
+        "code": "PM",
+        "regionName": "Saint Pierre and Miquelon",
+        "lists": [
+            [
+                "PM",
+                "Saint Pierre and Miquelon",
+                null
+            ],
+            [
+                "SPM",
+                null,
+                "PM"
+            ],
+            [
+                "666",
+                null,
+                "PM"
+            ]
+        ]
+    },
+    {
+        "code": "VC",
+        "regionName": "Saint Vincent and the Grenadines",
+        "lists": [
+            [
+                "VC",
+                "Saint Vincent and the Grenadines",
+                null
+            ],
+            [
+                "VCT",
+                null,
+                "VC"
+            ],
+            [
+                "670",
+                null,
+                "VC"
+            ]
+        ]
+    },
+    {
+        "code": "WS",
+        "regionName": "Samoa",
+        "lists": [
+            [
+                "WS",
+                null
+            ],
+            [
+                "WSM",
+                null,
+                "WS"
+            ],
+            [
+                "882",
+                null,
+                "WS"
+            ]
+        ]
+    },
+    {
+        "code": "SM",
+        "regionName": "San Marino",
+        "lists": [
+            [
+                "SM",
+                "San Marino",
+                null
+            ],
+            [
+                "SMR",
+                null,
+                "SM"
+            ],
+            [
+                "674",
+                null,
+                "SM"
+            ]
+        ]
+    },
+    {
+        "code": "ST",
+        "regionName": "Sao Tome and Principe",
+        "lists": [
+            [
+                "ST",
+                "Sao Tome and Principe",
+                null
+            ],
+            [
+                "STP",
+                null,
+                "ST"
+            ],
+            [
+                "678",
+                null,
+                "ST"
+            ]
+        ]
+    },
+    {
+        "code": "SA",
+        "regionName": "Saudi Arabia",
+        "lists": [
+            [
+                "SA",
+                "Saudi Arabia",
+                null
+            ],
+            [
+                "SAU",
+                null,
+                "SA"
+            ],
+            [
+                "682",
+                null,
+                "SA"
+            ]
+        ]
+    },
+    {
+        "code": "SN",
+        "regionName": "Senegal",
+        "lists": [
+            [
+                "SN",
+                null
+            ],
+            [
+                "SEN",
+                null,
+                "SN"
+            ],
+            [
+                "686",
+                null,
+                "SN"
+            ]
+        ]
+    },
+    {
+        "code": "RS",
+        "regionName": "Serbia",
+        "lists": [
+            [
+                "RS",
+                null
+            ],
+            [
+                "SRB",
+                null,
+                "RS"
+            ],
+            [
+                "688",
+                null,
+                "RS"
+            ]
+        ]
+    },
+    {
+        "code": "SC",
+        "regionName": "Seychelles",
+        "lists": [
+            [
+                "SC",
+                null
+            ],
+            [
+                "SYC",
+                null,
+                "SC"
+            ],
+            [
+                "690",
+                null,
+                "SC"
+            ]
+        ]
+    },
+    {
+        "code": "SL",
+        "regionName": "Sierra Leone",
+        "lists": [
+            [
+                "SL",
+                "Sierra Leone",
+                null
+            ],
+            [
+                "SLE",
+                null,
+                "SL"
+            ],
+            [
+                "694",
+                null,
+                "SL"
+            ]
+        ]
+    },
+    {
+        "code": "SG",
+        "regionName": "Singapore",
+        "lists": [
+            [
+                "SG",
+                null
+            ],
+            [
+                "SGP",
+                null,
+                "SG"
+            ],
+            [
+                "702",
+                null,
+                "SG"
+            ]
+        ]
+    },
+    {
+        "code": "SX",
+        "regionName": "Sint Maarten [Dutch]",
+        "lists": [
+            [
+                "SX",
+                "Sint Maarten [Dutch]",
+                null
+            ],
+            [
+                "SXM",
+                null,
+                "SX"
+            ],
+            [
+                "534",
+                null,
+                "SX"
+            ]
+        ]
+    },
+    {
+        "code": "SK",
+        "regionName": "Slovakia",
+        "lists": [
+            [
+                "SK",
+                null
+            ],
+            [
+                "SVK",
+                null,
+                "SK"
+            ],
+            [
+                "703",
+                null,
+                "SK"
+            ]
+        ]
+    },
+    {
+        "code": "SI",
+        "regionName": "Slovenia",
+        "lists": [
+            [
+                "SI",
+                null
+            ],
+            [
+                "SVN",
+                null,
+                "SI"
+            ],
+            [
+                "705",
+                null,
+                "SI"
+            ]
+        ]
+    },
+    {
+        "code": "SB",
+        "regionName": "Solomon Islands",
+        "lists": [
+            [
+                "SB",
+                "Solomon Islands",
+                null
+            ],
+            [
+                "SLB",
+                null,
+                "SB"
+            ],
+            [
+                "090",
+                null,
+                "SB"
+            ]
+        ]
+    },
+    {
+        "code": "SO",
+        "regionName": "Somalia",
+        "lists": [
+            [
+                "SO",
+                null
+            ],
+            [
+                "SOM",
+                null,
+                "SO"
+            ],
+            [
+                "706",
+                null,
+                "SO"
+            ]
+        ]
+    },
+    {
+        "code": "ZA",
+        "regionName": "South Africa",
+        "lists": [
+            [
+                "ZA",
+                "South Africa",
+                null
+            ],
+            [
+                "ZAF",
+                null,
+                "ZA"
+            ],
+            [
+                "710",
+                null,
+                "ZA"
+            ]
+        ]
+    },
+    {
+        "code": "GS",
+        "regionName": "South Georgia and the South Sandwich Islands",
+        "lists": [
+            [
+                "GS",
+                "South Georgia and the South Sandwich Islands",
+                null
+            ],
+            [
+                "SGS",
+                null,
+                "GS"
+            ],
+            [
+                "239",
+                null,
+                "GS"
+            ]
+        ]
+    },
+    {
+        "code": "SS",
+        "regionName": "South Sudan",
+        "lists": [
+            [
+                "SS",
+                "South Sudan",
+                null
+            ],
+            [
+                "SSD",
+                null,
+                "SS"
+            ],
+            [
+                "728",
+                null,
+                "SS"
+            ]
+        ]
+    },
+    {
+        "code": "ES",
+        "regionName": "Spain",
+        "lists": [
+            [
+                "ES",
+                null
+            ],
+            [
+                "ESP",
+                null,
+                "ES"
+            ],
+            [
+                "724",
+                null,
+                "ES"
+            ]
+        ]
+    },
+    {
+        "code": "LK",
+        "regionName": "Sri Lanka",
+        "lists": [
+            [
+                "LK",
+                "Sri Lanka",
+                null
+            ],
+            [
+                "LKA",
+                null,
+                "LK"
+            ],
+            [
+                "144",
+                null,
+                "LK"
+            ]
+        ]
+    },
+    {
+        "code": "SD",
+        "regionName": "Sudan",
+        "lists": [
+            [
+                "SD",
+                null
+            ],
+            [
+                "SDN",
+                null,
+                "SD"
+            ],
+            [
+                "729",
+                null,
+                "SD"
+            ]
+        ]
+    },
+    {
+        "code": "SR",
+        "regionName": "Suriname",
+        "lists": [
+            [
+                "SR",
+                null
+            ],
+            [
+                "SUR",
+                null,
+                "SR"
+            ],
+            [
+                "740",
+                null,
+                "SR"
+            ]
+        ]
+    },
+    {
+        "code": "SJ",
+        "regionName": "Svalbard and Jan Mayen",
+        "lists": [
+            [
+                "SJ",
+                "Svalbard and Jan Mayen",
+                null
+            ],
+            [
+                "SJM",
+                null,
+                "SJ"
+            ],
+            [
+                "744",
+                null,
+                "SJ"
+            ]
+        ]
+    },
+    {
+        "code": "SZ",
+        "regionName": "Swaziland",
+        "lists": [
+            [
+                "SZ",
+                null
+            ],
+            [
+                "SWZ",
+                null,
+                "SZ"
+            ],
+            [
+                "748",
+                null,
+                "SZ"
+            ]
+        ]
+    },
+    {
+        "code": "SE",
+        "regionName": "Sweden",
+        "lists": [
+            [
+                "SE",
+                null
+            ],
+            [
+                "SWE",
+                null,
+                "SE"
+            ],
+            [
+                "752",
+                null,
+                "SE"
+            ]
+        ]
+    },
+    {
+        "code": "CH",
+        "regionName": "Switzerland",
+        "lists": [
+            [
+                "CH",
+                null
+            ],
+            [
+                "CHE",
+                null,
+                "CH"
+            ],
+            [
+                "756",
+                null,
+                "CH"
+            ]
+        ]
+    },
+    {
+        "code": "SY",
+        "regionName": "Syrian Arab Republic",
+        "lists": [
+            [
+                "SY",
+                "Syrian Arab Republic",
+                null
+            ],
+            [
+                "SYR",
+                null,
+                "SY"
+            ],
+            [
+                "760",
+                null,
+                "SY"
+            ]
+        ]
+    },
+    {
+        "code": "TW",
+        "regionName": "Taiwan [Province of China]",
+        "lists": [
+            [
+                "TW",
+                "Taiwan [Province of China]",
+                null
+            ],
+            [
+                "TWN",
+                null,
+                "TW"
+            ],
+            [
+                "158",
+                null,
+                "TW"
+            ]
+        ]
+    },
+    {
+        "code": "TJ",
+        "regionName": "Tajikistan",
+        "lists": [
+            [
+                "TJ",
+                null
+            ],
+            [
+                "TJK",
+                null,
+                "TJ"
+            ],
+            [
+                "762",
+                null,
+                "TJ"
+            ]
+        ]
+    },
+    {
+        "code": "TZ",
+        "regionName": "Tanzania, United Republic of",
+        "lists": [
+            [
+                "TZ",
+                "Tanzania, United Republic of",
+                null
+            ],
+            [
+                "TZA",
+                null,
+                "TZ"
+            ],
+            [
+                "834",
+                null,
+                "TZ"
+            ]
+        ]
+    },
+    {
+        "code": "TH",
+        "regionName": "Thailand",
+        "lists": [
+            [
+                "TH",
+                null
+            ],
+            [
+                "THA",
+                null,
+                "TH"
+            ],
+            [
+                "764",
+                null,
+                "TH"
+            ]
+        ]
+    },
+    {
+        "code": "TL",
+        "regionName": "Timor-Leste",
+        "lists": [
+            [
+                "TL",
+                "Timor-Leste",
+                null
+            ],
+            [
+                "TLS",
+                null,
+                "TL"
+            ],
+            [
+                "626",
+                null,
+                "TL"
+            ]
+        ]
+    },
+    {
+        "code": "TG",
+        "regionName": "Togo",
+        "lists": [
+            [
+                "TG",
+                null
+            ],
+            [
+                "TGO",
+                null,
+                "TG"
+            ],
+            [
+                "768",
+                null,
+                "TG"
+            ]
+        ]
+    },
+    {
+        "code": "TK",
+        "regionName": "Tokelau",
+        "lists": [
+            [
+                "TK",
+                null
+            ],
+            [
+                "TKL",
+                null,
+                "TK"
+            ],
+            [
+                "772",
+                null,
+                "TK"
+            ]
+        ]
+    },
+    {
+        "code": "TO",
+        "regionName": "Tonga",
+        "lists": [
+            [
+                "TO",
+                null
+            ],
+            [
+                "TON",
+                null,
+                "TO"
+            ],
+            [
+                "776",
+                null,
+                "TO"
+            ]
+        ]
+    },
+    {
+        "code": "TT",
+        "regionName": "Trinidad and Tobago",
+        "lists": [
+            [
+                "TT",
+                "Trinidad and Tobago",
+                null
+            ],
+            [
+                "TTO",
+                null,
+                "TT"
+            ],
+            [
+                "780",
+                null,
+                "TT"
+            ]
+        ]
+    },
+    {
+        "code": "TN",
+        "regionName": "Tunisia",
+        "lists": [
+            [
+                "TN",
+                null
+            ],
+            [
+                "TUN",
+                null,
+                "TN"
+            ],
+            [
+                "788",
+                null,
+                "TN"
+            ]
+        ]
+    },
+    {
+        "code": "TR",
+        "regionName": "Turkey",
+        "lists": [
+            [
+                "TR",
+                null
+            ],
+            [
+                "TUR",
+                null,
+                "TR"
+            ],
+            [
+                "792",
+                null,
+                "TR"
+            ]
+        ]
+    },
+    {
+        "code": "TM",
+        "regionName": "Turkmenistan",
+        "lists": [
+            [
+                "TM",
+                null
+            ],
+            [
+                "TKM",
+                null,
+                "TM"
+            ],
+            [
+                "795",
+                null,
+                "TM"
+            ]
+        ]
+    },
+    {
+        "code": "TC",
+        "regionName": "Turks and Caicos Islands",
+        "lists": [
+            [
+                "TC",
+                "Turks and Caicos Islands",
+                null
+            ],
+            [
+                "TCA",
+                null,
+                "TC"
+            ],
+            [
+                "796",
+                null,
+                "TC"
+            ]
+        ]
+    },
+    {
+        "code": "TV",
+        "regionName": "Tuvalu",
+        "lists": [
+            [
+                "TV",
+                null
+            ],
+            [
+                "TUV",
+                null,
+                "TV"
+            ],
+            [
+                "798",
+                null,
+                "TV"
+            ]
+        ]
+    },
+    {
+        "code": "UG",
+        "regionName": "Uganda",
+        "lists": [
+            [
+                "UG",
+                null
+            ],
+            [
+                "UGA",
+                null,
+                "UG"
+            ],
+            [
+                "800",
+                null,
+                "UG"
+            ]
+        ]
+    },
+    {
+        "code": "UA",
+        "regionName": "Ukraine",
+        "lists": [
+            [
+                "UA",
+                null
+            ],
+            [
+                "UKR",
+                null,
+                "UA"
+            ],
+            [
+                "804",
+                null,
+                "UA"
+            ]
+        ]
+    },
+    {
+        "code": "AE",
+        "regionName": "United Arab Emirates",
+        "lists": [
+            [
+                "AE",
+                "United Arab Emirates",
+                null
+            ],
+            [
+                "ARE",
+                null,
+                "AE"
+            ],
+            [
+                "784",
+                null,
+                "AE"
+            ]
+        ]
+    },
+    {
+        "code": "GB",
+        "regionName": "United Kingdom of Great Britain and Northern Ireland",
+        "lists": [
+            [
+                "GB",
+                "United Kingdom of Great Britain and Northern Ireland",
+                null
+            ],
+            [
+                "GBR",
+                null,
+                "GB"
+            ],
+            [
+                "826",
+                null,
+                "GB"
+            ]
+        ]
+    },
+    {
+        "code": "UM",
+        "regionName": "United States Minor Outlying Islands",
+        "lists": [
+            [
+                "UM",
+                "United States Minor Outlying Islands",
+                null
+            ],
+            [
+                "UMI",
+                null,
+                "UM"
+            ],
+            [
+                "581",
+                null,
+                "UM"
+            ]
+        ]
+    },
+    {
+        "code": "US",
+        "regionName": "United States of America",
+        "lists": [
+            [
+                "US",
+                "United States of America",
+                null
+            ],
+            [
+                "USA",
+                null,
+                "US"
+            ],
+            [
+                "840",
+                null,
+                "US"
+            ]
+        ]
+    },
+    {
+        "code": "UY",
+        "regionName": "Uruguay",
+        "lists": [
+            [
+                "UY",
+                null
+            ],
+            [
+                "URY",
+                null,
+                "UY"
+            ],
+            [
+                "858",
+                null,
+                "UY"
+            ]
+        ]
+    },
+    {
+        "code": "UZ",
+        "regionName": "Uzbekistan",
+        "lists": [
+            [
+                "UZ",
+                null
+            ],
+            [
+                "UZB",
+                null,
+                "UZ"
+            ],
+            [
+                "860",
+                null,
+                "UZ"
+            ]
+        ]
+    },
+    {
+        "code": "VU",
+        "regionName": "Vanuatu",
+        "lists": [
+            [
+                "VU",
+                null
+            ],
+            [
+                "VUT",
+                null,
+                "VU"
+            ],
+            [
+                "548",
+                null,
+                "VU"
+            ]
+        ]
+    },
+    {
+        "code": "VE",
+        "regionName": "Venezuela",
+        "lists": [
+            [
+                "VE",
+                null
+            ],
+            [
+                "VEN",
+                null,
+                "VE"
+            ],
+            [
+                "862",
+                null,
+                "VE"
+            ]
+        ]
+    },
+    {
+        "code": "VN",
+        "regionName": "Viet Nam",
+        "lists": [
+            [
+                "VN",
+                "Viet Nam",
+                null
+            ],
+            [
+                "VNM",
+                null,
+                "VN"
+            ],
+            [
+                "704",
+                null,
+                "VN"
+            ]
+        ]
+    },
+    {
+        "code": "VG",
+        "regionName": "Virgin Islands [British]",
+        "lists": [
+            [
+                "VG",
+                "Virgin Islands [British]",
+                null
+            ],
+            [
+                "VGB",
+                null,
+                "VG"
+            ],
+            [
+                "092",
+                null,
+                "VG"
+            ]
+        ]
+    },
+    {
+        "code": "VI",
+        "regionName": "Virgin Islands [U.S.]",
+        "lists": [
+            [
+                "VI",
+                "Virgin Islands [U.S.]",
+                null
+            ],
+            [
+                "VIR",
+                null,
+                "VI"
+            ],
+            [
+                "850",
+                null,
+                "VI"
+            ]
+        ]
+    },
+    {
+        "code": "WF",
+        "regionName": "Wallis and Futuna",
+        "lists": [
+            [
+                "WF",
+                "Wallis and Futuna",
+                null
+            ],
+            [
+                "WLF",
+                null,
+                "WF"
+            ],
+            [
+                "876",
+                null,
+                "WF"
+            ]
+        ]
+    },
+    {
+        "code": "EH",
+        "regionName": "Western Sahara",
+        "lists": [
+            [
+                "EH",
+                "Western Sahara",
+                null
+            ],
+            [
+                "ESH",
+                null,
+                "EH"
+            ],
+            [
+                "732",
+                null,
+                "EH"
+            ]
+        ]
+    },
+    {
+        "code": "YE",
+        "regionName": "Yemen",
+        "lists": [
+            [
+                "YE",
+                null
+            ],
+            [
+                "YEM",
+                null,
+                "YE"
+            ],
+            [
+                "887",
+                null,
+                "YE"
+            ]
+        ]
+    },
+    {
+        "code": "ZM",
+        "regionName": "Zambia",
+        "lists": [
+            [
+                "ZM",
+                null
+            ],
+            [
+                "ZMB",
+                null,
+                "ZM"
+            ],
+            [
+                "894",
+                null,
+                "ZM"
+            ]
+        ]
+    },
+    {
+        "code": "ZW",
+        "regionName": "Zimbabwe",
+        "lists": [
+            [
+                "ZW",
+                null
+            ],
+            [
+                "ZWE",
+                null,
+                "ZW"
+            ],
+            [
+                "716",
+                null,
+                "ZW"
+            ]
+        ]
+    },
+    {
+        "code": "001",
+        "regionName": "World",
+        "lists": [[
+            "001",
+            "World",
+            null
+        ]]
+    },
+    {
+        "code": "002",
+        "regionName": "Africa",
+        "lists": [[
+            "002",
+            "Africa",
+            null
+        ]]
+    },
+    {
+        "code": "005",
+        "regionName": "South America",
+        "lists": [[
+            "005",
+            "South America",
+            null
+        ]]
+    },
+    {
+        "code": "009",
+        "regionName": "Oceania",
+        "lists": [[
+            "009",
+            "Oceania",
+            null
+        ]]
+    },
+    {
+        "code": "011",
+        "regionName": "Western Africa",
+        "lists": [[
+            "011",
+            "Western Africa",
+            null
+        ]]
+    },
+    {
+        "code": "013",
+        "regionName": "Central America",
+        "lists": [[
+            "013",
+            "Central America",
+            null
+        ]]
+    },
+    {
+        "code": "014",
+        "regionName": "Eastern Africa",
+        "lists": [[
+            "014",
+            "Eastern Africa",
+            null
+        ]]
+    },
+    {
+        "code": "015",
+        "regionName": "Northern Africa",
+        "lists": [[
+            "015",
+            "Northern Africa",
+            null
+        ]]
+    },
+    {
+        "code": "017",
+        "regionName": "Middle Africa",
+        "lists": [[
+            "017",
+            "Middle Africa",
+            null
+        ]]
+    },
+    {
+        "code": "018",
+        "regionName": "Southern Africa",
+        "lists": [[
+            "018",
+            "Southern Africa",
+            null
+        ]]
+    },
+    {
+        "code": "019",
+        "regionName": "Americas",
+        "lists": [[
+            "019",
+            "Americas",
+            null
+        ]]
+    },
+    {
+        "code": "021",
+        "regionName": "Northern America",
+        "lists": [[
+            "021",
+            "Northern America",
+            null
+        ]]
+    },
+    {
+        "code": "029",
+        "regionName": "Caribbean",
+        "lists": [[
+            "029",
+            "Caribbean",
+            null
+        ]]
+    },
+    {
+        "code": "030",
+        "regionName": "Eastern Asia",
+        "lists": [[
+            "030",
+            "Eastern Asia",
+            null
+        ]]
+    },
+    {
+        "code": "034",
+        "regionName": "Southern Asia",
+        "lists": [[
+            "034",
+            "Southern Asia",
+            null
+        ]]
+    },
+    [
+        "035",
+        "South-Eastern Asia",
+        null
+    ]
+]

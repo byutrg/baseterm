@@ -1,0 +1,9 @@
+{% block body %}
+<div class='changesPendingDiv'>
+	<p class='pendingChangeMessage'>Changes Pending</p> 
+	<div class='confirmSaveButtonDiv'>
+		<button type='button' class='pendingChangesButton changesDiscardButton jBox-Confirm-button jBox-Confirm-button-cancel' value='cancel' onclick='cancelChanges("Changes discarded."); closeConfirmModal();'>Discard</button>
+		<button type='button' class='pendingChangesButton changesSaveButton jBox-Confirm-button jBox-Confirm-button-submit' value='save' onclick='saveChanges(); closeConfirmModal()'>Save</button>
+	</div>
+</div>
+{% endblock %}

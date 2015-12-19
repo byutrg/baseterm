@@ -1,0 +1,124 @@
+<div class='extImgContainer'>
+	<span class='noQueriesError imgRequired' for='imgContent_{{e}}_{{l}}_{{t}}' hidden>Both content and target are required.</span>
+	<input type='text' id='imgContent_{{e}}_{{l}}_{{t}}' placeholder='Image Reference Content...'/>
+	<input type='text' id='imgTarget_{{e}}_{{l}}_{{t}}' placeholder='Image Reference Target...'/>
+	<button type='button' id='imgBtn' onclick='saveExtRef()'></button>
+	<button type='button' id='deleteImgBtn' onclick='deleteImg()'></button>
+</div>
+
+{{ render(controller(
+	'AppBundle:Objects:entry'
+)) }}
+
+<script type='text/javascript'>
+
+$(function(){
+	if ($('#{{imgElementId}}').text() != 'Click here to add a reference.')
+	{
+		var type = $('#{{imgElementId}}').attr('id').split('_')[0];
+		var refIndex = $('#{{imgElementId}}').attr('id').split('_')[1];
+		var subtype = $('#{{imgElementId}}').attr('id').split('_')[2];
+		var level = $('#{{imgElementId}}').attr('id').split('_')[3];
+	
+		if (refIndex != 'new')
+		{	
+			$('#imgBtn').text('Save Change');
+			
+			if (level.toUpperCase() == 'TERMENTRY')
+			{
+				$('#imgContent_{{e}}_{{l}}_{{t}}').val(entries[{{e}}].images[refIndex].content);
+				$('#imgTarget_{{e}}_{{l}}_{{t}}').val(entries[{{e}}].images[refIndex].target);
+			}
+		}
+		$('#deleteImgBtn').text('Delete');
+	}
+	else
+	{
+		$('#imgBtn').text('Add Reference');
+		$('#deleteImgBtn').text('Cancel');
+	}
+});
+
+function saveExtRef()
+{	
+	if($('#imgContent_{{e}}_{{l}}_{{t}}').val() == '' || $('#imgTarget_{{e}}_{{l}}_{{t}}').val() == '')
+	{
+		$('.imgRequired').prop('hidden',false);
+		return false;
+	}
+	else
+	{
+		var type = $('#{{imgElementId}}').attr('id').split('_')[0];
+		var refIndex = $('#{{imgElementId}}').attr('id').split('_')[1];
+		var subtype = $('#{{imgElementId}}').attr('id').split('_')[2];
+		var level = $('#{{imgElementId}}').attr('id').split('_')[3];
+		
+		var content = $('#imgContent_{{e}}_{{l}}_{{t}}').val();
+		var target = $('#imgTarget_{{e}}_{{l}}_{{t}}').val();
+		
+		switch(level.toUpperCase())
+		{
+			case 'TERMENTRY':
+				ref = new Image(content,target);
+			
+				if (typeof entries[{{e}}].images != 'undefined')
+				{
+					if (refIndex == 'new')
+					{
+						entries[{{e}}].images.push(ref);
+						refIndex = entries[{{e}}].images.length-1;
+					}
+					else
+					{
+						entries[{{e}}].images[refIndex] = ref;
+					}
+				}
+				else
+				{
+					entries[{{e}}]['images'] = [ref];
+					refIndex = entries[{{e}}].images.length-1;
+				}
+				break;
+		}
+		
+		var newId = type+"_"+refIndex+"_"+subtype+"_"+level;
+		var imgElement = $('#{{imgElementId}}');
+		imgElement.text(content);
+		imgElement.attr('class','imgContent');
+		imgElement.prop('id', newId);
+		setChanged(true);
+		imgSelectModal.close();
+	}
+}
+
+function deleteImg()
+{
+	if ($('#{{imgElementId}}').attr('id').split('_')[1] == 'new') 
+	{	
+		imgSelectModal.close();
+	}
+	else
+	{
+		var index = $('#{{imgElementId}}').attr('id').split('_')[1];
+		var level = $('#{{imgElementId}}').attr('id').split('_')[3];
+		switch(level.toUpperCase())
+		{
+			case 'TERMENTRY':
+				if(entries[e].images.length > 1)
+				{
+					entries[e].images.splice(index, 1);
+				}
+				else
+				{
+					delete entries[e].images;
+				}
+				break;
+		}
+		
+		$('#{{imgElementId}}_delete').prop('hidden', false);
+		setChanged(true);
+	}
+	
+	imgSelectModal.close();
+}
+</script>

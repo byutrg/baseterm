@@ -1,0 +1,84 @@
+<div id='entryInfoBlock'>
+	<div>
+		<label for='entrySubjectField'>Subject Field: </label>
+		<select id='subjectFieldSelect'>
+			<option value='---' selected>---</option>
+		</select>
+		<input type='hidden' id='entrySubjectField' placeholder='electronics, mechanics, etc.' required/>
+	</div>
+	<div>
+		<label for='entryLanguagesField'>Languages in this Entry:</label>
+		<div id='languagesList'></div>
+		<select id='entryLanguagesField'></select>
+		<button type='button' onClick='addLanguageToEntry()'>Add Language</button>
+	</div>
+	<!-- definitions -->
+	<div>
+		<label for='definitionsDiv'>Definition(s):</label>
+		<div id='definitionsList'></div>
+		<div id='definitionsDiv'>
+			<textarea id='definitionText' placeholder='Definition here'></textarea>
+			<input type='text' id='definitionSource' placeholder='Definition Source (optional)' />
+			<button type='button' onClick='addDefinition("entry")'>Add Definition</button>
+		</div>
+	</div>
+	
+	<!-- notes -->
+	<button type='button' id='addEntryLvlBtn' class='nextFormButton' onclick='return saveEntryLevel()' hidden>Next</button>
+</div>
+
+<script>
+	$(function(){
+		
+		for (var i = 0; i < subjectFields.length; i++)
+		{
+			var field = subjectFields[i];
+			var opt = $('<option></option>');
+			opt.attr('value', field);
+			opt.text(field);
+			$('#subjectFieldSelect').append(opt);
+		}
+
+		var field = subjectFields[i];
+		var opt = $('<option></option>');
+		opt.attr('value', 'new');
+		opt.text('Add Subject Field');
+		$('#subjectFieldSelect').append(opt);
+		
+		$('#subjectFieldSelect').on('change', function(){
+			switch($(this).val())
+			{
+				case 'new':
+					$('#entrySubjectField').val('');
+					$('#entrySubjectField').attr('type', 'text');
+					break;
+				case '---':
+					$('#entrySubjectField').attr('type', 'hidden');
+					$('#entrySubjectField').val('');
+					break;
+				default:
+					$('#entrySubjectField').attr('type', 'hidden');
+					$('#entrySubjectField').val($(this).val());
+					
+			}
+		});
+
+		for (var e = 0; e < langCodeMaster.length; e++)
+		{
+			var code = '';
+			if (langCodeMaster[e].codes[0] != '')
+			{
+				code = langCodeMaster[e].codes[0];
+			}
+			else{
+				code = langCodeMaster[e].codes[2];
+			}
+			
+			var opt = $('<option></option>');
+			opt.attr('value', code);
+			opt.text(langCodeMaster[e].name);
+			if (code == 'en') {opt.attr('selected', true);}
+			$('#entryLanguagesField').append(opt);
+		};
+	});
+</script>

@@ -1,0 +1,27 @@
+<script type='text/javascript'>
+var Person = function()
+{
+	this.person; //object from database, may be used to access other properties
+	this.id; //string, required
+	this.email; //string, format email
+	this.fn; //string
+	this.role; //string
+	
+	this.createFromObject = function(person)
+	{
+		this.person = person;
+		this.id = this.person.id;
+		this.email = this.person.email;
+		this.fn = this.person.fn;
+		this.role = this.person.role;
+	}
+	
+	this.createFromValues = function(id, email, fn, role)
+	{
+		this.id = id;
+		this.email = email;
+		this.fn = fn;
+		this.role = role;
+	}
+}
+</script>

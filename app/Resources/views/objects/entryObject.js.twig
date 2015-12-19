@@ -1,0 +1,299 @@
+<script type='text/javascript'>
+var Entry = function()
+{
+	this.id;
+	this.subject_field;
+	this.references = []; //array of objects
+	this.transactions = []; //array of objects
+	this.definitions = []; //array of objects
+	this.notes = []; //array of strings
+	this.external_references = []; //array of objects
+	this.images = []; //array of objects
+	this.languages = []; //array of objects
+}
+
+function cleanEntry(entry)
+{
+	if (typeof entry.id == 'undefined' || entry.id == '') delete entry.id;
+	if (typeof entry.subject_field == 'undefined' || entry.subject_field == '' || entry.subject_field == '---') delete entry.subject_field;
+	
+	if (typeof entry.references == 'undefined' || entry.references.length < 1)
+	{ 
+		delete entry.references; 
+	}
+	else for (i = 0; i < entry.references.length; i++) 
+	{
+		entry.references[i] = cleanReference(entry.references[i]);
+	}
+	
+	if (typeof entry.transactions == 'undefined' || entry.transactions.length < 1)
+	{ 
+		delete entry.transactions; 
+	}
+	else for (i = 0; i < entry.transactions.length; i++) 
+	{
+		entry.transactions[i] = cleanTransaction(entry.transactions[i]);
+	}
+	
+	if (typeof entry.definitions == 'undefined' || entry.definitions.length < 1)
+	{ 
+		delete entry.definitions; 
+	}
+	else for (i = 0; i < entry.definitions.length; i++) 
+	{
+		entry.definitions[i] = cleanDefinition(entry.definitions[i]);
+	}
+	
+	if (typeof entry.notes == 'undefined' || entry.notes.length < 1)
+	{ 
+		delete entry.notes; 
+	}
+	
+	if (typeof entry.external_references == 'undefined' || entry.external_references.length < 1)
+	{ 
+		delete entry.external_references; 
+	}
+	
+	if (typeof entry.images == 'undefined' || entry.images.length < 1)
+	{ 
+		delete entry.images; 
+	}
+	else for (i = 0; i < entry.images.length; i++) 
+	{
+		entry.images[i] = cleanImage(entry.images[i]);
+	}
+
+	if (typeof entry.languages == 'undefined' || entry.languages.length < 1)
+	{ 
+		delete entry.languages; 
+	}
+	else for (i = 0; i < entry.languages.length; i++) 
+	{
+		entry.languages[i] = cleanLanguage(entry.languages[i]);
+	}
+	
+	return entry;
+}
+
+var Reference = function(content, target)
+{
+	this.content; //required string
+	this.target; //required string
+	
+	this.content = content;
+	this.target = target;
+	
+	// this.clean = function()
+	// {
+		// if (typeof this.content == 'undefined' || this.content == '') delete this.content;
+		// if (typeof this.target == 'undefined' || this.target == '') delete this.target;
+	// }
+}
+
+function cleanReference(reference)
+{
+	if (typeof reference.content == 'undefined' || reference.content == '') delete reference.content;
+	if (typeof reference.target == 'undefined' || reference.target == '') delete reference.target;
+	
+	return reference;
+}
+
+var Transaction = function()
+{
+	this.person; //string
+	this.type; //must either be 'oriniation' or 'modification'
+	this.date; //string
+	this.target; //string
+}
+
+function cleanTransaction(transaction)
+{
+	if (typeof transaction.person == 'undefined' || transaction.person == '') delete transaction.person;
+	if (typeof transaction.type == 'undefined' || transaction.type == '') delete transaction.type;
+	if (typeof transaction.date == 'undefined' || transaction.date == '') delete transaction.date;
+	if (typeof transaction.target == 'undefined' || transaction.target == '') delete transaction.target;
+	
+	return transaction;
+}
+
+var Definition = function(content)
+{
+	this.content; //string required
+	this.source; //string
+	
+	this.content = content;
+}
+
+function cleanDefinition(definition)
+{
+	if (typeof definition.content == 'undefined' || definition.content == '') delete definition.content;
+	if (typeof definition.source == 'undefined' || definition.source == '') delete definition.source;
+	return definition;
+}
+
+var External_Reference = function(content, target)
+{
+	this.content; //required string
+	this.target; //required string
+	
+	this.content = content;
+	this.target = target;
+}
+
+var Image = function(content, target)
+{
+	this.content; //required string
+	this.target; //required string
+	
+	this.content = content;
+	this.target = target;
+}
+
+function cleanImage(image)
+{
+	if (typeof image.content == 'undefined' || image.content == '') delete image.content;
+	if (typeof image.target == 'undefined' || image.target == '') delete image.target;
+	
+	return image;
+}
+
+var Language = function(code)
+{
+	this.code; //string
+	this.definitions = []; //array of definition objects
+	this.transactions = []; //array of transaction objects
+	this.terms = []; //array of term objects
+	
+	this.code = code;
+}
+
+function cleanLanguage(language)
+{
+	if (typeof language.code == 'undefined' || language.code == '') delete language.code;
+	
+	if (typeof language.transactions == 'undefined' || language.transactions.length < 1)
+	{ 
+		delete language.transactions; 
+	}
+	else for (i = 0; i < language.transactions.length; i++) 
+	{
+		language.transactions[i] = cleanTransaction(language.transactions[i]);
+	}
+	
+	if (typeof language.definitions == 'undefined' || language.definitions.length < 1)
+	{ 
+		delete language.definitions; 
+	}
+	else for (i = 0; i < language.definitions.length; i++) 
+	{
+		language.definitions[i] = cleanDefinition(language.definitions[i]);
+	}
+	
+	if (typeof language.terms == 'undefined' || language.terms.length < 1)
+	{ 
+		delete language.terms; 
+	}
+	else for (i = 0; i < language.terms.length; i++) 
+	{
+		language.terms[i] = cleanTerm(language.terms[i]);
+	}
+	
+	return language;
+}
+
+var Term = function()
+{
+	this.gender;//string: masculine|feminine|neuter|other
+	this.source; //string
+	this.projects = []; //array of strings
+	this.status; //string: preferredTerm-admn-sts|admittedTerm-admn-sts|deprecatedTerm-admn-sts|supersededTerm-admn-sts
+	this.term; //string required
+	this.type; //string: fullForm|acronym|abbreviation|shortForm|variant|phrase
+	this.customers = []; //array of strings
+	this.geo; //string
+	this.pos; //string: noun|verb|adjective|adverb|properNoun|other
+	this.location; //string
+	this.external_references = []; //array of external_reference objects
+	this.references = []; //array of reference objects
+	this.transactions = []; //array of transaction objects
+	this.contexts = []; //array of context objects
+
+	this.term = term;
+}
+
+function cleanTerm(term)
+{
+	if (typeof term.gender == 'undefined' || term.gender == '') delete term.gender;
+	if (typeof term.source == 'undefined' || term.source == '') delete term.source;
+	if (typeof term.status == 'undefined' || term.status == '') delete term.status;
+	if (typeof term.term == 'undefined' || term.term == '') delete term.term;
+	if (typeof term.type == 'undefined' || term.type == '') delete term.type;
+	if (typeof term.geo == 'undefined' || term.geo == '') delete term.geo;
+	if (typeof term.location == 'undefined' || term.location == '') delete term.location;
+	if (typeof term.pos == 'undefined' || term.pos == '') delete term.pos;
+	
+	if (typeof term.projects == 'undefined' || term.projects.length < 1)
+	{ 
+		delete term.projects; 
+	}
+	
+	if (typeof term.customers == 'undefined' || term.customers.length < 1)
+	{ 
+		delete term.customers; 
+	}
+	
+	if (typeof term.external_references == 'undefined' || term.external_references.length < 1)
+	{ 
+		delete term.external_references; 
+	}
+	else for (i = 0; i < term.external_references.length; i++) 
+	{
+		term.external_references[i] = cleanReference(term.external_references[i]);
+	}
+	
+	if (typeof term.references == 'undefined' || term.references.length < 1)
+	{ 
+		delete term.references; 
+	}
+	else for (i = 0; i < term.references.length; i++) 
+	{
+		term.references[i] = cleanReference(term.references[i]);
+	}
+	
+	if (typeof term.transactions == 'undefined' || term.transactions.length < 1)
+	{ 
+		delete term.transactions; 
+	}
+	else for (i = 0; i < term.transactions.length; i++) 
+	{
+		term.transactions[i] = cleanTransaction(term.transactions[i]);
+	}
+	
+	if (typeof term.contexts == 'undefined' || term.contexts.length < 1)
+	{ 
+		delete term.contexts; 
+	}
+	else for (i = 0; i < term.contexts.length; i++) 
+	{
+		term.contexts[i] = cleanContext(term.contexts[i]);
+	}
+	
+	return term;
+}
+
+var Context = function(content)
+{
+	this.content; //string required
+	this.source; //string
+
+	this.content = content;
+}
+
+function cleanContext(context)
+{
+	if (typeof context.content == 'undefined' || context.content == '') delete context.content;
+	if (typeof context.source == 'undefined' || context.source == '') delete context.source;
+	
+	return context;
+}
+</script>

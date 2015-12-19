@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<table>
+		<thead>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Role</th>
+			<th>Save</th>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				{% if user.enabled %}
+					{% for d in data %}
+						{% if d.name == user.username %}
+							<tr>
+								{{ form_start(d.form, {'action': path('user_role_edit'), 'method': 'POST'}) }}
+									<td>{{user}}</td>
+									<td>{{user.getEmail()}}</td>
+									<td>
+										<select id='role_list' name='role'>
+											{% if "ROLE_ADMIN" in user.roles %}
+												<option value='user'>User</option>
+												<option value='staff'>Staff</option>
+												<option value='admin' selected>Admin</option>
+												<option value='inactive'>Inactive</option>
+											{% elseif "ROLE_STAFF" in user.roles %}
+												<option value='user'>User</option>
+												<option value='staff' selected>Staff</option>
+												<option value='admin'>Admin</option>
+												<option value='inactive'>Inactive</option>
+											{% elseif "ROLE_INACTIVE" in user.roles %}
+												<option value='user' selected>User</option>
+												<option value='staff'>Staff</option>
+												<option value='admin'>Admin</option>
+												<option value='inactive' selected>Inactive</option>
+											{% elseif "ROLE_USER" in user.roles %}
+												<option value='user' selected>User</option>
+												<option value='staff'>Staff</option>
+												<option value='admin'>Admin</option>
+												<option value='inactive'>Inactive</option>
+											{% endif %}
+										</select>
+									</td>
+									<td>{{form_widget(d.form.save)}}</td>
+								{{ form_end(d.form) }}
+							</tr>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
+
+{% block javascripts %}
+<script type='text/javascript'>
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class='registrationFormContainer'>
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+	
+	<p>Please provide the following:</p>
+	
+	{{ form_widget(form.name, {'attr': {'class': 'registrationInput', 'value':'', 'placeholder': 'Full Name'}}) }}
+	
+	{{ form_widget(form.email, {'attr': {'class': 'registrationInput', 'placeholder':'Email Address'}}) }}
+	
+	{{ form_widget(form.username, {'attr': {'class': 'registrationInput', 'placeholder':'Username'}}) }}
+	
+	{{ form_widget(form.plainPassword.first, {'attr': {'class': 'registrationInput', 'placeholder':'Password'}}) }}
+	
+	{{ form_widget(form.plainPassword.second, {'attr': {'class': 'registrationInput', 'placeholder':'Repeat Password'}}) }}
+	
+    <div class='submitRegistrationDiv'>
+        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+	
+	{{ form_errors(form) }}
+	{{ form_errors(form.name) }}
+	{{ form_errors(form.email) }}
+	{{ form_errors(form.username) }}
+	{{ form_errors(form.plainPassword) }}
+	{{ form_errors(form.plainPassword.first) }}
+	{{ form_errors(form.plainPassword.second) }}
+	
+{{ form_end(form) }}
+</div>

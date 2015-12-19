@@ -67,7 +67,11 @@
 			<script src="{{ asset_url }}"></script>
 		{% endjavascripts %}
 		
-        {% block javascripts %}{% endblock %}
-		<footer class='footer'></footer>
+		{% block javascripts %}{% endblock %}
+		<div id='footer'>
+			<p class='copyright'>
+				Copyright &copy; {{ "now"|date("Y") }} LTAC & CRITI
+			</p>
+		</div>
     </body>
 </html>

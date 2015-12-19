@@ -1,0 +1,63 @@
+<div class='geoContainer'>
+	<select id='geoContent_{{e}}_{{l}}_{{t}}'>
+	</select>
+	<button type='button' id='geoBtn' onclick='saveExtRef()'></button>
+	<button type='button' id='deleteGeoBtn' onclick='deleteGeoRef()'></button>
+</div>
+<script type='text/javascript'>
+
+$(function(){
+	//load regions
+	for(var i = 0; i < regionCodeMaster.length; i++)
+	{
+		var regionCode = regionCodeMaster[i].code;
+		var regionName = regionCodeMaster[i].regionName;
+		
+		var rOpt = $('<option></option>');
+		rOpt.prop('value',regionCode);
+		rOpt.text(regionName);
+		if($('#{{geoElementId}}').text() == regionName)
+		{
+			rOpt.prop('selected',true);
+		}
+		else if (regionCode == '029' && $('#{{geoElementId}}').text() == '---')
+		{ 
+			rOpt.prop('selected',true);
+		}
+		$('#geoContent_{{e}}_{{l}}_{{t}}').append(rOpt);
+	}
+	
+	if ( $('#{{geoElementId}}').text() == '---' )
+	{
+		$('#geoBtn').text('Add Region');
+		$('#deleteGeoBtn').text('Cancel');
+	}
+	else
+	{
+		$('#geoBtn').text('Edit Region');
+		$('#deleteGeoBtn').text('Delete');
+	}
+});
+
+function saveExtRef()
+{
+	entries[{{e}}].languages[{{l}}].terms[{{t}}]['geo'] = $('#geoContent_{{e}}_{{l}}_{{t}}').val();
+	
+	$('#{{geoElementId}}').text(regionCodeValueList[$('#geoContent_{{e}}_{{l}}_{{t}}').val()]);
+	
+	setChanged(true);
+	geoSelectModal.close();
+}
+
+function deleteGeoRef()
+{
+	if($('#deleteGeoBtn').text() == 'Delete')
+	{ 
+		delete entries[{{e}}].languages[{{l}}].terms[{{t}}].geo;
+		setChanged(true);
+	}
+	
+	geoSelectModal.close();
+}
+
+</script>

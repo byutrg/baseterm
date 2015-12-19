@@ -1,0 +1,5 @@
+<p>Choose a valid TBX Basic file to upload:</p>
+{{ form_start(form, {'action': path('import_termbase'), 'method': 'POST'}) }}
+<div class='chooseFile'>{{ form_widget(form.file) }}</div>
+<div class='uploadFile'>{{ form_widget(form.upload) }}</div>
+{{ form_end(form) }}

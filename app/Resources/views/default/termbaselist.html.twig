@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<p>
+		Which termbase would you like to view?
+	</p>
+	<p>
+		Alternatively, you may create your own!
+	</p>
+	
+	{% if is_granted('ROLE_STAFF') %}
+	<button type='button' id='createTermbase' onclick='createTermbase()'>
+		Create Termbase
+	</button>
+	{% endif %}
+
+	<button type='button' id='importTermbase' onclick='importTermbase();'>
+		Import Termbase
+	</button>
+
+	<table id='termbaseList'>
+		<thead>
+			<th>Termbase Name</th>
+			<th>Working Language</th>
+			{% if is_granted('ROLE_ADMIN') %}
+				<th>Delete</th>
+			{% endif %}
+			<th>Download</th>
+			<th>View</th>
+		</thead>
+		<tbody>
+			{{ render(controller(
+				'AppBundle:TermbasesSelect:getAll'
+			)) }}
+		</tbody>
+	</table>
+{% endblock %}
+
+{% block javascripts %}
+<script type='text/javascript'>
+$(document).ready(init);
+var termbaseModal;
+var importModal;
+function init()
+{
+	termbaseModal = new jBox('Modal',{
+		ajax: {
+			url: 'termbase/create'
+		},
+	});
+	termbaseModal.open();
+	termbaseModal.close();
+
+	importModal = new jBox('Modal',{
+		ajax: {
+			url: '{{path('import_view_termbase')}}',
+		},
+	});
+}
+
+function createTermbase()
+{
+	termbaseModal.open();
+}
+
+function importTermbase()
+{
+	importModal.open();
+}
+
+function deleteTermbase(id)
+{
+	termbaseModal = new jBox('Confirm',{
+		content: "Are you sure you want to delete this Termbase?",
+		cancelButton: "Delete this Termbase?",
+		cancel: function(){
+			$.ajax({
+				url: 'termbase/delete',
+				data: {
+					'id': id
+				},
+				success: function(result){
+					new jBox('Notice', {
+						theme: 'NoticeBorder',
+						color: 'blue',
+						content:'<p>Termbase Deleted</p>',
+						attributes: { 
+							x: 'right',
+							y: 'bottom'
+						}
+					});
+					location.reload();
+				},
+				error: function(result){
+					alert(JSON.stringify(result));
+					new jBox('Notice', {
+						theme: 'NoticeBorder',
+						color: 'red',
+						content:'<p>Update Error</p>'+
+								'<p>Termbase not deleted!</p>',
+						attributes: { 
+							x: 'right',
+							y: 'bottom'
+						}
+					});
+				}
+				
+			});
+		},
+		confirmButton: 'Cancel',
+		confirm: function(){
+			termbaseModal.close();
+		}
+	});
+	termbaseModal.open();
+}
+
+function exportTermbase(id)
+{
+	var route = "{{ path('export_termbase', {'id':"PLACEHOLDER"} ) }}";
+	window.location = route.replace("PLACEHOLDER", id);
+}
+</script>
+{% endblock %}

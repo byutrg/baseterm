@@ -1,0 +1,211 @@
+<div id='tigInfoBlock'>
+	<label for='langSelect'>Select a language to add terms to:</label>
+	<select id='langSelect'></select>
+
+	<hr/>
+	<div>
+		<label for='termsDiv'>Terms: (terms added here are synonyms)</label>
+		<div id='termsList'></div>
+		<br/>
+		<div id='termsDiv'>
+			<div>
+				<label for='td_term'>Term:</label>
+				<input type='text' id='td_term' placeholder='enter term value here'/>
+			</div>
+			<div>
+				<label for='td_context'>Context(s) (optional):</label>
+				<div id='contextList'></div>
+				<textarea id='td_context' placeholder='Context here'></textarea>				
+				<input type='text' id='td_contextSource' placeholder='Context Source (optional)' />
+				<button type='button' onClick='addContextToTig()'>Add Context</button>
+			</div>
+			<div>
+				<label for='td_gender'>Gender:</label>
+				<select id='td_gender'>
+					<option value='---' selected>Unspecified</option>
+					<option value='masculine'>Masculine</option>
+					<option value='feminine'>Feminine</option>
+					<option value='neuter'>Neuter</option>
+					<option value='other'>Other</option>
+				</select>
+			</div>
+			<div>
+				<label for='td_pos'>Part of Speech:</label>
+				<select id='td_pos'>
+					<option value='---'>Unspecified</option>
+					<option value='noun' selected>Noun</option>
+					<option value='verb'>Verb</option>
+					<option value='adjective'>Adjective</option>
+					<option value='adverb'>Adverb</option>
+					<option value='properNoun'>Proper Noun</option>
+					<option value='other'>Other</option>
+				</select>
+			</div>
+			<div>
+				<label for='td_status'>Term Status:</label>
+				<select id='td_status'>
+					<option value='preferredTerm-admn-sts'>Preferred</option>
+					<option value='admittedTerm-admn-sts'>Admitted</option>
+					<option value='deprecatedTerm-admn-sts'>Deprecated</option>
+					<option value='supersededTerm-admn-sts'>Superseded</option>
+				</select>
+			</div>
+			<button type='button' class='addTermButton' onClick='addTig()'>Add Term</button>
+		</div>
+	<hr />	
+	
+	</div>
+		
+		<div>
+			<button id='saveTermBtn' type='button' class='nextFormButton' onClick='saveTerm()' hidden>Save Terms</button>
+		</div>
+	</div>
+	
+	
+</div>
+
+{{ render(controller(
+	'AppBundle:Objects:entry'
+)) }}
+
+{{ render(controller(
+	'AppBundle:Objects:person'
+)) }}
+
+<script>
+
+var entryLangList = {{langs|raw}};
+var tigs = [];
+var contexts = [];
+$(function(){
+	loadLanguageList();
+});
+
+function loadLanguageList(selectNew, code) //if selectNew is true, select code
+{
+	$('#langSelect option').remove();
+
+	for (var i = 0; i < entryLangList.length; i++)
+	{
+		var opt = $('<option></option>');
+		opt.attr('value', entryLangList[i]);
+		opt.text(langCodeValueList[entryLangList[i]]);
+		if (i == 0 && !selectNew) {opt.attr('selected', true);}
+		else if (entryLangList[i] == code) {opt.attr('selected', true);};
+		$('#langSelect').append(opt);
+
+		
+	}
+
+	if ('{{type}}'.toUpperCase() == 'TRANSLATION')
+	{
+		var opt = $('<option></option>');
+		opt.attr('value', 'new_lang');
+		opt.text("Add New Language");
+		$('#langSelect').append(opt);
+	}
+}
+
+$('#langSelect').on('change',function(){
+	if($('#langSelect').val() == 'new_lang')
+	{	
+		if (typeof quickLangSelectModal.destroy != 'undefined') quickLangSelectModal.destroy();
+	
+		quickLangSelectModal = new jBox('Modal', {
+			closeOnClick: 'body',
+			repositionOnOpen: true,
+			title: 'Add Language:',
+			position: {
+				x: 25,
+				y: 100
+			},
+			ajax: {
+				url: "{{path('language_quick_select')}}",
+				reload: true
+			},
+			onClose: function(){
+				$('#langSelect').val(entryLangList[0]);
+			}
+		});
+		quickLangSelectModal.open();
+	}
+	else
+	{
+		if (typeof quickLangSelectModal.destroy != 'undefined') quickLangSelectModal.destroy();
+	}
+});
+
+function addContextToTig()
+{
+	if ($('#td_context').val() == '') return;
+	
+	var context = new Context($('#td_context').val());
+	if ($('#td_contextSource').val() != '') context.source = $('#td_contextSource').val();
+
+	contexts.push(context);
+
+	$('#contextList').append('<p>'+$('#td_context').val()+'</p>');
+	$('#td_contextSource').val('');
+	$('#td_context').val('');
+}
+
+function addTig()
+{
+	if ($('#td_term').val() == '') return;
+	
+	var tig = new Term();
+	tig.term = $('#td_term').val();
+	tig.contexts = contexts;
+
+	if ($('#td_gender').val() != '---') tig.gender = $('#td_gender').val();
+	if ($('#td_pos').val() != '---') tig.pos = $('#td_pos').val();
+	tig.status = $('#td_status').val();
+	
+	tig = cleanTerm(tig);
+	tigs.push(tig);
+
+	$('#termsList').append('<p>'+tig.term+' ('+tig.pos+')</p>');
+	$('#saveTermBtn').attr('hidden',false);
+	
+	//clear all fields
+	$('#td_term').val('');
+	$('#contextList p').remove();
+	$('#td_contextSource').val('');
+	$('#td_context').val('');
+	$('#td_gender').val('---').change();
+	$('#td_pos').val('noun').change();
+	$('#td_status').val('preferredTerm-admn-sts').change();
+}
+
+function saveTerm()
+{
+	if (tigs.length < 1) return;
+
+	var tid = '{{termbaseId}}';
+	var e = {{entryIndex}};
+	var languageExists = false;
+	for(var l = 0; l < entries[e].languages.length; l++)
+	{
+		if ($('#langSelect').val() == entries[e].languages[l].code)
+		{
+			languageExists = true;
+			for (var t = 0; t < tigs.length; t++)
+			{
+				entries[e].languages[l].terms.push(tigs[t]);
+			}
+		}
+	}
+
+	if (!languageExists)
+	{
+		var languageObj = new Language($('#langSelect').val());
+		languageObj.terms = tigs;
+
+		languageObj = cleanLanguage(languageObj);
+		entries[e].languages.push(languageObj);
+	}
+
+	saveChanges();
+	addTermModal.close();
+}
+</script>
