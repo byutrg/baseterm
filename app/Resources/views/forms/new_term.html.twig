@@ -1,6 +1,6 @@
 <div id='tigInfoBlock'>
-	<label for='langSelect'>Select a language to add terms to:</label>
-	<select id='langSelect'></select>
+	<label for='langSelect_{{type}}'>Select a language to add terms to:</label>
+	<select id='langSelect_{{type}}'></select>
 
 	<hr/>
 	<div>
@@ -83,7 +83,7 @@ $(function(){
 
 function loadLanguageList(selectNew, code) //if selectNew is true, select code
 {
-	$('#langSelect option').remove();
+	$('#langSelect_{{type}} option').remove();
 
 	for (var i = 0; i < entryLangList.length; i++)
 	{
@@ -92,7 +92,7 @@ function loadLanguageList(selectNew, code) //if selectNew is true, select code
 		opt.text(langCodeValueList[entryLangList[i]]);
 		if (i == 0 && !selectNew) {opt.attr('selected', true);}
 		else if (entryLangList[i] == code) {opt.attr('selected', true);};
-		$('#langSelect').append(opt);
+		$('#langSelect_{{type}}').append(opt);
 
 		
 	}
@@ -102,12 +102,12 @@ function loadLanguageList(selectNew, code) //if selectNew is true, select code
 		var opt = $('<option></option>');
 		opt.attr('value', 'new_lang');
 		opt.text("Add New Language");
-		$('#langSelect').append(opt);
+		$('#langSelect_{{type}}').append(opt);
 	}
 }
 
-$('#langSelect').on('change',function(){
-	if($('#langSelect').val() == 'new_lang')
+$('#langSelect_{{type}}').on('change',function(){
+	if($('#langSelect_{{type}}').val() == 'new_lang')
 	{	
 		if (typeof quickLangSelectModal.destroy != 'undefined') quickLangSelectModal.destroy();
 	
@@ -124,7 +124,7 @@ $('#langSelect').on('change',function(){
 				reload: true
 			},
 			onClose: function(){
-				$('#langSelect').val(entryLangList[0]);
+				$('#langSelect_{{type}}').val(entryLangList[0]);
 			}
 		});
 		quickLangSelectModal.open();
@@ -186,7 +186,7 @@ function saveTerm()
 	var languageExists = false;
 	for(var l = 0; l < entries[e].languages.length; l++)
 	{
-		if ($('#langSelect').val() == entries[e].languages[l].code)
+		if ($('#langSelect_{{type}}').val() == entries[e].languages[l].code)
 		{
 			languageExists = true;
 			for (var t = 0; t < tigs.length; t++)
@@ -198,7 +198,7 @@ function saveTerm()
 
 	if (!languageExists)
 	{
-		var languageObj = new Language($('#langSelect').val());
+		var languageObj = new Language($('#langSelect_{{type}}').val());
 		languageObj.terms = tigs;
 
 		languageObj = cleanLanguage(languageObj);

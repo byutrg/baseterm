@@ -14,8 +14,14 @@ body {
 }
 
 .mainContainer {
-	height: 100%;
+	height: 80%;
 	margin: 0 25px;
+}
+
+#footer {
+	float: left;
+	bottom: 5px;
+	left: 25px;
 }
 
 /*jBox Term Modals*/
