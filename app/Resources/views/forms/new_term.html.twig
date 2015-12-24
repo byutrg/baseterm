@@ -64,19 +64,13 @@
 	
 </div>
 
-{{ render(controller(
-	'AppBundle:Objects:entry'
-)) }}
-
-{{ render(controller(
-	'AppBundle:Objects:person'
-)) }}
-
 <script>
 
 var entryLangList = {{langs|raw}};
 var tigs = [];
 var contexts = [];
+pid = checkPerson();
+
 $(function(){
 	loadLanguageList();
 });
@@ -155,6 +149,13 @@ function addTig()
 	
 	var tig = new Term();
 	tig.term = $('#td_term').val();
+	transac_tig = new Transaction();
+	transac_tig.person = '{{app.user.fullusername|raw}}';
+	transac_tig.type = 'origination';
+	transac_tig.target = pid;
+	transac_tig.date = constructDate();
+	tig.transactions.push(transac_tig);
+	
 	tig.contexts = contexts;
 
 	if ($('#td_gender').val() != '---') tig.gender = $('#td_gender').val();
@@ -192,6 +193,7 @@ function saveTerm()
 			for (var t = 0; t < tigs.length; t++)
 			{
 				entries[e].languages[l].terms.push(tigs[t]);
+				setLevel('add', 'tig');
 			}
 		}
 	}
@@ -200,9 +202,17 @@ function saveTerm()
 	{
 		var languageObj = new Language($('#langSelect_{{type}}').val());
 		languageObj.terms = tigs;
-
+		setLevel('add', 'tig');
+		transac_lang = new Transaction();
+		transac_lang.person = '{{app.user.fullusername|raw}}';
+		transac_lang.type = 'origination';
+		transac_lang.target = pid;
+		transac_lang.date = constructDate();
+		languageObj.transactions.push(transac_lang);
+		
 		languageObj = cleanLanguage(languageObj);
 		entries[e].languages.push(languageObj);
+		setLevel('add', 'lang');
 	}
 
 	saveChanges();

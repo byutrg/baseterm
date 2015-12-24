@@ -18,18 +18,27 @@ class JboxController extends Controller
 		$entries = json_decode($request->request->get('entries'));
 		$nav = $request->request->get('nav');
 		$id = $request->request->get('termbaseId');
-		
+		$search_all = $request->request->get('search_all');
 		// $entryController = new EntryController($id);
 		// $entries_json = $entryController->getAll();
 		// $entries = json_decode($entries_json);
 		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
-		
-		return $this->render(
-			'jbox/small.html.twig',
-			array('entries'=>$entries, 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'])
-		);
+		if ($search_all == 'false')
+		{
+			return $this->render(
+				'jbox/small.html.twig',
+				array('entries'=>$entries, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
+			);
+		}
+		else if ($search_all == 'true')
+		{
+			return $this->render(
+				'jbox/small.html.twig',
+				array('entries'=>$entries, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
+			);
+		}
     }
 	
 	/**
@@ -40,18 +49,29 @@ class JboxController extends Controller
 		$entries = json_decode($request->request->get('entries'));
 		$nav = $request->request->get('nav');
 		$id = $request->request->get('termbaseId');
-		
+		$no_edit = $request->request->get('no_edit');
+		$search_all = $request->request->get('search_all');
 		// $entryController = new EntryController($id);
 		// $entries_json = $entryController->getAll();
 		// $entries = json_decode($entries_json);
 		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
+		if ($search_all == 'false')
+		{
+			return $this->render(
+				'jbox/large.html.twig',
+				array('entries'=>$entries, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
+			);
+		}
+		else if ($search_all == 'true')
+		{
+			return $this->render(
+				'jbox/large.html.twig',
+				array('entries'=>$entries, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
+			);
+		}
 		
-		return $this->render(
-			'jbox/large.html.twig',
-			array('entries'=>$entries, 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'])
-		);
     }
 	
 	/**

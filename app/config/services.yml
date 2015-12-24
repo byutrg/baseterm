@@ -20,6 +20,11 @@ services:
     entry_controller:
         class: ServiceBundle\Controller\EntryController
     app.form.registration:
-        class: AppBundle\Form\RegistrationType
+        class: UserBundle\Form\Type\RegistrationFormType
         tags:
             - { name: form.type, alias: app_user_registration }
+    app.user.profile.edit:
+        class: UserBundle\Form\Type\ProfileFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: app_user_profile_edit }

@@ -7,7 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ServiceBundle\Controller\TermbaseController;
+use ServiceBundle\Controller\TermbasesController;
 use ServiceBundle\Controller\EntryController;
+use ServiceBundle\Controller\PersonController;
 
 class TermbaseSearchController extends Controller
 {
@@ -31,6 +33,17 @@ class TermbaseSearchController extends Controller
 		return $this->render(
 			'default/search.html.twig',
 			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name)
+		);
+    }    
+	
+	/**
+     * @Route("/termbase/search_all", name="search_termbase_all")
+     */
+    public function searchAllAction(Request $request)
+    {
+		
+		return $this->render(
+			'default/search_all.html.twig'
 		);
     }    
 	
@@ -59,9 +72,37 @@ class TermbaseSearchController extends Controller
 		$entries_json = $entryController->getAll();
 		$entries = json_decode($entries_json);
 		
+		$personController = new PersonController($id);
+		$persons_json = $personController->getAll();
+		$persons = json_decode($persons_json);
+		
 		return $this->render( 
 			'default/js/search.js.twig',
-			array('entries'=>$entries,'id'=>$id)
+			array('entries'=>$entries,'id'=>$id, 'persons'=>$persons)
+		);
+	}
+	
+	/**
+     * @Route("/termbase/search_all.js", name="search_termbase_all_js")
+     */
+	public function scriptAllAction()
+	{
+		$entries_list = array();
+		$tc = new TermbasesController();
+		$termbases = json_decode($tc->getAllAction());
+		
+		foreach ($termbases as $termbase)
+		{
+			$entryController = new EntryController($termbase->id);
+			$entries_json = $entryController->getAll();
+			$entries = json_decode($entries_json);
+
+			array_push($entries_list,$entries);
+		}
+		
+		return $this->render( 
+			'default/js/search_all.js.twig',
+			array('entries_list'=>$entries_list)
 		);
 	}
 	

@@ -18,6 +18,24 @@ body {
 	margin: 0 25px;
 }
 
+.noFullNameMessage {
+	color: white;
+	width: 300px;
+	margin: 10px;
+	padding: 40px;
+	text-align: center;
+	border-radius: 5px;
+	box-shadow: 5px 5px 5px #888888;
+	background: -webkit-linear-gradient(#F3524D, #53120D); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#F3524D, #53120D); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#F3524D, #53120D); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(#F3524D, #53120D); /* Standard syntax */
+}
+
+.searchError {
+	color: red;
+}
+
 #footer {
 	float: left;
 	bottom: 5px;
@@ -237,8 +255,8 @@ body {
 }
 /*END LOGIN PAGE*/
 
-/*REGISTER PAGE*/
-.registrationFormContainer {
+/*REGISTER PAGE && PROFILE EDIT PAGE*/
+.registrationFormContainer, .profileFormContainer {
 	width: 100%;
 	height: 100%;
 }
@@ -246,6 +264,20 @@ body {
 .fos_user_registration_register {
 	display: block;
 	height: 260px;
+	width: 250px;
+	margin: 0 auto;
+	position: relative;
+	right: 5%;
+	padding: 10px;
+	
+	background-color: #dedbde;
+	border-radius: 5px;
+	box-shadow: 5px 5px 5px #888888;
+}
+
+.fos_user_profile_edit {
+	display: block;
+	height: 150x;
 	width: 250px;
 	margin: 0 auto;
 	position: relative;
@@ -270,7 +302,7 @@ body {
 	white-space: pre-line;
 }
 
-.registrationInput {
+.registrationInput, .profileInput {
 	display: block;
 	padding: 5px 0;
 	border-radius: 5px;
@@ -279,12 +311,12 @@ body {
 	margin: 5px auto;
 }
 
-.submitRegistrationDiv {
+.submitRegistrationDiv, .submitProfileDiv {
 	width: 80px;
 	margin: 0 auto;
 }
 
-.submitRegistrationDiv input[type='submit'] {
+.submitRegistrationDiv input[type='submit'], .submitProfileDiv input[type='submit'] {
 	width: 80px;
 	height: 40px;
 	color: white;

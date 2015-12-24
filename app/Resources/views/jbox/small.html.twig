@@ -98,15 +98,23 @@
 </div>
 <script type='text/javascript'>
 $(function(){
-	
-	if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
-	{
-		$('#geoValue_{{e}}_{{l}}_{{t}}').text(
-			regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
-		);
-	}
-	else $('#geoValue_{{e}}_{{l}}_{{t}}').text('---');
-
+	{% if search_all == 'false' %}
+		if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
+		{
+			$('#geoValue_{{e}}_{{l}}_{{t}}').text(
+				regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
+			);
+		}
+		else $('#geoValue_{{e}}_{{l}}_{{t}}').text('---');
+	{% elseif search_all == 'true' %}
+		if (typeof entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
+		{	
+			$('#geoValue_{{e}}_{{l}}_{{t}}').text(
+				regionCodeValueList[entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo]
+			);
+		}
+		else $('#geoValue_{{e}}_{{l}}_{{t}}').text('---');
+	{% endif %}
 });
 </script>
 {% endblock %}

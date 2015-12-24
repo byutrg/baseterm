@@ -98,6 +98,14 @@
 	{% endjavascripts %}
 
 	{{ render(controller(
+		'AppBundle:Objects:entry'
+	)) }}
+
+	{{ render(controller(
+		'AppBundle:Objects:person'
+	)) }}
+	
+	{{ render(controller(
 		'AppBundle:TermbaseSearch:script',
 		{'id':id}
 	)) }}

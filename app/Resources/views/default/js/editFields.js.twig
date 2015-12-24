@@ -237,10 +237,12 @@
 			//TERMS
 					case 'termValue':
 						entries[e].languages[l].terms[t].term = currentText;
+						setLevel('edit','tig');
 						break;
 			//SOURCE
 					case 'termSourceValue':
 						entries[e].languages[l].terms[t]['source'] = currentText;
+						setLevel('edit', 'tig');
 						break;
 			//NOTES
 					case 'noteValue':
@@ -272,10 +274,12 @@
 								entries[e].notes[noteindex] = currentText;
 							}
 						}
+						setLevel('edit', 'entry');
 						break;
 			//SUBJECTS
 					case 'subjectValue':
 						entries[e].subject_field = currentText;
+						setLevel('edit', 'entry');
 						break;
 			//PROJECTS
 					case 'projectValue':
@@ -307,6 +311,7 @@
 								entries[e].languages[l].terms[t].projects[projectIndex] = currentText;
 							}
 						}
+						setLevel('edit', 'tig');
 						break;
 			//DEFINITIONS
 					case 'defValue':
@@ -356,6 +361,7 @@
 										}
 									}
 								}
+								setLevel('edit', 'lang');
 							}
 							else
 							{
@@ -398,6 +404,7 @@
 										}
 									}
 								}
+								setLevel('edit', 'entry');
 							}
 						}
 						else if ($(this).attr('id').split('_')[2] == 'source')
@@ -456,6 +463,7 @@
 										}
 									}
 								}
+								setLevel('edit', 'lang');
 							}
 							else
 							{
@@ -512,6 +520,7 @@
 										}
 									}
 								}
+								setLevel('edit', 'entry');
 							}	
 						}
 						break;
@@ -618,6 +627,8 @@
 								}
 							}
 						}
+						setLevel('edit', 'tig');
+					break;
 				}
 			}
 			input.text(currentText);
@@ -824,6 +835,7 @@
 						}
 						break;
 				}
+				setLevel('edit', 'tig');
 			}
 			
 	});

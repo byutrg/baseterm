@@ -78,6 +78,7 @@ function saveExtRef()
 					entries[{{e}}]['images'] = [ref];
 					refIndex = entries[{{e}}].images.length-1;
 				}
+				setLevel('edit', 'entry');
 				break;
 		}
 		
@@ -112,6 +113,7 @@ function deleteImg()
 				{
 					delete entries[e].images;
 				}
+				setLevel('edit','entry');
 				break;
 		}
 		

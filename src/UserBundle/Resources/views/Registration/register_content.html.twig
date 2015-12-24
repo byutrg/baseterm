@@ -5,7 +5,7 @@
 	
 	<p>Please provide the following:</p>
 	
-	{{ form_widget(form.name, {'attr': {'class': 'registrationInput', 'value':'', 'placeholder': 'Full Name'}}) }}
+	{{ form_widget(form.fullusername, {'attr': {'class': 'registrationInput', 'placeholder': 'Full Name'}}) }}
 	
 	{{ form_widget(form.email, {'attr': {'class': 'registrationInput', 'placeholder':'Email Address'}}) }}
 	
@@ -20,7 +20,7 @@
     </div>
 	
 	{{ form_errors(form) }}
-	{{ form_errors(form.name) }}
+	{{ form_errors(form.fullusername) }}
 	{{ form_errors(form.email) }}
 	{{ form_errors(form.username) }}
 	{{ form_errors(form.plainPassword) }}

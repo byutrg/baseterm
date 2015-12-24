@@ -51,7 +51,12 @@ class User extends BaseUser
      *     groups={"Registration", "Profile"}
      * )
     */
-    protected $name;
+    protected $fullUserName;
+	
+	/**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $personId;
 	
     public function __construct()
     {
@@ -61,14 +66,26 @@ class User extends BaseUser
 
     }
 	
-	public function getName()
+	public function getPersonId()
 	{
-		return $this->showTips;
+		return $this->personId;
 	}
 	
-	public function setName($string)
+	public function setPersonId($string)
 	{
-		$this->name = $string;
+		$this->personId = $string;
+		
+		return $this;
+	}
+	
+	public function getFullUserName()
+	{
+		return $this->fullUserName;
+	}
+	
+	public function setFullUserName($string)
+	{
+		$this->fullUserName = $string;
 		
 		return $this;
 	}

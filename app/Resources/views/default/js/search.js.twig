@@ -1,6 +1,8 @@
 <script>
+
 $(document).ready(init);
 var entries;
+var persons;
 var tigCount = 0;
 var termbaseId;
 var langCodeMaster;
@@ -37,6 +39,8 @@ var activeIndex = -1;
 var displayIndex = 0;
 var showTips = (localStorage['showTips'] == 'false') ? false : true || true;
 var changed = false;
+var editLevel = {'entry': false, 'lang': false, 'tig': false};
+var addLevel = {'entry': false, 'lang': false, 'tig': false};
 var activeIsSmall = true;
 
 $(document).ready($('#resultsTable').tablesorter());
@@ -44,6 +48,8 @@ $(document).ready($('#resultsTable').tablesorter());
 function init()
 {
 	entries = $.parseJSON('{{entries|json_encode}}');
+	persons = $.parseJSON('{{persons|json_encode}}');
+
 	getLists();
 	termbaseId = '{{id|raw}}';
 	
@@ -107,6 +113,167 @@ function init()
 }
 
 //***************************Variable SET/GET*************************************
+function constructDate()
+{
+	var today = new Date();
+	var day = today.getDate();
+	var month = today.getMonth()+1;
+	var year = today.getFullYear();
+	
+	return year+'-'+month+'-'+day;
+}
+
+function setLevel(type, level)
+{
+	switch(level)
+	{
+		case 'entry':
+			if (type == 'add')
+			{
+				addLevel[level] = true;
+			}
+			else if (type == 'edit')
+			{
+				editLevel[level] = true;
+			}
+			break;
+		case 'lang':
+			if (type == 'add')
+			{
+				addLevel[level] = true;
+			}
+			else if (type == 'edit')
+			{
+				editLevel[level] = true;
+			}
+			break;
+		case 'tig':
+			if (type == 'add')
+			{
+				addLevel[level] = true;
+			}
+			else if (type == 'edit')
+			{
+				editLevel[level] = true;
+			}
+			break;
+	}
+}
+
+function checkTransac(e,l,t)
+{
+	if (editLevel.entry||editLevel.lang||editLevel.tig)
+	{
+		pid = checkPerson();
+		transac = new Transaction();
+		transac.person = '{{app.user.fullusername|raw}}';
+		transac.type = 'modification';
+		transac.target = pid;
+		transac.date = constructDate();
+		
+		if (editLevel.entry)
+		{
+			if (typeof entries[e].transactions != 'undefined')
+			{
+				entries[e].transactions.push(transac);
+			}
+			else
+			{
+				entries[e]['transactions'] = [transac];
+			}
+		}
+		if (editLevel.lang)
+		{
+			if (typeof entries[e].languages[l].transactions != 'undefined')
+			{
+				entries[e].languages[l].transactions.push(transac);
+			}
+			else
+			{
+				entries[e].languages[l]['transactions'] = [transac];
+			}
+		}
+		if (editLevel.tig)
+		{
+			if (typeof entries[e].languages[l].terms[t].transactions != 'undefined')
+			{
+				entries[e].languages[l].terms[t].transactions.push(transac);
+			}
+			else
+			{
+				entries[e].languages[l].terms[t]['transactions'] = [transac];
+			}
+		}
+	}
+}
+
+function checkPerson()
+{
+	pid = '';
+	if ('{{app.user.personId|raw}}' == '')
+	{
+		result = '';
+		personExists = false;
+		
+		for (var p = 0; p < persons.length; p++)
+		{
+			if (persons[p].fn == '{{app.user.fullusername|raw}}')
+			{
+				personExists = true;
+				pid = persons[p].id;
+				break;
+			}
+		}
+		
+		if (personExists)
+		{
+			$.ajax({ //set personId for person
+				url: '{{path("user_personId_edit")}}',
+				method: 'POST',
+				data: {
+					'name': '{{app.user.username}}',
+					'pid': pid
+				}
+			});
+		}
+		else //add a new person
+		{
+			role = '';
+			{%- if is_granted('ROLE_ADMIN') -%}
+				role = 'admin';
+			{%- elseif is_granted('ROLE_STAFF') -%}
+				role = 'staff';
+			{%- else -%}
+				role = 'user';
+			{%- endif -%}
+
+			person = {
+				'email': '{{app.user.email|raw}}',
+				'fn': '{{app.user.fullusername|raw}}',
+				'role': role
+			};
+			
+			$.ajax({ //set personId for person
+				url: '{{path("user_person_add")}}',
+				method: 'POST',
+				data: {
+					'tid': termbaseId,
+					'name': '{{app.user.username}}',
+					'person': person
+				},
+				success: function(data){
+					pid = data;
+				}
+			});
+		}
+	}
+	else
+	{
+		pid = '{{app.user.personId|raw}}';
+	}
+	return pid;
+}
+
 function getPendingModal()
 {
 	if (typeof pendingModal.open != 'undefined') pendingModal.open();
@@ -191,10 +358,12 @@ function setChanged(bool)
 
 function saveChanges()
 {
-	navObject = getNavObject()
+	navObject = getNavObject();
 	e = navObject.e;
 	l = navObject.l;
 	t = navObject.t;
+	
+	checkTransac(e,l,t);
 	
 	//alert(JSON.stringify(entries[e]));
 	$.ajax({
@@ -270,6 +439,8 @@ function cancelChanges(message)
 	
 	(activeIsSmall) ? shrinkModalButton_pressed() : expandModalButton_pressed();
 
+	editLevel = {'entry': false, 'lang': false, 'tig': false};
+    addLevel = {'entry': false, 'lang': false, 'tig': false};
 	setChanged(false);
 	getPendingModal();
 }
@@ -746,7 +917,7 @@ function smallWindowConstruct(modal)
 		'l': l,
 		't': t
 	};
-	modal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject}});
+	modal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject, 'search_all': 'false'}});
 	
 	activeIsSmall = true;
 }
@@ -855,12 +1026,12 @@ function deleteTermModalButton_pressed(e,l,t)
 
 function expandModalButton_pressed()
 {
-	navObject = getNavObject()
+	navObject = getNavObject();
 	e = navObject.e;
 	l = navObject.l;
 	t = navObject.t;
 		
-	activeModal.ajax({url: "{{path('jbox_large')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_large')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject, 'no_edit': 'false', 'search_all': 'false'}});
 	activeModal.setHeight(400);
 	activeModal.setWidth(600);
 	
@@ -871,12 +1042,12 @@ function expandModalButton_pressed()
 
 function shrinkModalButton_pressed()
 {
-	navObject = getNavObject()
+	navObject = getNavObject();
 	e = navObject.e;
 	l = navObject.l;
 	t = navObject.t;
 	
-	activeModal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject}});
+	activeModal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject, 'search_all': 'false'}});
 	activeModal.setHeight(200);
 	activeModal.setWidth(400);
 	

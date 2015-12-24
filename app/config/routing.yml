@@ -68,9 +68,19 @@ search_termbase:
     path: /termbase/search
     defaults: { _controller: AppBundle:TermbaseSearch:search }
 
+search_termbase:
+    path: /termbase/search_all
+    defaults: { _controller: AppBundle:TermbaseSearch:searchAll }
+
 search_termbase_js:
     path: /termbase/search.{_format}
     defaults: { _controller: AppBundle:TermbaseSearch:script, _format: js}
+    requirements:
+        _format: js|json
+
+search_termbase_js:
+    path: /termbase/search_all.{_format}
+    defaults: { _controller: AppBundle:TermbaseSearch:scriptAll, _format: js}
     requirements:
         _format: js|json
 
@@ -195,3 +205,11 @@ manage_users:
 user_role_edit:
     path: /users/user_role
     defaults: { _controller: AppBundle:UserEdit:roleUpdate }
+
+user_personId_edit:
+    path: /users/personId
+    defaults: { _controller: AppBundle:UserEdit:setPersonId }
+
+user_person_add:
+    path: /users/add_person
+    defaults: { _controller: AppBundle:UserEdit:addPerson }

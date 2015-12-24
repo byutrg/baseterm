@@ -112,14 +112,14 @@
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
-			{% if is_granted('ROLE_STAFF') %}
+			{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 				<p class='arrayFormat'>
 					New Project:
 					<span class='editText' id='projectValue_new'>Click here to add a project.</span>
 				</p>
 			{% endif %}
 		{%- else -%}
-			{% if is_granted('ROLE_STAFF') %}
+			{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 			<p class='arrayFormat'>
 				New Project:
 				<span class='editText' id='projectValue_new'>Click here to add a project.</span>
@@ -139,14 +139,14 @@
 				</p>
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
-				{% if is_granted('ROLE_STAFF') %}
+				{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 				<p class='arrayFormat'>
 					New Note:
 					<span class='editText' id='noteValue_new'>Click here to add a note.</span>
 				</p>
 				{% endif %}
 		{%- else -%}
-			{% if is_granted('ROLE_STAFF') %}
+			{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 			<p class='arrayFormat'>
 				New Note:
 				<span class='editText' id='noteValue_new'>Click here to add a note.</span>
@@ -172,7 +172,7 @@
 						{%- if ctxt.source is defined -%}
 							{{ctxt.source}}
 						{%- else -%}
-							{%- if is_granted('ROLE_STAFF') -%}
+							{%- if is_granted('ROLE_STAFF') and no_edit == 'false' -%}
 							Click here to add a source.
 							{%- endif -%}
 						{%- endif -%}
@@ -182,7 +182,7 @@
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New Context:
 					<p class='arrayFormat'>
 						Content: <span class='editText' id='ctxtValue_new_content'>Click here to add content.</span>
@@ -194,7 +194,7 @@
 				</div>
 		{%- else -%}
 			<div class='arrayFormat'>
-				{% if is_granted('ROLE_STAFF') %}
+				{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 				New Context:
 				<p class='arrayFormat'>
 					Content: <span class='editText' id='ctxtValue_new_content'>Click here to add content.</span>
@@ -220,7 +220,7 @@
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New Reference:
 					<p class='arrayFormat'>
 						<span class='editReference' id='refValue_new_content_tig'>Click here to add a reference.</span>
@@ -229,7 +229,7 @@
 				</div>
 		{%- else -%}
 			<div class='arrayFormat'>
-				{% if is_granted('ROLE_STAFF') %}
+				{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 				New Reference:
 				<p class='arrayFormat'>
 					<span class='editReference' id='refValue_new_content_tig'>Click here to add a reference.</span>
@@ -252,7 +252,7 @@
 				{%- set i = i + 1 -%}
 			{%- endfor -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New External Reference:
 					<p class='arrayFormat'>
 						<span class='editExtRef' id='extRefValue_new_content_tig'>Click here to add a reference.</span>
@@ -261,7 +261,7 @@
 				</div>
 		{%- else -%}
 			<div class='arrayFormat'>
-				{% if is_granted('ROLE_STAFF') %}
+				{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 				New External Reference:
 				<p class='arrayFormat'>
 					<span class='editExtRef' id='extRefValue_new_content_tig'>Click here to add a reference.</span>
@@ -274,14 +274,21 @@
 	<div>
 		<!-- <p class='synonymList'> -->
 		<span class='label label_synonyms'>Synonyms: </span>
+		{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 		<button type='button' onclick='addTerm({{e}},{{l}},{{t}},"synonym")' class='' href="{{path('entry_new_lang')}}">New Synonym</button>
-		
+		{% endif %}
 		{% if entries[e].languages[l].terms|length > 1 %}
 			<ul>
 			{% set tigIndex = 0 %}
 			{% for tig in entries[e].languages[l].terms %}
 				{% if tig.term != entries[e].languages[l].terms[t].term %}
-					<li id='M_{{e}}_{{l}}_{{tigIndex}}_term' class='term_item'>{{tig.term}}</li>
+					{% set mid = '' %}
+					{% if search_all == 'true' %}
+						{% set mid = 'M_'~el~'_'~e~'_'~l~'_'~tigIndex~'_term' %}
+					{% elseif search_all == 'false' %}
+						{% set mid = 'M_'~e~'_'~l~'_'~tigIndex~'_term' %}
+					{% endif %}
+					<li id='{{mid}}' class='term_item'>{{tig.term}}</li>
 				{% endif %}
 				{% set tigIndex = tigIndex + 1 %}
 			{% endfor %}
@@ -293,8 +300,9 @@
 		<!--<p class='translationList'>-->
 		
 		<span class='label label_translations'>Translations: </span>
+		{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 		<button type='button' onclick='addTerm({{e}},{{l}},{{t}},"translation")' class='' href="{{path('entry_new_lang')}}">New Translation</button>
-		
+		{% endif %}
 		{% if entries[e].languages|length > 1 %}
 			<ul>
 			{% set langIndex = 0 %}
@@ -302,7 +310,13 @@
 				{% if l != loop.index - 1 %}
 					{% set tigIndex = 0 %}
 					{% for tig in entries[e].languages[loop.index-1].terms %}
-						<li id='M_{{e}}_{{langIndex}}_{{tigIndex}}_term' class='term_item'>{{tig.term}}</li>
+						{% set mid = '' %}
+						{% if search_all == 'true' %}
+							{% set mid = 'M_'~el~'_'~e~'_'~langIndex~'_'~tigIndex~'_term' %}
+						{% elseif search_all == 'false' %}
+							{% set mid = 'M_'~e~'_'~langIndex~'_'~tigIndex~'_term' %}
+						{% endif %}
+						<li id='{{mid}}' class='term_item'>{{tig.term}}</li>
 						{% set tigIndex = tigIndex + 1 %}
 					{% endfor %}
 				{% endif %}
@@ -314,6 +328,24 @@
 		{% endif %}
 		<!--</p>-->
 	</div>
+	<!-- **********************Transactions******************* -->
+		<div class='modalDivValue'>
+			Transactions:
+			{%- if entries[e].languages[l].terms[t].transactions is defined -%}
+				{%- set i = 0 -%}
+				{%- for transac in entries[e].languages[l].terms[t].transactions -%}
+					<div class='arrayFormat'>
+						Transaction {{i + 1}}:
+							<span>{{transac.person}}</span>---<span>{{transac.type}}</span>---<span>{%- if transac.date is defined -%}{{transac.date}}{%-endif-%}</span>
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}	
+			{%- else -%}
+				<div class='arrayFormat'>
+					<span>No transactions to show.</span>
+				</div>
+			{%- endif -%}
+		</div>
 	<!-- **************Language SPECIFIC MATERIAL********************** -->
 	<hr/><hr/>
 	<div class='langDiv'>
@@ -335,7 +367,7 @@
 							{%- if def.source is defined -%}
 								{{def.source}}
 							{%- else -%}
-								{%- if is_granted('ROLE_STAFF') -%}
+								{%- if is_granted('ROLE_STAFF') and no_edit == 'false' -%}
 								Click here to add a source.
 								{%- endif -%}
 							{%- endif -%}
@@ -345,7 +377,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
-						{% if is_granted('ROLE_STAFF') %}
+						{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 						New Definition:
 						<p class='arrayFormat'>
 							Content: <span class='editText' id='defValue_new_content_langset'>Click here to add content.</span>
@@ -357,7 +389,7 @@
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New Definition:
 					<p class='arrayFormat'>
 						Content: <span class='editText' id='defValue_new_content_langset'>Click here to add content.</span>
@@ -370,6 +402,24 @@
 			{%- endif -%}
 		</div>
 	</div>
+	<!-- **********************Transactions******************* -->
+		<div class='modalDivValue'>
+			Transactions:
+			{%- if entries[e].languages[l].transactions is defined -%}
+				{%- set i = 0 -%}
+				{%- for transac in entries[e].languages[l].transactions -%}
+					<div class='arrayFormat'>
+						Transaction {{i + 1}}:
+							<span>{{transac.person}}</span>---<span>{{transac.type}}</span>---<span>{%- if transac.date is defined -%}{{transac.date}}{%-endif-%}</span>
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}	
+			{%- else -%}
+				<div class='arrayFormat'>
+					<span>No transactions to show.</span>
+				</div>
+			{%- endif -%}
+		</div>
 	<!-- **************ENTRY SPECIFIC MATERIAL********************** -->
 	<hr/><hr/>
 	<div class='entryDiv'>
@@ -391,7 +441,7 @@
 							{%- if def.source is defined -%}
 								{{def.source}}
 							{%- else -%}
-								{%- if is_granted('ROLE_STAFF') -%}
+								{%- if is_granted('ROLE_STAFF') and no_edit == 'false' -%}
 								Click here to add a source.
 								{%- endif -%}
 							{%- endif -%}
@@ -401,7 +451,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
-						{% if is_granted('ROLE_STAFF') %}
+						{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 						New Definition:
 						<p class='arrayFormat'>
 							Content: <span class='editText' id='defValue_new_content_termEntry'>Click here to add content.</span>
@@ -413,7 +463,7 @@
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New Definition:
 					<p class='arrayFormat'>
 						Content: <span class='editText' id='defValue_new_content_termEntry'>Click here to add content.</span>
@@ -439,7 +489,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
-						{% if is_granted('ROLE_STAFF') %}
+						{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 						New Reference:
 						<p class='arrayFormat'>
 							<span class='editReference' id='refValue_new_content_termEntry'>Click here to add a reference.</span>
@@ -448,7 +498,7 @@
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New Reference:
 					<p class='arrayFormat'>
 						<span class='editReference' id='refValue_new_content_termEntry'>Click here to add a reference.</span>
@@ -471,7 +521,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
-						{% if is_granted('ROLE_STAFF') %}
+						{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 						New External Reference:
 						<p class='arrayFormat'>
 							<span class='editExtRef' id='extRefValue_new_content_termEntry'>Click here to add a reference.</span>
@@ -480,7 +530,7 @@
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New External Reference:
 					<p class='arrayFormat'>
 						<span class='editExtRef' id='extRefValue_new_content_termEntry'>Click here to add a reference.</span>
@@ -491,7 +541,21 @@
 		</div>
 		<!-- **********************Transactions******************* -->
 		<div class='modalDivValue'>
-	
+			Transactions:
+			{%- if entries[e].transactions is defined -%}
+				{%- set i = 0 -%}
+				{%- for transac in entries[e].transactions -%}
+					<div class='arrayFormat'>
+						Transaction {{i + 1}}:
+							<span>{{transac.person}}</span>---<span>{{transac.type}}</span>---<span>{%- if transac.date is defined -%}{{transac.date}}{%-endif-%}</span>
+					</div>
+					{%- set i = i + 1 -%}
+				{%- endfor -%}	
+			{%- else -%}
+				<div class='arrayFormat'>
+					<span>No transactions to show.</span>
+				</div>
+			{%- endif -%}
 		</div>
 		<!-- **********************Images******************* -->
 		<div class='modalDivValue'>
@@ -507,7 +571,7 @@
 					{%- set i = i + 1 -%}
 				{%- endfor -%}
 					<div class='arrayFormat'>
-						{% if is_granted('ROLE_STAFF') %}
+						{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 						New Image:
 						<p class='arrayFormat'>
 							<span class='editImgRef' id='imgValue_new_content_termEntry'>Click here to add a reference.</span>
@@ -516,7 +580,7 @@
 					</div>
 			{%- else -%}
 				<div class='arrayFormat'>
-					{% if is_granted('ROLE_STAFF') %}
+					{% if is_granted('ROLE_STAFF') and no_edit == 'false' %}
 					New Image:
 					<p class='arrayFormat'>
 						<span class='editImgRef' id='imgValue_new_content_termEntry'>Click here to add a reference.</span>
@@ -526,7 +590,7 @@
 			{%- endif -%}
 		</div>
 	</div>
-	{% if is_granted('ROLE_ADMIN') %}
+	{% if is_granted('ROLE_ADMIN') and no_edit == 'false' %}
 		<div class='deleteButtonDiv'>
 			<button class='deleteEntryButtonL' onclick="deleteModalButton_pressed('{{e}}');">Delete Entry</button>
 		</div>
@@ -541,13 +605,23 @@
 <script type='text/javascript'>
 $(function(){
 	
-	if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
-	{
-		$('#geoValue_{{e}}_{{l}}_{{t}}_L').text(
-			regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
-		);
-	}
-	else $('#geoValue_{{e}}_{{l}}_{{t}}_L').text('---');
+	{% if search_all == 'false' %}
+		if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
+		{
+			$('#geoValue_{{e}}_{{l}}_{{t}}_L').text(
+				regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
+			);
+		}
+		else $('#geoValue_{{e}}_{{l}}_{{t}}_L').text('---');
+	{% elseif search_all == 'true' %}
+		if (typeof entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
+		{
+			$('#geoValue_{{e}}_{{l}}_{{t}}_L').text(
+				regionCodeValueList[entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo]
+			);
+		}
+		else $('#geoValue_{{e}}_{{l}}_{{t}}_L').text('---');
+	{% endif %}
 
 });
 </script>

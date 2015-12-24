@@ -90,6 +90,7 @@ function saveExtRef()
 					entries[{{e}}]['external_references'] = [ref];
 					refIndex = entries[{{e}}].external_references.length-1;
 				}
+				setLevel('edit', 'entry');
 				break;
 			case 'TIG':
 				ref = new External_Reference(content,target);
@@ -118,6 +119,7 @@ function saveExtRef()
 					entries[{{e}}].languages[{{l}}].terms[{{t}}]['external_references'] = [ref];
 					refIndex = entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references.length-1;
 				}
+				setLevel('edit', 'tig');
 				break;
 		}
 		
@@ -152,6 +154,7 @@ function deleteExtRef()
 				{
 					delete entries[e].external_references;
 				}
+				setLevel('edit','entry');
 				break;
 			case 'LANGSET':
 				if(entries[e].languages[l].external_references.length > 1)
@@ -162,6 +165,7 @@ function deleteExtRef()
 				{
 					delete entries[e].languages[l].external_references;
 				}
+				setLevel('edit','lang');
 				break;
 			case 'TIG':
 				if(entries[e].languages[l].terms[t].external_references.length > 1)
@@ -172,6 +176,7 @@ function deleteExtRef()
 				{
 					delete entries[e].languages[l].terms[t].external_references;
 				}
+				setLevel('edit','tig');
 				break;
 		}
 		

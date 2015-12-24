@@ -19,28 +19,35 @@ class PersonController extends Controller
 	}
 	
 	//Person Controller
-	public function getPeople()
+	public function getAll()
 	{
 		
 		$apiController = new apiController();
-		$result = $apiController->get($peoplePath);
+		$result = $apiController->get($this->path);
+		
+		return $result;
+	}
+	
+	public function getPerson($id)
+	{
+		$apiController = new apiController();
+		$result = $apiController->get($this->path+'/'+$id);
 		
 		return $result;
 	}
 	
 	public function postPerson($person) //person object
 	{
-		
 		$data = array(
 			'id' => '', //just gets overwritten
-			'email'=> $person->email,
-			'fn'=> $person->fn,
-			'role'=> $person->role
+			'email'=> $person['email'],
+			'fn'=> $person['fn'],
+			'role'=> $person['role']
 		);
 
 		$apiController = new apiController();
-		$result = $apiController->post($peoplePath, json_encode($data));
-		
+		$result = $apiController->post($this->path, $data);
+		var_dump($result);die;
 		return $result;
 	}
 	

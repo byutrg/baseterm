@@ -87,6 +87,7 @@ fos_user:
     user_class: UserBundle\Entity\User
     profile:
         form:
+            type: app_user_profile_edit
             validation_groups:  [Default] # Here you can also add your own groups if you have extra validation
     registration:
         form:

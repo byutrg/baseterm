@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ServiceBundle\Controller\TermbasesController;
+use ServiceBundle\Controller\PersonController;
 
 class UserEditController extends Controller
 {	
@@ -66,5 +68,47 @@ class UserEditController extends Controller
 		$userManager->updateUser($user);
 
 		return $this->redirectToRoute('manage_users');
+	}
+	
+	/**
+     * @Route("/users/personId", name="user_personId_edit")
+     */
+	public function setPersonIdAction(Request $request)
+	{
+		$name = $request->request->get('name');
+		$personId = $request->request->get('pid');
+
+		$userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($name);
+		
+		$user->setPersonId($personId);
+		
+		$userManager->updateUser($user);
+		
+		return new Response('SUCCESS');
+	}
+	
+	/**
+     * @Route("/users/add_person", name="user_person_add")
+     */
+	public function addPersonAction(Request $request)
+	{
+		$tid = $request->request->get('tid');
+		$name = $request->request->get('name');
+		$person = $request->request->get('person');
+
+		$userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($name);
+		
+		$personController = new PersonController($tid);
+		$result = json_decode($personController->postPerson($person));
+		
+		$pid = $result->created;
+		
+		$user->setPersonId($pid);
+		
+		$userManager->updateUser($user);
+		
+		return new Response($pid);
 	}
 }

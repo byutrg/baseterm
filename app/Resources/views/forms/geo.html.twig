@@ -44,7 +44,7 @@ function saveExtRef()
 	entries[{{e}}].languages[{{l}}].terms[{{t}}]['geo'] = $('#geoContent_{{e}}_{{l}}_{{t}}').val();
 	
 	$('#{{geoElementId}}').text(regionCodeValueList[$('#geoContent_{{e}}_{{l}}_{{t}}').val()]);
-	
+	setLevel('edit','tig');
 	setChanged(true);
 	geoSelectModal.close();
 }
@@ -54,6 +54,7 @@ function deleteGeoRef()
 	if($('#deleteGeoBtn').text() == 'Delete')
 	{ 
 		delete entries[{{e}}].languages[{{l}}].terms[{{t}}].geo;
+		setLevel('edit','tig');
 		setChanged(true);
 	}
 	

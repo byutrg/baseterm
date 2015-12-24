@@ -13,10 +13,17 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-		return $this->render(
-			'default/index.html.twig',
-			array()
-		);
+		if ($this->get('security.context')->isGranted('ROLE_STAFF')) {
+			return $this->render(
+				'default/index.html.twig',
+				array()
+			);
+		}
+		else
+		{
+			return $this->redirectToRoute('search_termbase_all');
+		}
+		
     }
 
 	/**

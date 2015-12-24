@@ -44,7 +44,7 @@
 		<div class='branding'></div>
 		{% if app.user %}
 		<div class='userWelcome'>
-			<p>Welcome {{app.user}}!  Your privilege level is:&nbsp;&nbsp;
+			<p>Welcome <a href='{{path("fos_user_profile_show")}}'>{{app.user}}</a>!  Your privilege level is:&nbsp;&nbsp;
 			
 			{%- if is_granted('ROLE_ADMIN') -%}
 				Admin (View, Download, Import, Create, Add, Edit, Delete)
