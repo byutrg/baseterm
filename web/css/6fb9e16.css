@@ -32,6 +32,10 @@ body {
 	background: linear-gradient(#F3524D, #53120D); /* Standard syntax */
 }
 
+.searchError {
+	color: red;
+}
+
 #footer {
 	float: left;
 	bottom: 5px;
