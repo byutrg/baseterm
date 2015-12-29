@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% stylesheets '@AppBundle/Resources/js/jquery_plugins/tablesorter/themes/blue/style.css.twig' %}
+			<link href="{{ asset_url }}" rel="stylesheet">
+		{% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+	<label for='onoffswitchDiv' class='onoffswitch-div-label'>Show Pop-up Tips:</label>
+	<div id='onoffswitchDiv' class="onoffswitch">
+		<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onchange='toggleTips(this)' checked>
+		<label class="onoffswitch-label" for="myonoffswitch">
+			<span class="onoffswitch-inner"></span>
+			<span class="onoffswitch-switch"></span>
+		</label>
+	</div>
+	<div class='entry_count'>
+		<p id='entry_count'></p>
+	</div>
+	<span id='searchError' class='searchError'></span>
+	<div id='searchQueries'>
+		<input type='text' id='term' name='term' placeholder='Term'/>
+		<!--<select id='pos' name='pos'>
+			<option value='' selected>Select a part of speech...</option>
+			<option value='noun'>Noun</option>
+			<option value='verb'>Verb</option>
+			<option value='adjective'>Adjective</option>
+			<option value='adverb'>Adverb</option>
+			<option value='properNoun'>Proper Noun</option>
+			<option value='other'>Other</option>
+		</select>-->
+		<select id='languageCode' name='languageCode'>
+			<option value='' selected>Select a language...</option>
+		</select>
+		<select id='subjectField' name='subjectField'>
+			<option value='' selected>Select a subject field...</option>
+		</select>
+		<!--<select id='approval' name='approval'>
+			<option value='' selected>Select an approval...</option>
+			<option value='*'>Any</option>
+			<option value='preferredTerm-admn-sts'>Preferred</option>
+            <option value='admittedTerm-admn-sts'>Admitted</option>
+			<option value='deprecatedTerm-admn-sts'>Deprecated</option>
+			<option value='supersededTerm-admn-sts'>Superseded</option>
+		</select>
+		<select id='customer' name='customer'>
+			<option value='' selected>Select a customer...</option>
+		</select>-->
+		<!--<span>Person</span>
+		<select id='transacPerson' name='transacPerson'>
+			<option value='' selected>---</option>
+		</select>-->
+		<button onClick='searchClick()'>Search</button>
+		<button onClick='clearSearchQueries()'>Clear Search</button>
+	</div>
+	<div id='results'>
+		<p class='moreInformation'>Click on a term to view more information.</p>
+		<div class='navResultsContainer'>
+			<button type='button' class='prevResults' onClick='prevResultsClick()'>Previous Results</button>
+			<button type='button' class='nextResults' onClick='nextResultsClick()'>Next Results</button>
+		</div>
+		<table id='resultsTable' class='tablesorter'>
+			<thead>
+				<tr>
+					<th>Term</th>
+					<th>Language</th>
+					<th>Definition(s)</th>
+					<th>Synonym(s)</th>
+					<th>Translation(s)</th>
+					<th>Subject Field</th>
+					<th>Part of Speech</th>
+					<!--<th>Approval Status</th>-->
+					<!--<th>Customer(s)</th>-->
+					<!--<th>Project</th>-->
+				</tr>
+			</thead>
+			<tbody id='resultTableBody'>
+			</tbody>
+		</table>
+
+		<div class='navResultsContainer'>
+			<button type='button' class='prevResults' onClick='prevResultsClick()'>Previous Results</button>
+			<button type='button' class='nextResults' onClick='nextResultsClick()'>Next Results</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	
+	{% javascripts '@AppBundle/Resources/js/jquery_plugins/tablesorter/jquery.tablesorter.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+
+	{{ render(controller(
+		'AppBundle:TermbaseSearch:scriptAll'
+	)) }}
+
+{% endblock %}
+	
+	
+
