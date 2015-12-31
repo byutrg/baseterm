@@ -44,6 +44,11 @@ class DefaultController extends Controller
      */
     public function termbaseAction(Request $request)
     {
+		if (!$this->get('security.context')->isGranted('ROLE_STAFF'))
+		{
+			return $this->redirectToRoute('search_termbase_all');
+		}
+		
 		$form = $this->createFormBuilder()
 				->getForm();
 		

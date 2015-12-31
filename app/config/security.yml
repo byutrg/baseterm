@@ -46,5 +46,6 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/termbase$, role: ROLE_USER }
+        - { path: ^/termbase$, role: ROLE_STAFF }
+        - { path: ^/termbase/search/, role: ROLE_STAFF }
         - { path: ^/users$, role: ROLE_ADMIN }
