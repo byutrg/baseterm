@@ -71,13 +71,13 @@ Class EditEntryController extends Controller
 	 */
 	public function uploadAction(Request $request)
 	{
-		$entryObject = $request->query->get('entry');
-		$id = $request->query->get('termbaseId');
+		$entryObject = $request->request->get('entry');
+		$id = $request->request->get('termbaseId');
 		
 		$entry = new EntryController($id);
 		$result = $entry->addEntry($entryObject);
 		
-		return new Response($result);
+		return new Response(var_dump($result));
 	}
 	
 	/**

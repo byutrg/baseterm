@@ -212,9 +212,10 @@
 			else
 			{
 				entry = cleanEntry(entry);
-
+				
 				$.ajax({
 					url: 'entry/upload',
+					method: 'POST',
 					data: {
 						'entry': entry,
 						'termbaseId': termbaseId
