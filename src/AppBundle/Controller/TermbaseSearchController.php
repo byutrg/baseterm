@@ -20,7 +20,10 @@ class TermbaseSearchController extends Controller
     {
 
 		$id = $request->request->get('form')['id'];
+		if (!isset($id) || $id == "") { $id = $request->query->get('id'); } //use GET if POST is empty
+		if (!isset($id) || $id == "") { return $this->redirectToRoute('homepage'); } //redirect of POST and GET are empty
 		$name = $request->request->get('name');
+		if (!isset($name) || $name == "") { $name = $request->query->get('name'); } //use GET if POST is 
 		$response = 'response';
 
 		// $termbase = new TermbaseController();

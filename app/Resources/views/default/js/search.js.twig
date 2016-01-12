@@ -5,6 +5,7 @@ var entries;
 var persons;
 var tigCount = 0;
 var termbaseId;
+var termbaseName;
 var langCodeMaster;
 var langCodeValueList = {};
 var regionCodeValueList = {};
@@ -52,6 +53,7 @@ function init()
 
 	getLists();
 	termbaseId = '{{id|raw}}';
+	termbaseName = $('#termbaseName').text();
 	
 	if (!showTips){$('#myonoffswitch').prop('checked', false);} 
 
@@ -971,9 +973,13 @@ function deleteModalButton_pressed(entryIndex)
 					});
 					activeModal.close();
 					entries.splice(entryIndex,1);
-					searchForm(true);//refresh result list
-					//sort Table
-					//append some content to the tbody
+
+					//searchForm(true);//refresh result list
+					//instead of calling searchForm, just 'refresh'
+					if (!window.location.hash)
+					{
+						window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+					}
 				},
 				error: function(result){
 					new jBox('Notice', {

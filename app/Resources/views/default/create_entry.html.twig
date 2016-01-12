@@ -232,7 +232,11 @@
 							}
 						});
 						
-						location.reload();
+						//location.reload();
+						if (!window.location.hash)
+						{
+							window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+						}
 					},
 					error: function(result){
 						new jBox('Notice', {
@@ -246,7 +250,11 @@
 							}
 						});
 						
-						location.reload();
+						//location.reload();
+						if (!window.location.hash)
+						{
+							window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+						}
 					}
 				})
 			}

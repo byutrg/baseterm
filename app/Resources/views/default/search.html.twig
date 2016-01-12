@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-	<p>Now showing Termbase: {{name}}</p>
+	<p>Now showing Termbase: <span id='termbaseName'>{{name}}</span></p>
 	<label for='onoffswitchDiv' class='onoffswitch-div-label'>Show Pop-up Tips:</label>
 	<div id='onoffswitchDiv' class="onoffswitch">
 		<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onchange='toggleTips(this)' checked>
