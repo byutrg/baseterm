@@ -18,15 +18,18 @@ class TermbasesSelectController extends Controller
 		$termbases = json_decode($result);
 		$forms = array();
 		
-		foreach ($termbases as $termbase)
+		if (isset($termbases))
 		{
-			$form = $this->createFormBuilder($termbase)
-				->add('id', 'hidden')
-				->add('save', 'submit', array('label' => 'View'))
-				->getForm();
-			
-			
-			array_push($forms, array('form' => $form->createView(), 'termbase' => $termbase));
+			foreach ($termbases as $termbase)
+			{
+				$form = $this->createFormBuilder($termbase)
+					->add('id', 'hidden')
+					->add('save', 'submit', array('label' => 'View'))
+					->getForm();
+
+
+				array_push($forms, array('form' => $form->createView(), 'termbase' => $termbase));
+			}
 		}
 		
 		return $this->render(
