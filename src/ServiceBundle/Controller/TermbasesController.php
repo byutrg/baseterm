@@ -31,11 +31,20 @@ class TermbasesController extends Controller
 	{
 		$import_path = $this->api_address."/import";
 		
-		$post = array(
-			'file'=>'@'.$file_path,
-			'name'=>$name
-		);
-		
+		if (version_compare(phpversion(), '5.5', '<')) {
+			$post = array(
+				'file'=> '@'.$file_path,
+				'name'=>$name
+			);
+		}
+		else
+		{
+			$post = array(
+				'file'=> new \CURLFile($file_path),
+				'name'=>$name
+			);
+		}
+
 		$apiController = new apiController();
 		$result = $apiController->postFile($import_path, $post);
 		return $result;

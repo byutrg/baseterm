@@ -41,17 +41,17 @@ class apiController extends Controller
 	public function postFile($path, $data) //same as post, but no json_encode(data)
 	{
 		$ch = curl_init();
-		
+
 		curl_setopt_array($ch, array(
 			CURLOPT_RETURNTRANSFER => 1,
-			//CURLOPT_HTTPHEADER => array('Content-Type: application/json'), //x-www-form-urlencoded
 			CURLOPT_URL => $path,
 			CURLOPT_POST => 1,
-			CURLOPT_POSTFIELDS => $data
+			CURLOPT_POSTFIELDS => $data,
+			CURLOPT_SAFE_UPLOAD, true
 		));
 	
 		$result = curl_exec($ch);
-		
+
 		return $result;
 	}
 
