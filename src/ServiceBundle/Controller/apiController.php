@@ -68,7 +68,7 @@ class apiController extends Controller
 			));
 		
 		$result = curl_exec($ch);
-		echo($path);
+
 		return $result;
 	}
 	
