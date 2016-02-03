@@ -91,8 +91,8 @@
 		</span>
 	</div>
 	{% if is_granted('ROLE_ADMIN') %}
-		<button class='deleteEntryButton' onclick="deleteModalButton_pressed('{{e}}')">Delete Entry</button>
-		<button class='deleteTermButton' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
+		<button class='deleteEntryButton delButton' onclick="deleteModalButton_pressed('{{e}}')">Delete Entry</button>
+		<button class='deleteTermButton delButton' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
 	{% endif %}
 	<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
 </div>
@@ -114,6 +114,8 @@ $(function(){
 			);
 		}
 		else $('#geoValue_{{e}}_{{l}}_{{t}}').text('---');
+		
+		$('.delButton').hide();
 	{% endif %}
 });
 </script>

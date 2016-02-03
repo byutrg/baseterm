@@ -55,7 +55,12 @@
 		<button onClick='clearSearchQueries()'>Clear Search</button>
 	</div>
 	<div id='results'>
-		<p class='moreInformation'>Click on a term to view more information.</p>
+		<p class='moreInformation'>
+			<span>Click on a term to view more information.</span>
+			{%- if is_granted('ROLE_STAFF') -%}
+				<span>&nbsp;*Note: Editing is not available when viewing all termbases.*</span>
+			{%- endif -%}
+		</p>
 		<div class='navResultsContainer'>
 			<button type='button' class='prevResults' onClick='prevResultsClick()'>Previous Results</button>
 			<button type='button' class='nextResults' onClick='nextResultsClick()'>Next Results</button>

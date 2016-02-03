@@ -592,10 +592,10 @@
 	</div>
 	{% if is_granted('ROLE_ADMIN') and no_edit == 'false' %}
 		<div class='deleteButtonDiv'>
-			<button class='deleteEntryButtonL' onclick="deleteModalButton_pressed('{{e}}');">Delete Entry</button>
+			<button class='deleteEntryButtonL delButton' onclick="deleteModalButton_pressed('{{e}}');">Delete Entry</button>
 		</div>
 		<div class='deleteTermDiv'>
-			<button class='deleteTermButtonL' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
+			<button class='deleteTermButtonL delButton' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
 		</div>
 	{% endif %}
 	<div class='shrinkButtonDiv'>
@@ -621,6 +621,7 @@ $(function(){
 			);
 		}
 		else $('#geoValue_{{e}}_{{l}}_{{t}}_L').text('---');
+		$('.delButton').hide();
 	{% endif %}
 
 });
