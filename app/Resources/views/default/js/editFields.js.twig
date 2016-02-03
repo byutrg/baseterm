@@ -8,7 +8,8 @@
 	
 	$('body').on('mouseover', '.editText, .editList, .editReference', function(){
 		if(typeof clickToEditTip.destroy != 'undefined') clickToEditTip.destroy();
-		clickToEditTip = $('.editText, .editList').jBox('Mouse', {
+		clickToEditTip = new jBox('Mouse', {
+			attach: '.editText, .editList',
 			content: 'Click to edit this value!',
 			class: 'clickToEditTip',
 			closeOnClick: true
@@ -43,7 +44,8 @@
 					break;
 			}
 			
-			displayRefTargetTip = $('.refContent').jBox('Mouse', {
+			displayRefTargetTip = new jBox('Mouse', {
+				attach: '.refContent',
 				content: "Target Id: "+target+" -- Click to Edit",
 				class: 'displayRefTargetTip'
 			}).open();
@@ -71,7 +73,8 @@
 					break;
 			}
 			
-			displayExtRefTargetTip = $('.extRefContent').jBox('Mouse', {
+			displayExtRefTargetTip = new jBox('Mouse', {
+				attach: '.extRefContent',
 				content: "Target Id: "+target+" -- Click to Edit",
 				class: 'displayRefTargetTip'
 			}).open();
@@ -93,7 +96,8 @@
 					break;
 			}
 			
-			displayImgTargetTip = $('.imgContent').jBox('Mouse', {
+			displayImgTargetTip = new jBox('Mouse', {
+				attach: '.imgContent',
 				content: "Target Id: "+target+" -- Click to Edit",
 				class: 'displayRefTargetTip'
 			}).open();
@@ -108,8 +112,9 @@
 			
 			if (typeof geoEditTip.destroy != 'undefined') geoEditTip.destroy();
 			
-			geoEditTip = $('.editGeo').jBox('Mouse', {
-				content: "Click to Edit",
+			geoEditTip = new jBox('Mouse', {
+				attach: '.editGeo',
+				content: "Click to edit this value!",
 				class: 'displayRefTargetTip'
 			}).open();
 		}
