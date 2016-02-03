@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-{% stylesheets '@AppBundle/Resources/js/jquery_plugins/tablesorter/themes/blue/style.css.twig' %}
-			<link href="{{ asset_url }}" rel="stylesheet">
-		{% endstylesheets %}
+	{% stylesheets '@AppBundle/Resources/js/jquery_plugins/tablesorter/themes/blue/style.css.twig' %}
+		<link href="{{ asset_url }}" rel="stylesheet">
+	{% endstylesheets %}
 {% endblock %}
 
 {% block body %}
@@ -75,6 +75,7 @@
 					<th>Translation(s)</th>
 					<th>Subject Field</th>
 					<th>Part of Speech</th>
+					<th>Termbase</th>
 					<!--<th>Approval Status</th>-->
 					<!--<th>Customer(s)</th>-->
 					<!--<th>Project</th>-->

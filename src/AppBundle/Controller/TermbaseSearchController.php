@@ -91,6 +91,7 @@ class TermbaseSearchController extends Controller
 	public function scriptAllAction()
 	{
 		$entries_list = array();
+		$entry_termbase_link = array();
 		$tc = new TermbasesController();
 		$termbases = json_decode($tc->getAllAction());
 		
@@ -99,13 +100,17 @@ class TermbaseSearchController extends Controller
 			$entryController = new EntryController($termbase->id);
 			$entries_json = $entryController->getAll();
 			$entries = json_decode($entries_json);
-
+			
 			array_push($entries_list,$entries);
+			array_push($entry_termbase_link, array(
+					'name'=>$termbase->name,
+					'id'=>$termbase->id
+				));
 		}
 		
 		return $this->render( 
 			'default/js/search_all.js.twig',
-			array('entries_list'=>$entries_list)
+			array('entries_list'=>$entries_list, 'entry_termbase_link'=>$entry_termbase_link)
 		);
 	}
 	

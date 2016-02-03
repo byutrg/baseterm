@@ -48,6 +48,8 @@ $(document).ready($('#resultsTable').tablesorter());
 function init()
 {
 	entries_list = $.parseJSON('{{entries_list|json_encode}}');
+	entryTermbaseLink = $.parseJSON('{{entry_termbase_link|json_encode}}');
+	console.log(entryTermbaseLink);
 	
 	getLists();
 	
@@ -470,6 +472,17 @@ function printResults()
 		var pos = (typeof entries_list[el][e]['languages'][l]['terms'][t]['pos'] != 'undefined') ? entries_list[el][e]['languages'][l]['terms'][t]['pos'] : '---';
 		resultPos.text(pos);
 		
+		//parent termbase
+		var parentTermbase = $('<td></td>');
+		{% if is_granted('ROLE_STAFF') %}
+			var termbaseLink = $('<a></a>');
+			termbaseLink.prop('href', "{{path('search_termbase')}}?id="+entryTermbaseLink[el]['id']+"&name="+entryTermbaseLink[el]['name'])
+			termbaseLink.text(entryTermbaseLink[el]['name']);
+			parentTermbase.append(termbaseLink);
+		{% else %}
+			parentTermbase.text(entryTermbaseLink[el]['name']);
+		{% endif %}
+		
 		//approval status
 		//var resultStatus = $('<td></td>');
 		//var status = (typeof entries_list[el][e]['languages'][l]['terms'][t]['status'] != 'undefined') ? entries_list[el][e]['languages'][l]['terms'][t]['status'] : '---';
@@ -554,6 +567,7 @@ function printResults()
 		resultRow.append(resultTranslations);
 		resultRow.append(resultSubject);
 		resultRow.append(resultPos);
+		resultRow.append(parentTermbase);
 		//resultRow.append(resultStatus);
 		//resultRow.append(resultCustomers);
 		//resultRow.append(resultProjects);
