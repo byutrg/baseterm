@@ -142,6 +142,10 @@
 			if ($('#td_term').val() == '') return false;
 			
 			tig.term = $('#td_term').val();
+			if ($('#td_term_source').val() != "")
+			{
+				tig.source = $('#td_term_source').val();
+			}
 			for (i = 0; i < tigContexts.length; i++)
 			{
 				tig.contexts.push(tigContexts[i]);
@@ -169,6 +173,7 @@
 			$('#saveEntryBtn').attr('hidden',false);
 			//clear all fields
 			$('#td_term').val('');
+			$('#td_term_source').val('')
 			$('#contextList p').remove();
 			$('#td_contextSource').val('');
 			$('#td_context').val('');
