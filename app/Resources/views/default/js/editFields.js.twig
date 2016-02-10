@@ -6,10 +6,10 @@
 
 	//mini-window event handlers
 	
-	$('body').on('mouseover', '.editText, .editList, .editReference', function(){
+	$('body').on('mouseover', '.editText, .editList, .editReference, .editExtRef, .editImgRef', function(){
 		if(typeof clickToEditTip.destroy != 'undefined') clickToEditTip.destroy();
 		clickToEditTip = new jBox('Mouse', {
-			attach: '.editText, .editList',
+			attach: '.editText, .editList,  .editReference, .editExtRef, .editImgRef',
 			content: 'Click to edit this value!',
 			class: 'clickToEditTip',
 			closeOnClick: true
@@ -17,7 +17,8 @@
 	});
 	$('body').on('mouseover', '.addNote', function(){
 		if(typeof clickToAddNoteTip.destroy != 'undefined') clickToAddNoteTip.destroy();
-		clickToAddNoteTip = $('.addNote').jBox('Mouse', {
+		clickToAddNoteTip = new jBox('Mouse', {
+			attach: '.addNote',
 			content: 'Add a new note!',
 			class: 'clickToAddNoteTip'
 		}).open();

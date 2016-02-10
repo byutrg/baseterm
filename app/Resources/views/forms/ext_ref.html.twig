@@ -99,7 +99,7 @@ function saveExtRef()
 				{
 					if (refIndex != 'new')
 					{
-						if (typeof entries[{{e}}].external_references != 'undefined')
+						if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references != 'undefined')
 						{
 							entries[{{e}}].languages[{{l}}].terms[{{t}}].external_references.push(ref);
 						}

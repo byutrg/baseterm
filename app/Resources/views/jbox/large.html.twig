@@ -241,9 +241,9 @@
 	<!-- **********************External References******************* -->
 	<div class='modalDivValue'>
 		External References:
-		{%- if entries[e].external_references is defined -%}
+		{%- if entries[e].languages[l].terms[t].external_references is defined -%}
 			{%- set i = 0 -%}
-			{%- for ref in entries[e].external_references -%}
+			{%- for ref in entries[e].languages[l].terms[t].external_references -%}
 				<div class='arrayFormat'>
 					External Reference {{i + 1}}:
 						<span class='extRefContent' id='extRefValue_{{i}}_content_tig'>{{ref.content}}</span>
