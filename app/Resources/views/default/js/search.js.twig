@@ -1023,6 +1023,11 @@ function deleteTermModalButton_pressed(e,l,t)
 
 			saveChanges();
 			activeModal.close();
+			
+			if (!window.location.hash)
+			{
+				window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+			}
 		},
 		confirmButton: 'Cancel',
 		confirm: function(){
