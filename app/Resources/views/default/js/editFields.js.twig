@@ -685,6 +685,7 @@
 				var optAdv = $("<option value='adverb'>Adverb</option>");
 				var optPropN = $("<option value='properNoun'>Proper Noun</option>");
 				var optOther = $("<option value='other'>Other</option>");
+				var optUnspecified = $("<option value='unspecified'>Unspecified</option>");
 				
 				switch($(this).text())
 				{
@@ -706,6 +707,8 @@
 					case 'Other':
 						optOther.attr('selected','true');
 						break;
+					case 'Unspecified':
+						optUnspecified.attr('selected','true');
 				}
 				input.append(optNoun);
 				input.append(optVerb);
@@ -713,6 +716,7 @@
 				input.append(optAdv);
 				input.append(optPropN);
 				input.append(optOther);
+				input.append(optUnspecified);
 				
 				$(this).replaceWith(input);
 				break;
@@ -788,6 +792,9 @@
 				case 'properNoun':
 					currentText = "Proper Noun";
 					break;
+				case 'unspecified':
+					currentText = "Unspecified";
+					break;
 				case 'masculine':
 					currentText = "Masculine";
 					break;
@@ -825,6 +832,17 @@
 						break;
 					case 'posValue':
 						entries[e].languages[l].terms[t].pos = $(this).val();
+						if ($(this).val() != 'unspecified')
+						{
+							entries[e].languages[l].terms[t].pos = $(this).val();
+						}
+						else
+						{
+							if (typeof entries[e].languages[l].terms[t].pos != 'undefined')
+							{
+								delete entries[e].languages[l].terms[t]['pos'];
+							}
+						}
 						break;
 					case 'genderValue':
 						if ($(this).val() != 'none')
