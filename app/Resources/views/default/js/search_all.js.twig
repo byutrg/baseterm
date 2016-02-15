@@ -211,6 +211,13 @@ function clearSearchQueries()
 
 //***************************Click handlers***************************************
 
+$('#term').keyup(function(event) {
+	if (event.keyCode == 13) {
+		$('#search_all_button').click();
+		return false;
+	 }
+});
+
 //on hover over a term
 $('body').on('mouseover','.term_item',function(){
 	if(typeof clickToViewTip.destroy != 'undefined') clickToViewTip.destroy();

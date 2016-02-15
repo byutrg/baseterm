@@ -43,7 +43,7 @@
             <option value='admittedTerm-admn-sts'>Admitted</option>
 			<option value='deprecatedTerm-admn-sts'>Deprecated</option>
 			<option value='supersededTerm-admn-sts'>Superseded</option>
-		</select>
+		</select> 
 		<select id='customer' name='customer'>
 			<option value='' selected>Select a customer...</option>
 		</select>-->
@@ -51,10 +51,10 @@
 		<select id='transacPerson' name='transacPerson'>
 			<option value='' selected>---</option>
 		</select>-->
-		<button onClick='searchClick()'>Search</button>
+		<button id='search_all_button' onClick='searchClick()'>Search</button>
 		<button onClick='clearSearchQueries()'>Clear Search</button>
 	</div>
-	<div id='results'>
+	<div id='results'> 
 		<p class='moreInformation'>
 			<span>Click on a term to view more information.</span>
 			{%- if is_granted('ROLE_STAFF') -%}

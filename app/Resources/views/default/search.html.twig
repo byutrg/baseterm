@@ -57,7 +57,7 @@
 		<select id='transacPerson' name='transacPerson'>
 			<option value='' selected>---</option>
 		</select>-->
-		<button onClick='searchClick()'>Search</button>
+		<button id='search_all_button' onClick='searchClick()'>Search</button>
 		<button onClick='clearSearchQueries()'>Clear Search</button>
 	</div>
 	<div id='results'>
@@ -92,7 +92,7 @@
 {% endblock %}
 
 {% block javascripts %}
-	
+
 	{% javascripts '@AppBundle/Resources/js/jquery_plugins/tablesorter/jquery.tablesorter.js' %}
 		<script src="{{ asset_url }}"></script>
 	{% endjavascripts %}
