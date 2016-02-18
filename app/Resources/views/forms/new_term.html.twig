@@ -204,7 +204,7 @@ function saveTerm()
 			}
 		}
 	}
-
+	
 	if (!languageExists)
 	{
 		var languageObj = new Language($('#langSelect_{{type}}').val());
@@ -221,7 +221,7 @@ function saveTerm()
 		entries[e].languages.push(languageObj);
 		setLevel('add', 'lang');
 	}
-
+	
 	saveChanges();
 	addTermModal.close();
 }

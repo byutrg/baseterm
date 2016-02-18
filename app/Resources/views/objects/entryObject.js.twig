@@ -21,7 +21,7 @@ function cleanEntry(entry)
 	{ 
 		delete entry.references; 
 	}
-	else for (i = 0; i < entry.references.length; i++) 
+	else for (var i = 0; i < entry.references.length; i++) 
 	{
 		entry.references[i] = cleanReference(entry.references[i]);
 	}
@@ -30,7 +30,7 @@ function cleanEntry(entry)
 	{ 
 		delete entry.transactions; 
 	}
-	else for (i = 0; i < entry.transactions.length; i++) 
+	else for (var i = 0; i < entry.transactions.length; i++) 
 	{
 		entry.transactions[i] = cleanTransaction(entry.transactions[i]);
 	}
@@ -39,7 +39,7 @@ function cleanEntry(entry)
 	{ 
 		delete entry.definitions; 
 	}
-	else for (i = 0; i < entry.definitions.length; i++) 
+	else for (var i = 0; i < entry.definitions.length; i++) 
 	{
 		entry.definitions[i] = cleanDefinition(entry.definitions[i]);
 	}
@@ -58,7 +58,7 @@ function cleanEntry(entry)
 	{ 
 		delete entry.images; 
 	}
-	else for (i = 0; i < entry.images.length; i++) 
+	else for (var i = 0; i < entry.images.length; i++) 
 	{
 		entry.images[i] = cleanImage(entry.images[i]);
 	}
@@ -67,7 +67,7 @@ function cleanEntry(entry)
 	{ 
 		delete entry.languages; 
 	}
-	else for (i = 0; i < entry.languages.length; i++) 
+	else for (var i = 0; i < entry.languages.length; i++) 
 	{
 		entry.languages[i] = cleanLanguage(entry.languages[i]);
 	}
@@ -175,7 +175,7 @@ function cleanLanguage(language)
 	{ 
 		delete language.transactions; 
 	}
-	else for (i = 0; i < language.transactions.length; i++) 
+	else for (var i = 0; i < language.transactions.length; i++) 
 	{
 		language.transactions[i] = cleanTransaction(language.transactions[i]);
 	}
@@ -184,7 +184,7 @@ function cleanLanguage(language)
 	{ 
 		delete language.definitions; 
 	}
-	else for (i = 0; i < language.definitions.length; i++) 
+	else for (var i = 0; i < language.definitions.length; i++) 
 	{
 		language.definitions[i] = cleanDefinition(language.definitions[i]);
 	}
@@ -193,7 +193,7 @@ function cleanLanguage(language)
 	{ 
 		delete language.terms; 
 	}
-	else for (i = 0; i < language.terms.length; i++) 
+	else for (var i = 0; i < language.terms.length; i++) 
 	{
 		language.terms[i] = cleanTerm(language.terms[i]);
 	}
@@ -246,7 +246,7 @@ function cleanTerm(term)
 	{ 
 		delete term.external_references; 
 	}
-	else for (i = 0; i < term.external_references.length; i++) 
+	else for (var i = 0; i < term.external_references.length; i++) 
 	{
 		term.external_references[i] = cleanReference(term.external_references[i]);
 	}
@@ -255,7 +255,7 @@ function cleanTerm(term)
 	{ 
 		delete term.references; 
 	}
-	else for (i = 0; i < term.references.length; i++) 
+	else for (var i = 0; i < term.references.length; i++) 
 	{
 		term.references[i] = cleanReference(term.references[i]);
 	}
@@ -264,7 +264,7 @@ function cleanTerm(term)
 	{ 
 		delete term.transactions; 
 	}
-	else for (i = 0; i < term.transactions.length; i++) 
+	else for (var i = 0; i < term.transactions.length; i++) 
 	{
 		term.transactions[i] = cleanTransaction(term.transactions[i]);
 	}
@@ -273,7 +273,7 @@ function cleanTerm(term)
 	{ 
 		delete term.contexts; 
 	}
-	else for (i = 0; i < term.contexts.length; i++) 
+	else for (var i = 0; i < term.contexts.length; i++) 
 	{
 		term.contexts[i] = cleanContext(term.contexts[i]);
 	}

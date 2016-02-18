@@ -146,7 +146,7 @@
 			{
 				tig.source = $('#td_term_source').val();
 			}
-			for (i = 0; i < tigContexts.length; i++)
+			for (var i = 0; i < tigContexts.length; i++)
 			{
 				tig.contexts.push(tigContexts[i]);
 			}
@@ -162,7 +162,7 @@
 			
 			tig.status = $('#td_status').val();
 			
-			for (i = 0; i < entry.languages.length; i++)
+			for (var i = 0; i < entry.languages.length; i++)
 			{
 				if (entry.languages[i].code == $('#langSelect').val())
 				{
@@ -198,7 +198,7 @@
 			
 			if (languageList.length - 1 > 0)
 			{
-				for (i = 0; i < languageList.length; i++)
+				for (var i = 0; i < languageList.length; i++)
 				{
 					if (languageList[i].code == $('#langSelect').val())
 					{
