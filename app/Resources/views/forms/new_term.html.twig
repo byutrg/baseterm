@@ -88,13 +88,9 @@ function loadLanguageList(selectNew, code) //if selectNew is true, select code
 		var opt = $('<option></option>');
 		opt.attr('value', entryLangList[i]);
 		opt.text(langCodeValueList[entryLangList[i]]);
-		if (i == 0 && !selectNew) {opt.attr('selected', true);}
-		else if (entryLangList[i] == code) {opt.attr('selected', true);};
 		$('#langSelect_{{type}}').append(opt);
-
-		
 	}
-
+	if (selectNew) {$('#langSelect_{{type}} option[value='+code+']').prop('selected', true);}
 	if (entryLangList.length == 0)
 	{
 		var opt = $('<option></option>');
@@ -130,7 +126,6 @@ $('#langSelect_{{type}}').on('change',function(){
 				reload: true
 			},
 			onClose: function(){
-				$('#langSelect_{{type}}').val(entryLangList[0]);
 			}
 		});
 		quickLangSelectModal.open();
