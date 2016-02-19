@@ -242,7 +242,7 @@
 						{
 							window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + 
 								"?id="+termbaseId+"&name="+termbaseName+
-								(($('#term').val() != "")? "&previous_forms=1" : "&previous_forms=0")+
+								(($('#term').val() != ""&&$('#pos').val() != ""&&$('#languageCode').val() != ""&&$('#subjectField').val() != ""&&$('#approval').val()&&$('#customer').val() != "")? "&previous_forms=1" : "&previous_forms=0")+
 								(($('#term').val() != "")? "&term_val="+$('#term').val() : "")+
 								(($('#pos').val() != "")? "&pos_val="+$('#pos').val() : "")+
 								(($('#languageCode').val() != "")? "&lang_val="+$('#languageCode').val() : "")+
@@ -270,7 +270,7 @@
 						{
 							window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + 
 								"?id="+termbaseId+"&name="+termbaseName+
-								(($('#term').val() != "")? "&previous_forms=1" : "&previous_forms=0")+
+								(($('#term').val() != ""&&$('#pos').val() != ""&&$('#languageCode').val() != ""&&$('#subjectField').val() != ""&&$('#approval').val()&&$('#customer').val() != "")? "&previous_forms=1" : "&previous_forms=0")+
 								(($('#term').val() != "")? "&term_val="+$('#term').val() : "")+
 								(($('#pos').val() != "")? "&pos_val="+$('#pos').val() : "")+
 								(($('#languageCode').val() != "")? "&lang_val="+$('#languageCode').val() : "")+
