@@ -94,19 +94,21 @@ class TermbaseSearchController extends Controller
 		$tc = new TermbasesController();
 		$termbases = json_decode($tc->getAllAction());
 		
-		foreach ($termbases as $termbase)
+		if (isset($termbases) && count($termbases) > 0)
 		{
-			$entryController = new EntryController($termbase->id);
-			$entries_json = $entryController->getAll();
-			$entries = json_decode($entries_json);
-			
-			array_push($entries_list,$entries);
-			array_push($entry_termbase_link, array(
-					'name'=>$termbase->name,
-					'id'=>$termbase->id
-				));
+			foreach ($termbases as $termbase)
+			{
+				$entryController = new EntryController($termbase->id);
+				$entries_json = $entryController->getAll();
+				$entries = json_decode($entries_json);
+				
+				array_push($entries_list,$entries);
+				array_push($entry_termbase_link, array(
+						'name'=>$termbase->name,
+						'id'=>$termbase->id
+					));
+			}
 		}
-		
 		return $this->render( 
 			'default/js/search_all.js.twig',
 			array('entries_list'=>$entries_list, 'entry_termbase_link'=>$entry_termbase_link)
