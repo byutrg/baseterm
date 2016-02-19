@@ -28,3 +28,11 @@ services:
         arguments: [%fos_user.model.user.class%]
         tags:
             - { name: form.type, alias: app_user_profile_edit }
+    app.logger:
+        class:     Symfony\Bridge\Monolog\Logger
+        arguments: [app]
+        calls:
+            - [pushHandler, [@app.logger_handler]]
+    app.logger_handler:
+        class:     Monolog\Handler\StreamHandler       
+        arguments: [%kernel.logs_dir%/%kernel.environment%.users.log, 200]
