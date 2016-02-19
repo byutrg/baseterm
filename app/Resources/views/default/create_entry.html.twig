@@ -240,7 +240,7 @@
 						//location.reload();
 						if (!window.location.hash)
 						{
-							window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+							window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + "?id="+termbaseId+"&name="+termbaseName);
 						}
 					},
 					error: function(result){

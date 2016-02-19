@@ -781,7 +781,7 @@ function printResults()
 		
 		//pos
 		var resultPos = $('<td></td>');
-		var pos = (typeof entries[e]['languages'][l]['terms'][t]['pos'] != 'undefined') ? entries[e]['languages'][l]['terms'][t]['pos'] : '---';
+		var pos = (typeof entries[e]['languages'][l]['terms'][t]['pos'] != 'undefined') ? entries[e]['languages'][l]['terms'][t]['pos'] : 'Unspecified';
 		resultPos.text(pos);
 		
 		//approval status
@@ -986,7 +986,7 @@ function deleteModalButton_pressed(entryIndex)
 					//instead of calling searchForm, just 'refresh'
 					if (!window.location.hash)
 					{
-						window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+						window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + "?id="+termbaseId+"&name="+termbaseName);
 					}
 				},
 				error: function(result){
@@ -1034,7 +1034,7 @@ function deleteTermModalButton_pressed(e,l,t)
 			
 			if (!window.location.hash)
 			{
-				window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+				window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + "?id="+termbaseId+"&name="+termbaseName);
 			}
 		},
 		confirmButton: 'Cancel',
@@ -1267,7 +1267,6 @@ function searchForm(searchAll)
 					resultArray = termFind(query);
 					break;
 				case 'pos':
-					//resultArray = posFind(children[i].value);
 					resultArray = tigFind(children[i].value, 'pos');
 					break;
 				case 'languageCode':
@@ -1397,7 +1396,7 @@ function tigFind(query, index)
 	{
 		var tig = tigList[t];
 		
-		if ( query == '*' || (typeof tig.tig[index] != 'undefined' &&
+		if ( query == '*' || (query == 'unspecified' && typeof tig.tig[index] == 'undefined') || (typeof tig.tig[index] != 'undefined' &&
 			tig.tig[index].toUpperCase() == query.toUpperCase()))
 		{
 			var resultId = "I-"+tig.tig.term.replace(/[\'\"_\(\)\s]/g,'~').toUpperCase()+"_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
