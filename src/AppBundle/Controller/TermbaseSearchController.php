@@ -32,7 +32,6 @@ class TermbaseSearchController extends Controller
 				->add('termbaseId', 'hidden', array('data' => $id))
 				->add('addEntry', 'submit', array('label' => 'Add a New Entry'))
 				->getForm();
-		
 		return $this->render(
 			'default/search.html.twig',
 			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name)
@@ -81,7 +80,7 @@ class TermbaseSearchController extends Controller
 		
 		return $this->render( 
 			'default/js/search.js.twig',
-			array('entries'=>$entries,'id'=>$id, 'persons'=>$persons)
+			array('entries'=>$entries,'id'=>$id, 'persons'=>$persons, 'GET'=>$_GET)
 		);
 	}
 	

@@ -240,7 +240,17 @@
 						//location.reload();
 						if (!window.location.hash)
 						{
-							window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + "?id="+termbaseId+"&name="+termbaseName);
+							window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + 
+								"?id="+termbaseId+"&name="+termbaseName+
+								"&previous_forms=1"+
+								(($('#term').val() != "")? "&term_val="+$('#term').val() : "")+
+								(($('#pos').val() != "")? "&pos_val="+$('#pos').val() : "")+
+								(($('#languageCode').val() != "")? "&lang_val="+$('#languageCode').val() : "")+
+								(($('#subjectField').val() != "")? "&subject_val="+$('#subjectField').val() : "")+
+								(($('#approval').val() != "")? "&approval_val="+$('#approval').val() : "")+
+								(($('#customer').val() != "")? "&customer_val="+$('#customer').val() : "")+
+								""
+								);
 						}
 					},
 					error: function(result){
@@ -258,7 +268,17 @@
 						//location.reload();
 						if (!window.location.hash)
 						{
-							window.location.replace(window.location.href + "?id="+termbaseId+"&name="+termbaseName);
+							window.location.replace(window.location.protocol + '//' + window.location.hostname + window.location.pathname + 
+								"?id="+termbaseId+"&name="+termbaseName+
+								"&previous_forms=1"+
+								(($('#term').val() != "")? "&term_val="+$('#term').val() : "")+
+								(($('#pos').val() != "")? "&pos_val="+$('#pos').val() : "")+
+								(($('#languageCode').val() != "")? "&lang_val="+$('#languageCode').val() : "")+
+								(($('#subjectField').val() != "")? "&subject_val="+$('#subjectField').val() : "")+
+								(($('#approval').val() != "")? "&approval_val="+$('#approval').val() : "")+
+								(($('#customer').val() != "")? "&customer_val="+$('#customer').val() : "")+
+								""
+								);
 						}
 					}
 				})
