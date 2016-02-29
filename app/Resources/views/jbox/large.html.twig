@@ -169,7 +169,7 @@
 					<p class='arrayFormat'>
 						Source: 
 						<span class='editText' id='ctxtValue_{{i}}_source'>
-						{%- if ctxt.source is defined -%}
+						{%- if ctxt.source is defined and ctxt.source != "" -%}
 							{{ctxt.source}}
 						{%- else -%}
 							{%- if is_granted('ROLE_STAFF') and no_edit == 'false' -%}
@@ -364,7 +364,7 @@
 						<p class='arrayFormat'>
 							Source: 
 							<span class='editText' id='defValue_{{i}}_source_langset'>
-							{%- if def.source is defined -%}
+							{%- if def.source is defined and def.source != "" -%}
 								{{def.source}}
 							{%- else -%}
 								{%- if is_granted('ROLE_STAFF') and no_edit == 'false' -%}
@@ -438,7 +438,7 @@
 						<p class='arrayFormat'>
 							Source: 
 							<span class='editText' id='defValue_{{i}}_source_termEntry'>
-							{%- if def.source is defined -%}
+							{%- if def.source is defined and def.source != "" -%}
 								{{def.source}}
 							{%- else -%}
 								{%- if is_granted('ROLE_STAFF') and no_edit == 'false' -%}
