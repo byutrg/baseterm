@@ -282,11 +282,6 @@
 						}
 						setLevel('edit', 'entry');
 						break;
-			//SUBJECTS
-					case 'subjectValue':
-						entries[e].subject_field = currentText;
-						setLevel('edit', 'entry');
-						break;
 			//PROJECTS
 					case 'projectValue':
 						input.attr('class', 'editText arrayFormat');
@@ -754,12 +749,58 @@
 				
 				$(this).replaceWith(input);
 				break;
+			case 'subjectValue':
+				for (var i = 0; i < subjectFields.length; i++)
+				{
+					var field = subjectFields[i];
+					var opt = $('<option></option>');
+					opt.attr('value', field);
+					opt.text(field);
+					if (field == $(this).text()) opt.prop('selected', true);
+					input.append(opt);
+				}
+				
+				var opt = $('<option></option>');
+				opt.attr('value', 'delete');
+				opt.text('Remove Subject Field');
+				input.append(opt);
+				
+				var opt = $('<option></option>');
+				opt.attr('value', 'new');
+				opt.text('Add Subject Field');
+				input.append(opt);
+				
+				$(this).replaceWith(input);
+				break;
 		}
 	
 		input.focus();
 	});
 	$('body').on('focusout', '.inputListValue', function(){
 			
+			if ($(this).attr('id').split('_')[0] == "subjectValue")
+			{
+				var subjectValueId = '#subjectValueInput_'+
+									$(this).attr('id').split('_')[1] +'_'+
+									$(this).attr('id').split('_')[2] +'_'+
+									$(this).attr('id').split('_')[3];
+				if ($(this).attr('id').split('_').length > 4) subjectValueId += '_L';
+				switch($(this).val())
+				{
+					case 'new':
+						$(subjectValueId).val('');
+						$(subjectValueId).attr('type', 'text');
+						return;
+						break;
+					case '---':
+						$(subjectValueId).attr('type', 'hidden');
+						$(subjectValueId).val('');
+						break;
+					default:
+						$(subjectValueId).attr('type', 'hidden');
+						$(subjectValueId).val($(this).val());
+				}
+			}
 			var input = $('<span class="editList"></span>');
 			input.attr('id',$(this).attr('id'));
 			var currentText;
@@ -810,6 +851,12 @@
 					break;
 				case 'none':
 					currentText = "None";
+					break;
+				case 'delete':
+					currentText = '---';
+					break;
+				default:
+					currentText = $(this).val();
 			}
 			
 			$(this).replaceWith( input );
@@ -858,11 +905,57 @@
 							}
 						}
 						break;
+				//SUBJECTS	
+					case 'subjectValue':
+						if ($(this).val() != "new" && $(this).val() != 'delete')
+						{
+							entries[e].subject_field = $(this).val();
+							setLevel('edit', 'entry');
+						}
+						else if ($(this).val() == 'delete')
+						{
+							if (typeof entries[e].subject_field !== 'undefined')
+							{
+								delete entries[e]['subject_field'];
+							}
+						}
+						break;
 				}
 				setLevel('edit', 'tig');
 			}
 			
 	});
+	
+	//subject field manual value
+	$('body').on('change', '.editSubject', function(){
+		var subjectValueId = '#subjectValue_'+
+									$(this).attr('id').split('_')[1] +'_'+
+									$(this).attr('id').split('_')[2] +'_'+
+									$(this).attr('id').split('_')[3];
+		if ($(this).attr('id').split('_').length > 4) subjectValueId += '_L';
+		var e = $(this).attr('id').split('_')[1];
+		
+		var input = $('<span class="editList"></span>');
+		input.attr('id',$(this).attr('id'));
+		if ($(this).val() !== "")
+		{
+			setChanged(true);
+			input.val($(this).val());
+			input.text($(this).val());
+			entries[e].subject_field = $(this).val();
+			setLevel('edit','entry');
+		}
+		else
+		{
+			var subjValue = (typeof entries[e].subject_field !== 'undefined' && entries[e].subjectfield !== '')?
+					entries[e].subject_field : '---';
+			input.val(subjValue);
+		}
+		$(subjectValueId).replaceWith(input);
+		$(this).val('');
+		$(this).prop('type','hidden');
+	});
+	
 	//references
 	$('body').on('click', '.editReference, .refContent', function(){
 		var type = $(this).attr('id').split('_')[0];

@@ -81,13 +81,14 @@
 	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_subject'>Subject Field: </span>
-		<span class='editText value_subject' id='subjectValue_{{e}}_{{l}}_{{t}}_L'>
+		<span class='editList value_subject' id='subjectValue_{{e}}_{{l}}_{{t}}_L'>
 		{%- if entries[e].subject_field is defined -%}
 			{{entries[e].subject_field}}
 		{%- else -%}
 			---
 		{%- endif -%}
 		</span>
+		<input type='hidden' id='subjectValueInput_{{e}}_{{l}}_{{t}}_L' class='editSubject' placeholder='electronics, mechanics, etc.' required/>
 	</div>
 	<!-- ************************TERM SOURCE************************* -->
 	<div class='modalDivValue'>

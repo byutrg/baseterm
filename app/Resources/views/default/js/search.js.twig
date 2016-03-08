@@ -59,12 +59,6 @@ function init()
 
 	$('#entry_count').text('This termbase has '+entries.length+' entries ('+tigCount+' terms).');
 	
-	//add options to #subjectField select
-	subjectFieldLoader();
-	
-	//add options to #customer select
-	customerLoader();
-	
 	//add options to #transacPerson select
 	// transacPersonLoader();
 	
@@ -344,6 +338,12 @@ function getLists()
 			}
 		}
 	}
+	
+	//add options to #subjectField select
+	subjectFieldLoader();
+	
+	//add options to #customer select
+	customerLoader();
 }
 
 function setChanged(bool)
@@ -1244,7 +1244,7 @@ function transacLooper(transactions, personList) //used by transacPersonLoader()
 
 function subjectFieldLoader()
 {
-	
+	subjectFields = [];
 	for (var i = 0; i < entries.length; i++)
 	{
 		var field = entries[i].subject_field;
