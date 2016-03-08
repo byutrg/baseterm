@@ -1245,6 +1245,7 @@ function transacLooper(transactions, personList) //used by transacPersonLoader()
 function subjectFieldLoader()
 {
 	subjectFields = [];
+	$('#subjectField option').remove();
 	for (var i = 0; i < entries.length; i++)
 	{
 		var field = entries[i].subject_field;
@@ -1254,6 +1255,11 @@ function subjectFieldLoader()
 			subjectFields.push(field);
 		}
 	}
+	var opt = $('<option></option>');
+	opt.attr('value', '');
+	opt.text("Select a subject field...");
+	$('#subjectField').append(opt);
+	
 	for (var i = 0; i < subjectFields.length; i++)
 	{
 		var field = subjectFields[i];
