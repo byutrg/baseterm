@@ -156,6 +156,11 @@ function addTig()
 	
 	var tig = new Term();
 	tig.term = $('#td_term').val();
+	
+	if ($('#td_term_source').val() != "")
+	{
+		tig.source = $('#td_term_source').val();
+	}
 	transac_tig = new Transaction();
 	transac_tig.person = '{{app.user.fullusername|raw}}';
 	transac_tig.type = 'origination';
@@ -177,6 +182,7 @@ function addTig()
 	
 	//clear all fields
 	$('#td_term').val('');
+	$('#td_term_source').val('')
 	$('#contextList p').remove();
 	$('#td_contextSource').val('');
 	$('#td_context').val('');
