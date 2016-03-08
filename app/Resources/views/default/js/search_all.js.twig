@@ -981,7 +981,7 @@ function termFind(query)
 		if (typeof term.term != 'undefined' &&
 			term.term.search(re) > -1)
 		{
-			var resultId = "I-"+term.term.replace(/[\'\"_\(\)\s]/g,'~').toUpperCase()+"_"+term.el+"_"+term.entry_id+"_"+term.language_id+"_"+term.tig_id;
+			var resultId = "I-"+term.term.replace(/[^\w]/g,'~').toUpperCase()+"_"+term.el+"_"+term.entry_id+"_"+term.language_id+"_"+term.tig_id;
 			
 			if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 			{
@@ -1003,7 +1003,7 @@ function tigFind(query, index)
 		if ( query == '*' || (typeof tig.tig[index] != 'undefined' &&
 			tig.tig[index].toUpperCase() == query.toUpperCase()))
 		{
-			var resultId = "I-"+tig.tig.term.replace(/[\'\"_\(\)\s]/g,'~').toUpperCase()+"_"+tig.el+"_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
+			var resultId = "I-"+tig.tig.term.replace(/[^\w]/g,'~').toUpperCase()+"_"+tig.el+"_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
 			
 			if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 			{
@@ -1028,7 +1028,7 @@ function langFind(query, index)
 			
 			for (var t = 0; t < terms.length; t++)
 			{
-				var resultId = "I-"+terms[t].term.replace(/[\'\"_\(\)\s]/g,'~').toUpperCase()+"_"+langList[l].el+"_"+langList[l].entry_id+"_"+langList[l].language_id+"_"+t;
+				var resultId = "I-"+terms[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+langList[l].el+"_"+langList[l].entry_id+"_"+langList[l].language_id+"_"+t;
 				
 				
 				if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
@@ -1070,7 +1070,7 @@ function personFind(query)
 					
 					if (!found) found = transactionNameCompare(query, transactions);
 					
-					var resultId = "I-"+tigs[t].term.replace(/[\'\"_\(\)\s]/g,'~').toUpperCase()+"_"+el+"_"+e+"_"+l+"_"+t;
+					var resultId = "I-"+tigs[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+el+"_"+e+"_"+l+"_"+t;
 					
 					if (found && $.inArray(resultId, results) < 0)
 					{
@@ -1121,7 +1121,7 @@ function subjectFieldFind(query)
 				{
 					var tig = tigs[t];
 					
-					var resultId = "I-"+tigs[t].term.replace(/[\'\"_\(\)\s]/g,'~').toUpperCase()+"_"+el+"_"+e+"_"+l+"_"+t;
+					var resultId = "I-"+tigs[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+el+"_"+e+"_"+l+"_"+t;
 					
 					if (found && $.inArray(resultId, results) < 0)
 					{
@@ -1149,7 +1149,7 @@ function customerFind(query)
 			if ( query == '*' || (typeof tig.tig['customers'][i] != 'undefined' &&
 				tig.tig['customers'][i].toUpperCase() == query.toUpperCase()))
 			{
-				var resultId = "I-"+tig.tig[t].term.replace(/[\'\"_\(\)\s]/g,'~').toUpperCase()+"_"+tig.el+"_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
+				var resultId = "I-"+tig.tig[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+tig.el+"_"+tig.entry_id+"_"+tig.language_id+"_"+tig.tig_id;
 				
 				if ($.inArray(resultId, resultList) < 0 && $.inArray(resultId, results) < 0)
 				{
