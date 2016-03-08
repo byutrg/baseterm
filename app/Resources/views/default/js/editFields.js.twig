@@ -221,8 +221,8 @@
 			
 			var input = $('<span class="editText"></span>');
 			input.attr('id', $(this).attr('id'));
-			var currentText;
-			($(this).val() != "") ? currentText = $(this).val() : currentText = "---";
+
+			var currentText =($(this).val() != "") ?  $(this).val() : "---";
 			$(this).replaceWith( input );
 			
 			
