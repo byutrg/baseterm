@@ -2,6 +2,7 @@
 
 $(document).ready(init);
 var entries;
+var entriesBackup;
 var persons;
 var tigCount = 0;
 var termbaseId;
@@ -982,6 +983,7 @@ function checkChanges()
 			confirm: saveChanges,
 			cancelButton: "Discard",
 			cancel: function(){
+                                entries = entriesBackup;
 				cancelChanges('Changes ignored.');
 			},
 		});

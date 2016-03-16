@@ -639,7 +639,7 @@
 	//SELECTION MENUS
 	   //General
 	$('body').on('click', '.editList', function(){
-		
+		entriesBackup = entries;
 		input = $('<select class="inputListValue"></select>');
 		input.attr('id',$(this).attr('id'));
 		var type = $(this).attr('id').split('_')[0];
