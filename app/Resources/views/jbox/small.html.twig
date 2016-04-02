@@ -6,6 +6,13 @@
 	<div class='modalDivValue infoContainer'>
 		<span class='label label_term'>Term: </span><span class='editText value_term' id='termValue_{{e}}_{{l}}_{{t}}'>{{entries[e].languages[l].terms[t].term}}</span>
 	</div>
+	{% if search_all == 'false' %}
+	<!-- ************************LANGUAGE**************************** -->
+	<div class='modalDivValue'>
+		<span class='label label_lang'>Language: </span>
+		<span class='editList value_lang' id='langValue_{{e}}_{{l}}_{{t}}'></span>
+	</div>
+	{%- endif -%}
 	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_approval'>Approval: </span>
@@ -100,6 +107,8 @@
 <script type='text/javascript'>
 $(function(){
 	{% if search_all == 'false' %}
+		$('#langValue_{{e}}_{{l}}_{{t}}').text(langCodeValueList[entries[{{e}}].languages[{{l}}].code]);
+			
 		if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
 		{
 			$('#geoValue_{{e}}_{{l}}_{{t}}').text(

@@ -772,6 +772,18 @@
 				
 				$(this).replaceWith(input);
 				break;
+			case 'langValue':
+				for (code in langCodeValueList)
+				{
+					opt = $('<option></option>');
+					opt.val(code);
+					opt.text(langCodeValueList[code]);
+					if (langCodeValueList[code] == $(this).text()) opt.prop('selected',true);
+					input.append(opt);
+				}
+				
+				$(this).replaceWith(input);
+				break;
 		}
 	
 		input.focus();
@@ -856,12 +868,19 @@
 					currentText = '---';
 					break;
 				default:
-					currentText = $(this).val();
+					if (langCodeValueList[$(this).val()] == previousText)
+					{
+						currentText = previousText;
+					}
+					else
+					{
+						currentText = $(this).val();
+					}
 			}
 			
 			$(this).replaceWith( input );
 			input.text(currentText);
-			
+
 			if (currentText != previousText)
 			{
 				setChanged(true);
@@ -919,6 +938,61 @@
 								delete entries[e]['subject_field'];
 							}
 						}
+						break;
+					//LANGUAGES
+					case 'langValue':
+						// Check if the same language exists already
+						// If it does: move tig to existing
+						input.text(langCodeValueList[currentText]);
+						lang_code_exists = false;
+						existing_lang_index = 0;
+						for (var x = 0; x < entries[e].languages.length; x++)
+						{
+							var lang = entries[e].languages[x];
+							if (lang.code == currentText)
+							{
+								lang_code_exists = true;
+								existing_lang_index = x;
+								break;
+							}
+						}
+						if (lang_code_exists)
+						{
+							entries[e].languages[existing_lang_index].terms.push(
+									entries[e].languages[l].terms[t]
+								);
+							entries[e].languages[l].terms.splice(t,1);
+							if (entries[e].languages[l].terms.length < 1)
+							{
+								entries[e].languages.splice(l,1);
+							}
+							for (var x = 0; x < entries[e].languages.length; x++)
+							{
+								var lang = entries[e].languages[x];
+								if (lang.code == currentText)
+								{
+									existing_lang_index = x;
+									break;
+								}
+							}
+							setNavObject(e,existing_lang_index,(entries[e].languages[existing_lang_index].terms.length-1));
+							setLevel('edit', 'lang');
+						}
+						else
+						{
+							new_language = new Language(currentText);
+							new_language.terms.push(entries[e].languages[l].terms[t]);
+							entries[e].languages[l].terms.splice(t,1);
+							if (entries[e].languages[l].terms.length < 1)
+							{
+								entries[e].languages.splice(l,1);
+							}
+							entries[e].languages.push(new_language);
+							setNavObject(e,(entries[e].languages.length-1),0);
+							setLevel('edit', 'lang');
+						}
+						getLists();
+						
 						break;
 				}
 				setLevel('edit', 'tig');

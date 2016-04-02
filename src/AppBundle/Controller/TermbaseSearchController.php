@@ -10,6 +10,11 @@ use ServiceBundle\Controller\TermbaseController;
 use ServiceBundle\Controller\TermbasesController;
 use ServiceBundle\Controller\EntryController;
 use ServiceBundle\Controller\PersonController;
+use AppBundle\Entity\Language;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class TermbaseSearchController extends Controller
 {
@@ -26,6 +31,20 @@ class TermbaseSearchController extends Controller
 		if (!isset($name) || $name == "") { $name = $request->query->get('name'); } //use GET if POST is 
 		$response = 'response';
 
+		$languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+		
+		$languageDict = array();
+		foreach ($languages as $lang)
+		{
+			$codes = split(",", $lang->getCodes());
+			foreach ($codes as $code)
+			{
+				$languageDict[$code] = $lang->getName();
+			}
+		}
+		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		$form = $this->createFormBuilder()
@@ -34,7 +53,7 @@ class TermbaseSearchController extends Controller
 				->getForm();
 		return $this->render(
 			'default/search.html.twig',
-			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name)
+			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name, 'languages'=>$languages, 'languageDict'=>$languageDict)
 		);
     }    
 	
@@ -78,9 +97,17 @@ class TermbaseSearchController extends Controller
 		$persons_json = $personController->getAll();
 		$persons = json_decode($persons_json);
 		
+		$languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+		
+		$encoders = array(new JsonEncoder());
+		$normalizers = array(new ObjectNormalizer());
+		$serializer = new Serializer($normalizers,$encoders);
+		$json_languages = $serializer->serialize($languages, 'json');
 		return $this->render( 
 			'default/js/search.js.twig',
-			array('entries'=>$entries,'id'=>$id, 'persons'=>$persons, 'GET'=>$_GET)
+			array('entries'=>$entries,'id'=>$id, 'persons'=>$persons, 'languages'=>$json_languages, 'GET'=>$_GET)
 		);
 	}
 	

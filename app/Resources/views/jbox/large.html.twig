@@ -6,6 +6,13 @@
 	<div class='modalDivValue'>
 		<span class='label label_term'>Term: </span><span class='editText value_term' id='termValue_{{e}}_{{l}}_{{t}}_L'>{{entries[e].languages[l].terms[t].term}}</span>
 	</div>
+	{% if search_all == 'false' %}
+	<!-- ************************LANGUAGE**************************** -->
+	<div class='modalDivValue'>
+		<span class='label label_lang'>Language: </span>
+		<span class='editList value_lang' id='langValue_{{e}}_{{l}}_{{t}}_L'></span>
+	</div>
+	{%- endif -%}
 	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_approval'>Approval: </span>
@@ -317,7 +324,7 @@
 						{% elseif search_all == 'false' %}
 							{% set mid = 'M_'~e~'_'~langIndex~'_'~tigIndex~'_term' %}
 						{% endif %}
-						<li id='{{mid}}' class='term_item'>{{tig.term}}</li>
+						<li id='{{mid}}' class='term_item'>{{tig.term}} ({{languageDict[lang.code]}})</li>
 						{% set tigIndex = tigIndex + 1 %}
 					{% endfor %}
 				{% endif %}
@@ -605,6 +612,8 @@
 </div>
 <script type='text/javascript'>
 $(function(){
+	
+	$('#langValue_{{e}}_{{l}}_{{t}}_L').text(langCodeValueList[entries[{{e}}].languages[{{l}}].code]);
 	
 	{% if search_all == 'false' %}
 		if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')

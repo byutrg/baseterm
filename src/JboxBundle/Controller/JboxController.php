@@ -23,20 +23,24 @@ class JboxController extends Controller
 		// $entries_json = $entryController->getAll();
 		// $entries = json_decode($entries_json);
 		
+		$languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		if ($search_all == 'false')
 		{
 			return $this->render(
 				'jbox/small.html.twig',
-				array('entries'=>$entries, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
+				array('entries'=>$entries, 'languages'=>$languages, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
 			);
 		}
 		else if ($search_all == 'true')
 		{
 			return $this->render(
 				'jbox/small.html.twig',
-				array('entries'=>$entries, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
+				array('entries'=>$entries, 'languages'=>$languages, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
 			);
 		}
     }
@@ -55,20 +59,33 @@ class JboxController extends Controller
 		// $entries_json = $entryController->getAll();
 		// $entries = json_decode($entries_json);
 		
+		$languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+		
+		$languageDict = array();
+		foreach ($languages as $lang)
+		{
+			$codes = split(",", $lang->getCodes());
+			foreach ($codes as $code)
+			{
+				$languageDict[$code] = $lang->getName();
+			}
+		}
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		if ($search_all == 'false')
 		{
 			return $this->render(
 				'jbox/large.html.twig',
-				array('entries'=>$entries, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
+				array('entries'=>$entries, 'languages'=>$languages, 'languageDict'=>$languageDict, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
 			);
 		}
 		else if ($search_all == 'true')
 		{
 			return $this->render(
 				'jbox/large.html.twig',
-				array('entries'=>$entries, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
+				array('entries'=>$entries,'languages'=>$languages, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
 			);
 		}
 		

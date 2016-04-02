@@ -18,6 +18,7 @@ var termList = [];
 var resultList = [];
 var resultRows = [];
 var activeModal = {};
+var activeModal_id = "";
 var pendingModal = {};
 var quickLangSelectModal = {};
 var targetSelectModal = {};
@@ -50,7 +51,9 @@ $(document).ready($('#resultsTable').tablesorter());
 function init()
 {
 	entries = $.parseJSON('{{entries|json_encode}}');
+	entriesBackup = entries;
 	persons = $.parseJSON('{{persons|json_encode}}');
+	langCodeData = $.parseJSON('{{languages}}');
 
 	getLists();
 	termbaseId = '{{id|raw}}';
@@ -64,29 +67,30 @@ function init()
 	// transacPersonLoader();
 	
 	//add options to #languageCode select
-	$.getJSON('{{path("lang_codes_list")}}', function(data){
-		langCodeLoader(data);
-		{% if GET is defined %}
-			getVars = $.parseJSON('{{GET|json_encode}}');
-		{% else %}
-			getVars = 0
-		{% endif %}
+	langCodeLoader(langCodeData);
 
-		if (getVars != 0 && getVars['previous_forms'] != 0)
-		{
-			$('#term').val(getVars['term_val']);
-			$('#pos').val(getVars['pos_val']);
-			$('#languageCode').val(getVars['lang_val']);
-			$('#subjectField').val(getVars['subject_val']);
-			$('#approval').val(getVars['approval_val']);
-			$('#customer').val(getVars['customer_val']);
-			searchForm(false);
-		}
-		else
-		{
-			searchForm(true);
-		}
-	});
+	
+	{% if GET is defined %}
+		getVars = $.parseJSON('{{GET|json_encode}}');
+	{% else %}
+		getVars = 0
+	{% endif %}
+
+	if (getVars != 0 && getVars['previous_forms'] != 0)
+	{
+		$('#term').val(getVars['term_val']);
+		$('#pos').val(getVars['pos_val']);
+		$('#languageCode').val(getVars['lang_val']);
+		$('#subjectField').val(getVars['subject_val']);
+		$('#approval').val(getVars['approval_val']);
+		$('#customer').val(getVars['customer_val']);
+		searchForm(false);
+	}
+	else
+	{
+		searchForm(true);
+	}
+	
 	
 	//load region codes
 	$.ajax({
@@ -312,6 +316,7 @@ function getLists()
 		{
 			var language = languages[l];
 			var tigs = languages[l]['terms'];
+
 			langList.push({
 					'entry_id':e, 
 					'language_id':l,
@@ -441,7 +446,7 @@ function saveChanges()
 	e = navObject.e;
 	l = navObject.l;
 	t = navObject.t;
-	
+
 	checkTransac(e,l,t);
 	
 	//alert(JSON.stringify(entries[e]));
@@ -491,6 +496,7 @@ function saveChanges()
 
 function cancelChanges(message)
 {
+	activeModal_id = activeModal.id;
 	//refresh entries and clear all changes
 	$.ajax({
 		async: false,
@@ -505,7 +511,6 @@ function cancelChanges(message)
 		}
 	});
 
-	
 	new jBox('Notice', {
 		theme: 'NoticeBorder',
 		color: 'green',
@@ -526,7 +531,7 @@ function cancelChanges(message)
 
 function getNavObject()
 {
-	var idSplit = activeModal.id.split('_');
+	var idSplit = activeModal_id.split('_');
 			
 	var e = idSplit[1]; 
 	var l = idSplit[2];
@@ -538,6 +543,20 @@ function getNavObject()
 		't': t
 	};
 	
+	return navObject;
+}
+
+function setNavObject(entry_i, lang_i, term_i)
+{
+	var idSplit = activeModal_id.split('_');
+	
+	activeModal_id = idSplit[0]+"_"+entry_i+"_"+lang_i+"_"+term_i+"_modal";
+	
+	var navObject = {
+		'e': entry_i,
+		'l': lang_i,
+		't': term_i
+	}
 	return navObject;
 }
 
@@ -768,17 +787,8 @@ function printResults()
 		//Language
 		//lang
 		var code = entries[e]['languages'][l]['code'];
-		var langName = "";
+		var langName = (typeof langCodeValueList[code] != 'undefined')? langCodeValueList[code]:code;
 		var exists = false;
-		for (var z = 0; z < langCodeMaster.length; z++)
-		{
-			if ($.inArray(code.toLowerCase(),langCodeMaster[z].codes) > -1)
-			{
-				exists = true;
-				langName = langCodeMaster[z].name;
-			}
-		}
-		if (!exists) langName = code;
 		var resultLangCode = $('<td></td>');
 		if(typeof entries[e]['languages'][l]['terms'][t].geo != 'undefined')
 		{
@@ -829,15 +839,15 @@ function printResults()
 						var transTerm = $('<p></p>');
 						transTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t);;
 						transTerm.attr('class', 'term_item');;
-						
+						var langName = (typeof langCodeValueList[entries[e]['languages'][z].code] != 'undefined')? langCodeValueList[entries[e]['languages'][z].code]:entries[e]['languages'][z].code;
 						if (typeof entries[e]['languages'][z].terms[x].geo == 'undefined')
 						{
-							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+')');
+							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+langName+')');
 						}
 						else
 						{
 							region = regionCodeValueList[entries[e]['languages'][z].terms[x].geo];
-							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+entries[e]['languages'][z].code+') --- '+region);
+							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+langName+') --- '+region);
 						}
 						resultTranslations.append(transTerm);	
 					}
@@ -983,7 +993,7 @@ function checkChanges()
 			confirm: saveChanges,
 			cancelButton: "Discard",
 			cancel: function(){
-                                entries = entriesBackup;
+								getLists();
 				cancelChanges('Changes ignored.');
 			},
 		});
@@ -1021,7 +1031,8 @@ function largeWindowConstruct()
 function modalListener(modal)
 {
 	activeModal = modal;
-	activeModal.setHeight(200);
+	activeModal_id = activeModal.id;
+	activeModal.setHeight(230);
 	activeModal.setWidth(400);
 	// $('.expandButton').text('More Details');
 	// $('.expandButton').attr('onClick', 'expandModalButton_pressed()');
@@ -1121,7 +1132,7 @@ function shrinkModalButton_pressed()
 	t = navObject.t;
 	
 	activeModal.ajax({url: "{{path('jbox_small')}}", method: 'POST', data: {'entries':JSON.stringify(entries), 'termbaseId':termbaseId, 'nav': navObject, 'search_all': 'false'}});
-	activeModal.setHeight(200);
+	activeModal.setHeight(230);
 	activeModal.setWidth(400);
 	
 	activeIsSmall = true;
@@ -1139,14 +1150,7 @@ function langCodeLoader(langCodeData)
 	
 	for (var e = 0; e < langCodeMaster.length; e++)
 	{
-		var codeKey = '';
-		if (langCodeMaster[e].codes[0] != '')
-		{
-			codeKey = langCodeMaster[e].codes[0];
-		}
-		else{
-			codeKey = langCodeMaster[e].codes[2];
-		}
+		var codeKey = langCodeMaster[e].codes.split(',')[0];
 	
 		langCodeValueList[codeKey] = langCodeMaster[e].name;
 	}
@@ -1166,7 +1170,7 @@ function langCodeLoader(langCodeData)
 		var exists;
 		for (var e = 0; e < langCodeMaster.length; e++)
 		{
-			if ($.inArray(code.toLowerCase(),langCodeMaster[e].codes) > -1)
+			if ($.inArray(code.toLowerCase(),langCodeMaster[e].codes.split(',')[0]) > -1)
 			{
 				exists = true;
 				
