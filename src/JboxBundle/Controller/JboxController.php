@@ -27,20 +27,40 @@ class JboxController extends Controller
 				->getRepository('AppBundle:Language')
 				->findAll();
 		
+		$languageDict = array();
+		foreach ($languages as $lang)
+		{
+			$codes = preg_split("/,/", $lang->getCodes());
+			foreach ($codes as $code)
+			{
+				$languageDict[$code] = $lang->getName();
+			}
+		}
+		
+        $regions = $this->getDoctrine()
+				->getRepository('AppBundle:Region')
+				->findAll();
+        
+        $regionDict = array();
+        foreach ($regions as $region)
+		{
+			$regionDict[$region->getCode()] = $region->getName();
+		}
+		
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		if ($search_all == 'false')
 		{
 			return $this->render(
 				'jbox/small.html.twig',
-				array('entries'=>$entries, 'languages'=>$languages, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
+				array('entries'=>$entries, 'languages'=>$languages, 'languageDict'=>$languageDict, 'regionDict'=>$regionDict, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
 			);
 		}
 		else if ($search_all == 'true')
 		{
 			return $this->render(
 				'jbox/small.html.twig',
-				array('entries'=>$entries, 'languages'=>$languages, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
+				array('entries'=>$entries, 'languages'=>$languages, 'languageDict'=>$languageDict, 'regionDict'=>$regionDict, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'search_all' => $search_all)
 			);
 		}
     }
@@ -66,26 +86,37 @@ class JboxController extends Controller
 		$languageDict = array();
 		foreach ($languages as $lang)
 		{
-			$codes = split(",", $lang->getCodes());
+			$codes = preg_split("/,/", $lang->getCodes());
 			foreach ($codes as $code)
 			{
 				$languageDict[$code] = $lang->getName();
 			}
 		}
+		
+        $regions = $this->getDoctrine()
+				->getRepository('AppBundle:Region')
+				->findAll();
+        
+        $regionDict = array();
+        foreach ($regions as $region)
+		{
+			$regionDict[$region->getCode()] = $region->getName();
+		}
+        
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		if ($search_all == 'false')
 		{
 			return $this->render(
 				'jbox/large.html.twig',
-				array('entries'=>$entries, 'languages'=>$languages, 'languageDict'=>$languageDict, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
+				array('entries'=>$entries, 'languages'=>$languages, 'languageDict'=>$languageDict, 'regionDict'=>$regionDict, 'el'=>'', 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
 			);
 		}
 		else if ($search_all == 'true')
 		{
 			return $this->render(
 				'jbox/large.html.twig',
-				array('entries'=>$entries,'languages'=>$languages, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
+				array('entries'=>$entries,'languages'=>$languages, 'languageDict'=>$languageDict, 'regionDict'=>$regionDict, 'el'=>$nav['el'], 'e'=>$nav['e'], 'l'=>$nav['l'], 't'=>$nav['t'], 'no_edit'=> $no_edit, 'search_all' => $search_all)
 			);
 		}
 		

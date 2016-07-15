@@ -56,11 +56,11 @@ Class EditEntryController extends Controller
      */
 	public function deleteAction(Request $request)
 	{
-		$entryObject = $request->request->get('entry');
+		$entryId = $request->request->get('entry');
 		$id = $request->request->get('termbaseId');
 		
 		$entry = new EntryController($id);
-		$entry->setId($entryObject['id']);
+		$entry->setId($entryId);
 		$response = $entry->deleteEntry();
 		
 		return new Response(json_encode($response));
@@ -98,8 +98,21 @@ Class EditEntryController extends Controller
 	 */
 	public function entryAction()
 	{
+        $languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+		
+		$languageDict = array();
+		foreach ($languages as $lang)
+		{
+			$code = preg_split("/,/", $lang->getCodes())[0];
+
+			$languageDict[$code] = $lang->getName();
+		}
+        asort($languageDict);
 		return $this->render(
-			'forms/entry_level_info.html'
+			'forms/entry_level_info.html.twig',
+            array('languages'=> $languageDict)
 		);
 	}
 	
@@ -169,11 +182,22 @@ Class EditEntryController extends Controller
 		$e = $request->request->get('e');
 		$l = $request->request->get('l');
 		$t = $request->request->get('t');
-		$geoElementId = $request->request->get('geoElementId');
+        $geoElementId = $request->request->get('geoElementId');
+		$geoElementValue = $request->request->get('geoElementValue');
 
+        $regions = $this->getDoctrine()
+				->getRepository('AppBundle:Region')
+				->findAll();
+        
+        $regionDict = array();
+        foreach ($regions as $region)
+		{
+			$regionDict[$region->getCode()] = $region->getName();
+		}
+        
 		return $this->render(
 			'forms/geo.html.twig',
-			array('e'=>$e,'l'=>$l,'t'=>$t,'geoElementId'=>$geoElementId)
+			array('e'=>$e,'l'=>$l,'t'=>$t,'geoElementId'=>$geoElementId, 'geoElementValue'=>$geoElementValue, 'regions'=>$regionDict)
 		);
 	}
 	
@@ -182,8 +206,21 @@ Class EditEntryController extends Controller
 	 */
 	public function quickLangSelectAction()
 	{
+        $languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+        
+        $languageDict = array();
+		foreach ($languages as $lang)
+		{
+			$code = preg_split("/,/", $lang->getCodes())[0];
+
+			$languageDict[$code] = $lang->getName();
+		}
+        asort($languageDict);
 		return $this->render(
-			'jbox/language_quick_select.html.twig'
+			'jbox/language_quick_select.html.twig',
+            array('languages'=>$languageDict)
 		);
 	}	
 }

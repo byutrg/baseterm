@@ -6,13 +6,11 @@
 	<div class='modalDivValue'>
 		<span class='label label_term'>Term: </span><span class='editText value_term' id='termValue_{{e}}_{{l}}_{{t}}_L'>{{entries[e].languages[l].terms[t].term}}</span>
 	</div>
-	{% if search_all == 'false' %}
 	<!-- ************************LANGUAGE**************************** -->
 	<div class='modalDivValue'>
 		<span class='label label_lang'>Language: </span>
-		<span class='editList value_lang' id='langValue_{{e}}_{{l}}_{{t}}_L'></span>
+		<span class='editList value_lang' id='langValue_{{e}}_{{l}}_{{t}}_L'>{{languageDict[entries[e].languages[l].code]}}</span>
 	</div>
-	{%- endif -%}
 	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_approval'>Approval: </span>
@@ -83,7 +81,7 @@
 	<!-- ************************GEOGRAPHIC REGION************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_geo'>Region: </span>
-		<span class='editGeo value_geo' id='geoValue_{{e}}_{{l}}_{{t}}_L'></span>
+		<span class='editGeo value_geo' id='geoValue_{{e}}_{{l}}_{{t}}_L'>{% if entries[e].languages[l].terms[t].geo is defined %}{{regionDict[entries[e].languages[l].terms[t].geo]}}{% else %}---{% endif %}</span>
 	</div>
 	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
@@ -318,13 +316,24 @@
 				{% if l != loop.index - 1 %}
 					{% set tigIndex = 0 %}
 					{% for tig in entries[e].languages[loop.index-1].terms %}
+                        {% if tig.status is defined %}
+                            {% if tig.status == 'preferredTerm-admn-sts' %}
+                                {% set approvalStatus = 'preferred' %}
+                            {% elseif tig.status == 'admittedTerm-admn-sts' %}
+                                {% set approvalStatus = 'admitted' %}
+                            {% elseif tig.status == 'deprecatedTerm-admn-sts' %}
+                                {% set approvalStatus = 'deprecated' %}
+                            {% elseif tig.status == 'supersededTerm-admn-sts' %}
+                                {% set approvalStatus = 'superseded' %}
+                            {% endif %}
+                        {% endif %}
 						{% set mid = '' %}
 						{% if search_all == 'true' %}
 							{% set mid = 'M_'~el~'_'~e~'_'~langIndex~'_'~tigIndex~'_term' %}
 						{% elseif search_all == 'false' %}
 							{% set mid = 'M_'~e~'_'~langIndex~'_'~tigIndex~'_term' %}
 						{% endif %}
-						<li id='{{mid}}' class='term_item'>{{tig.term}} ({{languageDict[lang.code]}})</li>
+						<li id='{{mid}}' class='term_item'>{{tig.term}} ({{languageDict[lang.code]}}){% if approvalStatus is defined %} - {{approvalStatus}}{% endif %}</li>
 						{% set tigIndex = tigIndex + 1 %}
 					{% endfor %}
 				{% endif %}
@@ -610,30 +619,5 @@
 		<button class='shrinkButton' onclick='shrinkModalButton_pressed()'>Fewer Details</button>
 	</div>
 </div>
-<script type='text/javascript'>
-$(function(){
-	
-	$('#langValue_{{e}}_{{l}}_{{t}}_L').text(langCodeValueList[entries[{{e}}].languages[{{l}}].code]);
-	
-	{% if search_all == 'false' %}
-		if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
-		{
-			$('#geoValue_{{e}}_{{l}}_{{t}}_L').text(
-				regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
-			);
-		}
-		else $('#geoValue_{{e}}_{{l}}_{{t}}_L').text('---');
-	{% elseif search_all == 'true' %}
-		if (typeof entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
-		{
-			$('#geoValue_{{e}}_{{l}}_{{t}}_L').text(
-				regionCodeValueList[entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo]
-			);
-		}
-		else $('#geoValue_{{e}}_{{l}}_{{t}}_L').text('---');
-		$('.delButton').hide();
-	{% endif %}
 
-});
-</script>
 {% endblock %}

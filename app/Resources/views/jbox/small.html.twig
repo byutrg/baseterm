@@ -6,13 +6,11 @@
 	<div class='modalDivValue infoContainer'>
 		<span class='label label_term'>Term: </span><span class='editText value_term' id='termValue_{{e}}_{{l}}_{{t}}'>{{entries[e].languages[l].terms[t].term}}</span>
 	</div>
-	{% if search_all == 'false' %}
 	<!-- ************************LANGUAGE**************************** -->
 	<div class='modalDivValue'>
 		<span class='label label_lang'>Language: </span>
-		<span class='editList value_lang' id='langValue_{{e}}_{{l}}_{{t}}'></span>
+		<span class='editList value_lang' id='langValue_{{e}}_{{l}}_{{t}}'>{{languageDict[entries[e].languages[l].code]}}</span>
 	</div>
-	{%- endif -%}
 	<!-- ************************TERM STATUS************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_approval'>Approval: </span>
@@ -84,7 +82,7 @@
 	<!-- ************************GEOGRAPHIC REGION************************* -->
 	<div class='modalDivValue'>
 		<span class='label label_geo'>Region: </span>
-		<span class='editGeo value_geo' id='geoValue_{{e}}_{{l}}_{{t}}'></span>
+		<span class='editGeo value_geo' id='geoValue_{{e}}_{{l}}_{{t}}'>{% if entries[e].languages[l].terms[t].geo is defined %}{{regionDict[entries[e].languages[l].terms[t].geo]}}{% else %}---{% endif %}</span>
 	</div>
 	<!-- ************************SUBJECT FIELD************************* -->
 	<div class='modalDivValue'>
@@ -98,36 +96,12 @@
 		</span>
 		<input type='hidden' id='subjectValueInput_{{e}}_{{l}}_{{t}}' class='editSubject edit_subject_small' placeholder='electronics, mechanics, etc.' required/>
 	</div>
-	{% if is_granted('ROLE_ADMIN') %}
+	{% if is_granted('ROLE_ADMIN') and search_all == 'false' %}
 		<button class='deleteEntryButton delButton' onclick="deleteModalButton_pressed('{{e}}')">Delete Entry</button>
 		<button class='deleteTermButton delButton' onclick="deleteTermModalButton_pressed('{{e}}','{{l}}','{{t}}');">Delete Term</button>
 	{% endif %}
 	<button class='expandButton' onclick='expandModalButton_pressed()'>More Details</button>
 </div>
-<script type='text/javascript'>
-$(function(){
-	{% if search_all == 'false' %}
-		$('#langValue_{{e}}_{{l}}_{{t}}').text(langCodeValueList[entries[{{e}}].languages[{{l}}].code]);
-			
-		if (typeof entries[{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
-		{
-			$('#geoValue_{{e}}_{{l}}_{{t}}').text(
-				regionCodeValueList[entries[{{e}}].languages[{{l}}].terms[{{t}}].geo]
-			);
-		}
-		else $('#geoValue_{{e}}_{{l}}_{{t}}').text('---');
-	{% elseif search_all == 'true' %}
-		if (typeof entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo != 'undefined')
-		{	
-			$('#geoValue_{{e}}_{{l}}_{{t}}').text(
-				regionCodeValueList[entries_list[{{el}}][{{e}}].languages[{{l}}].terms[{{t}}].geo]
-			);
-		}
-		else $('#geoValue_{{e}}_{{l}}_{{t}}').text('---');
-		
-		$('.delButton').hide();
-	{% endif %}
-});
-</script>
+
 {% endblock %}
 

@@ -1,8 +1,8 @@
 {% for f in forms %}
 	<tr>
 	{{ form_start(f.form, {'action': path('search_termbase'), 'method': 'POST'}) }}
-		<td>{{f.termbase.name}}</td>
-		<td>{{f.termbase.working_language}}</td>
+        <td><span class=".editable">{{f.termbase.name}}</span></td>
+        <td><span class=".editable">{{f.termbase.working_language}}</span></td>
 		{% if is_granted('ROLE_ADMIN') %}
 			<td>
 				<div>
@@ -15,6 +15,7 @@
 		
 		<td>{{ form_widget(f.form.save) }}</td>
 		<input type='hidden' name='name' value='{{f.termbase.name}}'/>
+        <input type='hidden' name='termbaseId' value='{{f.termbase.id}}'/>
 	{{ form_end(f.form) }}
 	</tr>
 {% endfor %}

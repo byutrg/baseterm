@@ -38,13 +38,23 @@ class TermbaseSearchController extends Controller
 		$languageDict = array();
 		foreach ($languages as $lang)
 		{
-			$codes = split(",", $lang->getCodes());
+			$codes = preg_split("/,/", $lang->getCodes());
 			foreach ($codes as $code)
 			{
 				$languageDict[$code] = $lang->getName();
 			}
 		}
 		
+        $regions = $this->getDoctrine()
+				->getRepository('AppBundle:Region')
+				->findAll();
+        
+        $regionDict = array();
+        foreach ($regions as $region)
+		{
+			$regionDict[$region->getCode()] = $region->getName();
+		}
+        
 		// $termbase = new TermbaseController();
 		// $termbase->get($id);
 		$form = $this->createFormBuilder()
@@ -53,7 +63,7 @@ class TermbaseSearchController extends Controller
 				->getForm();
 		return $this->render(
 			'default/search.html.twig',
-			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name, 'languages'=>$languages, 'languageDict'=>$languageDict)
+			array('id'=>$id, 'newEntryForm'=>$form, 'name'=>$name, 'languages'=>$languages, 'languageDict'=>$languageDict, 'regionDict'=>$regionDict)
 		);
     }    
 	
@@ -62,9 +72,33 @@ class TermbaseSearchController extends Controller
      */
     public function searchAllAction(Request $request)
     {
+		$languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
 		
+		$languageDict = array();
+		foreach ($languages as $lang)
+		{
+			$codes = preg_split("/,/", $lang->getCodes());
+			foreach ($codes as $code)
+			{
+				$languageDict[$code] = $lang->getName();
+			}
+		}
+        
+        $regions = $this->getDoctrine()
+				->getRepository('AppBundle:Region')
+				->findAll();
+        
+        $regionDict = array();
+        foreach ($regions as $region)
+		{
+			$regionDict[$region->getCode()] = $region->getName();
+		}
+        
 		return $this->render(
-			'default/search_all.html.twig'
+			'default/search_all.html.twig',
+            array('languages'=>$languages, 'languageDict'=>$languageDict, 'regionDict'=>$regionDict)
 		);
     }    
 	
@@ -100,14 +134,27 @@ class TermbaseSearchController extends Controller
 		$languages = $this->getDoctrine()
 				->getRepository('AppBundle:Language')
 				->findAll();
-		
+        
 		$encoders = array(new JsonEncoder());
 		$normalizers = array(new ObjectNormalizer());
 		$serializer = new Serializer($normalizers,$encoders);
 		$json_languages = $serializer->serialize($languages, 'json');
+        
+        $regions = $this->getDoctrine()
+				->getRepository('AppBundle:Region')
+				->findAll();
+        
+        $regionDict = array();
+        foreach ($regions as $region)
+		{
+			$regionDict[$region->getCode()] = $region->getName();
+		}
+        
+        $regionDict_json = $serializer->serialize($regionDict, 'json');
+        
 		return $this->render( 
 			'default/js/search.js.twig',
-			array('entries'=>$entries,'id'=>$id, 'persons'=>$persons, 'languages'=>$json_languages, 'GET'=>$_GET)
+			array('entries'=>$entries,'id'=>$id, 'persons'=>$persons, 'languages'=>$json_languages, 'regions'=>$regionDict_json, 'GET'=>$_GET)
 		);
 	}
 	
@@ -136,9 +183,31 @@ class TermbaseSearchController extends Controller
 					));
 			}
 		}
+        
+        $languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+        
+		$encoders = array(new JsonEncoder());
+		$normalizers = array(new ObjectNormalizer());
+		$serializer = new Serializer($normalizers,$encoders);
+		$json_languages = $serializer->serialize($languages, 'json');
+        
+        $regions = $this->getDoctrine()
+				->getRepository('AppBundle:Region')
+				->findAll();
+        
+        $regionDict = array();
+        foreach ($regions as $region)
+		{
+			$regionDict[$region->getCode()] = $region->getName();
+		}
+        
+        $regionDict_json = $serializer->serialize($regionDict, 'json');
+        
 		return $this->render( 
 			'default/js/search_all.js.twig',
-			array('entries_list'=>$entries_list, 'entry_termbase_link'=>$entry_termbase_link)
+			array('entries_list'=>$entries_list, 'entry_termbase_link'=>$entry_termbase_link, 'languages'=>$json_languages, 'regions'=>$regionDict_json)
 		);
 	}
 	

@@ -17,11 +17,6 @@ var resultList = [];
 var resultRows = [];
 var activeModal = {};
 var pendingModal = {};
-var quickLangSelectModal = {};
-var targetSelectModal = {};
-var extRefSelectModal = {};
-var geoSelectModal = {};
-var imgSelectModal = {};
 var clickToViewTip = {};
 var clickToEditTip = {};
 var clickToAddNoteTip = {};
@@ -29,8 +24,6 @@ var displayRefTargetTip = {};
 var displayExtRefTargetTip = {};
 var displayImgTargetTip = {};
 var geoEditTip = {};
-var addNoteModal = {};
-var newEntryModal = {};
 var addTermModal = {};
 var saveConfirmModal = {};
 var saveConfirmModalMini = {};
@@ -83,32 +76,6 @@ function init()
 	//$.getJSON('{{path("region_codes_list")}}', function(data){
 	//	regionCodeLoader(data);
 	//});
-
-	//non-unique jBox windows
-	addNoteModal = new jBox('Modal', {
-		height: 300,
-		width: 300,
-		closeOnClick: false,
-	});
-	
-	//create new Entry modal
-	newEntryModal = new jBox('Modal',{
-		title: "New Entry:",
-		position: {
-			x: 50,
-			y: 50
-		},
-		ajax: {
-			url: "{{path('entry_new')}}", 
-			data: {
-				'termbaseId':termbaseId, 
-				},
-			reload: true
-			},
-		onClose: function(){
-			
-		}
-	});
 }
 
 //***************************Variable SET/GET*************************************

@@ -38,11 +38,26 @@
 
 {% block javascripts %}
 <script type='text/javascript'>
-$(document).ready(init);
+{#$(document).ready(init);#}
 var termbaseModal;
 var importModal;
-function init()
-{
+
+$('body').on('click', '.editable', function(){
+    console.log("MADE IT");
+    var input = $('<input></input>');
+    input.prop('value', $(this).attr('class'));
+    input.val($(this).text());
+    $(this).replaceWith(input);
+});
+
+$('body').on('focusout', '.editable', function(){
+    var span = $('<span></span>');
+    span.prop('class', $(this).attr('class'));
+    span.text($(this).val())
+    $(this).replaceWith(span);
+});
+
+$(function(){
 	termbaseModal = new jBox('Modal',{
 		ajax: {
 			url: 'termbase/create'
@@ -56,7 +71,7 @@ function init()
 			url: '{{path('import_view_termbase')}}',
 		},
 	});
-}
+});
 
 function createTermbase()
 {

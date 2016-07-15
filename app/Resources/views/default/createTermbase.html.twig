@@ -4,45 +4,14 @@
 	Termbase Name: <input type='text' placeholder='Termbase Name' name='termbase_name' required />.tbx
 	</div>
 	<div>
-	Working Language: <select id='languageCode' name='languageCode'></select>
+        Working Language: <select id='languageCode' name='languageCode'>
+            {% for key, lang in languages %}
+                <option value="{{key}}" {% if key == "en" %}selected{% endif %}>{{lang}}</option>
+            {% endfor %}
+        </select>
 	</div>
 	<div>
 	<input type='submit' value='Save'/>
 	</div>
 	{{ form_end(form.createView()) }}
-{% endblock %}
-
-{% block javascripts %}
-<script type='text/javascript'>
-$(document).ready(init);
-
-function init()
-{
-	$.getJSON('termbase/lang_codes.json', function(data){
-		
-		langCodeMaster = data;
-		var langCodes = [];
-
-		for (var e = 0; e < langCodeMaster.length; e++)
-		{
-			var code = '';
-			if (langCodeMaster[e].codes[0] != '')
-			{
-				code = langCodeMaster[e].codes[0];
-			}
-			else{
-				code = langCodeMaster[e].codes[2];
-			}
-			
-			var opt = $('<option></option>');
-			opt.attr('value', code);
-			opt.text(langCodeMaster[e].name);
-			if (code == 'en') {opt.attr('selected', true);}
-			$('#languageCode').append(opt);
-		}
-		
-		
-	});
-}
-</script>
 {% endblock %}

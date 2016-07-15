@@ -59,9 +59,21 @@ class TermbaseEditController extends Controller
 		$form = $this->createFormBuilder()
 				->getForm();
 		
+        $languages = $this->getDoctrine()
+				->getRepository('AppBundle:Language')
+				->findAll();
+		
+		$languageDict = array();
+		foreach ($languages as $lang)
+		{
+			$code = preg_split("/,/", $lang->getCodes())[0];
+
+			$languageDict[$code] = $lang->getName();
+		}
+        asort($languageDict);
 		return $this->render(
 			'default/createTermbase.html.twig',
-			array('form'=>$form)
+			array('form'=>$form, 'languages'=>$languageDict)
 		);
     }
 	

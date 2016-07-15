@@ -27,16 +27,6 @@
 	</div>
 	<div id='searchQueries'>
 		<input type='text' id='term' name='term' placeholder='Term'/>
-		<select id='pos' name='pos'>
-			<option value='' selected>Select a part of speech...</option>
-			<option value='noun'>Noun</option>
-			<option value='verb'>Verb</option>
-			<option value='adjective'>Adjective</option>
-			<option value='adverb'>Adverb</option>
-			<option value='properNoun'>Proper Noun</option>
-			<option value='other'>Other</option>
-			<option value='unspecified'>Unspecified</option>
-		</select>
 		<select id='languageCode' name='languageCode'>
 			<option value='' selected>Select a language...</option>
 		</select>
@@ -57,6 +47,16 @@
 		<select id='transacPerson' name='transacPerson'>
 			<option value='' selected>---</option>
 		</select>-->
+        <select id='pos' name='pos'>
+			<option value='' selected>Select a part of speech...</option>
+			<option value='noun'>Noun</option>
+			<option value='verb'>Verb</option>
+			<option value='adjective'>Adjective</option>
+			<option value='adverb'>Adverb</option>
+			<option value='properNoun'>Proper Noun</option>
+			<option value='other'>Other</option>
+			<option value='unspecified'>Unspecified</option>
+		</select>
 		<button id='search_all_button' onClick='searchClick()'>Search</button>
 		<button onClick='clearSearchQueries()'>Clear Search</button>
 	</div>

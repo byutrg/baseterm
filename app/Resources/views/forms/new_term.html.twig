@@ -111,8 +111,6 @@ function loadLanguageList(selectNew, code) //if selectNew is true, select code
 $('#langSelect_{{type}}').on('change',function(){
 	if($('#langSelect_{{type}}').val() == 'new_lang')
 	{	
-		if (typeof quickLangSelectModal.destroy != 'undefined') quickLangSelectModal.destroy();
-	
 		quickLangSelectModal = new jBox('Modal', {
 			closeOnClick: 'body',
 			repositionOnOpen: true,
@@ -125,15 +123,12 @@ $('#langSelect_{{type}}').on('change',function(){
 				url: "{{path('language_quick_select')}}",
 				reload: true
 			},
-			onClose: function(){
+			onCloseComplete: function(){
+                quickLangSelectModal.destroy();
 			}
-		});
-		quickLangSelectModal.open();
+		}).open();
 	}
-	else
-	{
-		if (typeof quickLangSelectModal.destroy != 'undefined') quickLangSelectModal.destroy();
-	}
+
 });
 
 function addContextToTig()

@@ -1,5 +1,8 @@
 <div class='geoContainer'>
 	<select id='geoContent_{{e}}_{{l}}_{{t}}'>
+        {%- for key,region in regions -%}
+        <option value="{{key}}" {% if geoElementValue == region %}selected{% endif %}>{{region}}</option> 
+        {%- endfor -%}
 	</select>
 	<button type='button' id='geoBtn' onclick='saveExtRef()'></button>
 	<button type='button' id='deleteGeoBtn' onclick='deleteGeoRef()'></button>
@@ -8,26 +11,12 @@
 
 $(function(){
 	//load regions
-	for(var i = 0; i < regionCodeMaster.length; i++)
-	{
-		var regionCode = regionCodeMaster[i].code;
-		var regionName = regionCodeMaster[i].regionName;
-		
-		var rOpt = $('<option></option>');
-		rOpt.prop('value',regionCode);
-		rOpt.text(regionName);
-		if($('#{{geoElementId}}').text() == regionName)
-		{
-			rOpt.prop('selected',true);
-		}
-		else if (regionCode == '029' && $('#{{geoElementId}}').text() == '---')
-		{ 
-			rOpt.prop('selected',true);
-		}
-		$('#geoContent_{{e}}_{{l}}_{{t}}').append(rOpt);
-	}
-	
-	if ( $('#{{geoElementId}}').text() == '---' )
+
+    $("#geoContent_{{e}}_{{l}}_{{t}}").on("change",function(){
+        $('#{{geoElementId}}').text($(this).children("option:selected").text());
+    });
+
+	if ( $('#{{geoElementId}} option').text() == '---' )
 	{
 		$('#geoBtn').text('Add Region');
 		$('#deleteGeoBtn').text('Cancel');
@@ -53,6 +42,7 @@ function deleteGeoRef()
 {
 	if($('#deleteGeoBtn').text() == 'Delete')
 	{ 
+        $('#{{geoElementId}}').text("---");
 		delete entries[{{e}}].languages[{{l}}].terms[{{t}}].geo;
 		setLevel('edit','tig');
 		setChanged(true);

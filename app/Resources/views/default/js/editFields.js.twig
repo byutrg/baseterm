@@ -1035,9 +1035,7 @@
 		var type = $(this).attr('id').split('_')[0];
 		var level = $(this).attr('id').split('_')[3];
 		var navObject = getNavObject();
-
-		if (typeof targetSelectModal.destroy != 'undefined') targetSelectModal.destroy();
-	   
+   
 		targetSelectModal = new jBox('Modal',{
 			closeOnClick: 'body',
 			title: 'Select a reference:',
@@ -1059,18 +1057,18 @@
 					'targetElementId':$(this).attr('id')
 				},
 				reload: true
-			}
-		});
-		targetSelectModal.open();
+			},
+            onCloseComplete: function(){
+                targetSelectModal.destroy();
+            }
+		}).open();
 	});
 	//external references
 	$('body').on('click', '.editExtRef, .extRefContent', function(){
 		var type = $(this).attr('id').split('_')[0];
 		var level = $(this).attr('id').split('_')[3];
 		var navObject = getNavObject();
-
-		if (typeof extRefSelectModal.destroy != 'undefined') extRefSelectModal.destroy();
-	   
+ 
 		extRefSelectModal = new jBox('Modal',{
 			closeOnClick: 'body',
 			title: 'Edit external reference:',
@@ -1092,9 +1090,11 @@
 					'extRefElementId':$(this).attr('id')
 				},
 				reload: true
-			}
-		});
-		extRefSelectModal.open();
+			},
+            onCloseComplete: function(){
+                extRefSelectModal.destroy();
+            }
+		}).open();
 	});
 	//images
 	$('body').on('click', '.editImgRef, .imgContent', function(){
@@ -1102,8 +1102,6 @@
 		var level = $(this).attr('id').split('_')[3];
 		var navObject = getNavObject();
 
-		if (typeof imgSelectModal.destroy != 'undefined') imgSelectModal.destroy();
-	   
 		imgSelectModal = new jBox('Modal',{
 			closeOnClick: 'body',
 			title: 'Edit Image Reference:',
@@ -1125,9 +1123,11 @@
 					'imgElementId':$(this).attr('id')
 				},
 				reload: true
-			}
-		});
-		imgSelectModal.open();
+			},
+            onCloseComplete: function(){
+                imgSelectModal.destroy()
+            }
+		}).open();
 	});
 	//GEO
 	$('body').on('click', '.editGeo', function(){
@@ -1135,8 +1135,6 @@
 		var level = $(this).attr('id').split('_')[3];
 		var navObject = getNavObject();
 
-		if (typeof geoSelectModal.destroy != 'undefined') geoSelectModal.destroy();
-	   
 		geoSelectModal = new jBox('Modal',{
 			closeOnClick: 'body',
 			title: 'Edit Image Reference:',
@@ -1155,12 +1153,15 @@
 					'e':navObject.e,
 					'l':navObject.l,
 					't':navObject.t,
-					'geoElementId':$(this).attr('id')
+                    'geoElementId':$(this).attr('id'),
+					'geoElementValue':$(this).text()
 				},
 				reload: true
-			}
-		});
-		geoSelectModal.open();
+			},
+            onCloseComplete: function(){
+                geoSelectModal.destroy();
+            }
+		}).open();
 	});
 	
 </script>

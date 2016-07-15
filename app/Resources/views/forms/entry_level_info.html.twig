@@ -9,7 +9,11 @@
 	<div>
 		<label for='entryLanguagesField'>Languages in this Entry:</label>
 		<div id='languagesList'></div>
-		<select id='entryLanguagesField'></select>
+        <select id='entryLanguagesField'>
+            {% for key, lang in languages %}
+                <option value="{{key}}">{{lang}}</option>
+            {% endfor %}
+        </select>
 		<button type='button' onClick='addLanguageToEntry()'>Add Language</button>
 	</div>
 	<!-- definitions -->
@@ -62,23 +66,5 @@
 					
 			}
 		});
-
-		for (var e = 0; e < langCodeMaster.length; e++)
-		{
-			var code = '';
-			if (langCodeMaster[e].codes[0] != '')
-			{
-				code = langCodeMaster[e].codes[0];
-			}
-			else{
-				code = langCodeMaster[e].codes[2];
-			}
-			
-			var opt = $('<option></option>');
-			opt.attr('value', code);
-			opt.text(langCodeMaster[e].name);
-			if (code == 'en') {opt.attr('selected', true);}
-			$('#entryLanguagesField').append(opt);
-		};
 	});
 </script>

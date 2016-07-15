@@ -20,11 +20,6 @@ var resultRows = [];
 var activeModal = {};
 var activeModal_id = "";
 var pendingModal = {};
-var quickLangSelectModal = {};
-var targetSelectModal = {};
-var extRefSelectModal = {};
-var geoSelectModal = {};
-var imgSelectModal = {};
 var clickToViewTip = {};
 var clickToEditTip = {};
 var clickToAddNoteTip = {};
@@ -32,8 +27,6 @@ var displayRefTargetTip = {};
 var displayExtRefTargetTip = {};
 var displayImgTargetTip = {};
 var geoEditTip = {};
-var addNoteModal = {};
-var newEntryModal = {};
 var addTermModal = {};
 var saveConfirmModal = {};
 var saveConfirmModalMini = {};
@@ -45,6 +38,12 @@ var changed = false;
 var editLevel = {'entry': false, 'lang': false, 'tig': false};
 var addLevel = {'entry': false, 'lang': false, 'tig': false};
 var activeIsSmall = true;
+var approvalPicklist = {
+    'preferredTerm-admn-sts' : 'preferred',
+    'admittedTerm-admn-sts' : 'admitted',
+    'deprecatedTerm-admn-sts' : 'deprecated',
+    'supersededTerm-admn-sts' : 'superseded'
+};
 
 $(document).ready($('#resultsTable').tablesorter());
 
@@ -54,7 +53,8 @@ function init()
 	entriesBackup = entries;
 	persons = $.parseJSON('{{persons|json_encode}}');
 	langCodeData = $.parseJSON('{{languages}}');
-
+    regionCodeValueList = $.parseJSON('{{regions}}');
+    
 	getLists();
 	termbaseId = '{{id|raw}}';
 	termbaseName = $('#termbaseName').text();
@@ -93,43 +93,17 @@ function init()
 	
 	
 	//load region codes
-	$.ajax({
+{#	$.ajax({
 		dataType: "json",
 		url: '{{path("region_codes_list")}}',
-		async: false,
+		async: true,
 		success: function(data){
 			regionCodeLoader(data);
 		}
-	});
-	//$.getJSON('{{path("region_codes_list")}}', function(data){
-	//	regionCodeLoader(data);
-	//});
-
-	//non-unique jBox windows
-	addNoteModal = new jBox('Modal', {
-		height: 300,
-		width: 300,
-		closeOnClick: false,
-	});
-	
-	//create new Entry modal
-	newEntryModal = new jBox('Modal',{
-		title: "New Entry:",
-		position: {
-			x: 50,
-			y: 50
-		},
-		ajax: {
-			url: "{{path('entry_new')}}", 
-			data: {
-				'termbaseId':termbaseId, 
-				},
-			reload: true
-			},
-		onClose: function(){
-			
-		}
-	});
+	});#}
+	{#$.getJSON('{{path("region_codes_list")}}', function(data){
+		regionCodeLoader(data);
+	});#}
 }
 
 //***************************Variable SET/GET*************************************
@@ -393,7 +367,7 @@ function deleteEntry(entryIndex)
 				method: "POST",
 				data: {
 					'termbaseId': termbaseId,
-					'entry': entries[entryIndex],
+					'entry': entries[entryIndex].id,
 				},
 				success: function(result){
 					new jBox('Notice', {
@@ -659,7 +633,24 @@ $('body').on('click','.term_item',function(){
 
 function addNewEntry()
 {
-	newEntryModal.open();
+	//create new Entry modal
+	newEntryModal = new jBox('Modal',{
+		title: "New Entry:",
+		position: {
+			x: 50,
+			y: 50
+		},
+		ajax: {
+			url: "{{path('entry_new')}}", 
+			data: {
+				'termbaseId':termbaseId, 
+				},
+			reload: true
+			},
+		onCloseComplete: function(){
+			newEntryModal.destroy();
+		}
+	}).open();
 }
 
 function searchClick()
@@ -792,7 +783,7 @@ function printResults()
 		var resultLangCode = $('<td></td>');
 		if(typeof entries[e]['languages'][l]['terms'][t].geo != 'undefined')
 		{
-			region = regionCodeValueList[entries[e]['languages'][l]['terms'][t].geo];
+			var region = regionCodeValueList[entries[e]['languages'][l]['terms'][t].geo];
 			resultLangCode.text(langName+" --- "+region);
 		}
 		else
@@ -825,8 +816,8 @@ function printResults()
 						}
 						else
 						{
-							region = regionCodeValueList[entries[e]['languages'][z].terms[x].geo];
-							synonymTerm.text(entries[e]['languages'][z].terms[x].term+" --- "+region);
+							var synonymRegion = regionCodeValueList[entries[e]['languages'][z].terms[x].geo];
+							synonymTerm.text(entries[e]['languages'][z].terms[x].term+" --- "+synonymRegion);
 						}
 						resultSynonym.append(synonymTerm);	
 					}
@@ -846,8 +837,9 @@ function printResults()
 						}
 						else
 						{
-							region = regionCodeValueList[entries[e]['languages'][z].terms[x].geo];
-							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+langName+') --- '+region);
+							var translationRegion = regionCodeValueList[entries[e]['languages'][z].terms[x].geo];
+                            var translationApproval = approvalPicklist[entries[e]['languages'][z].terms[x].status];
+							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+langName+') --- ' + translationRegion + ' - ' + translationApproval);
 						}
 						resultTranslations.append(transTerm);	
 					}
