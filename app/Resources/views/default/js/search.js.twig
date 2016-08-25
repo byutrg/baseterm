@@ -778,7 +778,7 @@ function printResults()
 		//Language
 		//lang
 		var code = entries[e]['languages'][l]['code'];
-		var langName = (typeof langCodeValueList[code] != 'undefined')? langCodeValueList[code]:code;
+		var langName = (typeof langCodeValueList[code.toLowerCase()] != 'undefined')? langCodeValueList[code.toLowerCase()]:code.toLowerCase();
 		var exists = false;
 		var resultLangCode = $('<td></td>');
 		if(typeof entries[e]['languages'][l]['terms'][t].geo != 'undefined')
@@ -830,7 +830,7 @@ function printResults()
 						var transTerm = $('<p></p>');
 						transTerm.attr('id', 'I_'+e+'_'+z+'_'+x+'_term_'+l+'_'+t);;
 						transTerm.attr('class', 'term_item');;
-						var langName = (typeof langCodeValueList[entries[e]['languages'][z].code] != 'undefined')? langCodeValueList[entries[e]['languages'][z].code]:entries[e]['languages'][z].code;
+						var langName = (typeof langCodeValueList[entries[e]['languages'][z].code.toLowerCase()] != 'undefined')? langCodeValueList[entries[e]['languages'][z].code.toLowerCase()]:entries[e]['languages'][z].code.toLowerCase();
 						if (typeof entries[e]['languages'][z].terms[x].geo == 'undefined')
 						{
 							transTerm.text(entries[e]['languages'][z].terms[x].term+' ('+langName+')');
@@ -1144,7 +1144,7 @@ function langCodeLoader(langCodeData)
 	{
 		var codeKey = langCodeMaster[e].codes.split(',')[0];
 	
-		langCodeValueList[codeKey] = langCodeMaster[e].name;
+		langCodeValueList[codeKey.toLowerCase()] = langCodeMaster[e].name;
 	}
 	
 	for (var i = 0; i < langList.length; i++)
