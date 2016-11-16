@@ -24,7 +24,7 @@ class TermbasesSelectController extends Controller
 			{
 				$form = $this->createFormBuilder($termbase)
 					->add('id', 'hidden')
-					->add('save', 'submit', array('label' => 'View'))
+					->add('save', 'submit', array('label' => 'View/Edit'))
 					->getForm();
 
 
