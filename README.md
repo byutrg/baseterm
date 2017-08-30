@@ -69,6 +69,14 @@ Note, you may need to fix permissions for the app/cache and app/logs folders aft
 php app/console cache:clear
 ```
 
+#### Promote User
+
+After accessing BaseTerm and creating your first user, you will need to promote them to admin.  After this all permissions can be handled internally within BaseTerm.
+
+```
+php app\console fos:user:promote [USERNAME] ROLE_ADMIN
+```
+
 ## Usage
 
 The instructions are included in "Using BaseTerm.docx", which is located in this repository.  
