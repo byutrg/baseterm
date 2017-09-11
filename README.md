@@ -49,6 +49,8 @@ From the main directory run the following:
 php app/console doctrine:schema:update --force
 ```
 
+After initializing the database, you will need to import "langauges_regions.sql" located in the "app" directory to have access to Langauges and Regions.  In the future this will be changed to happen automatically.
+
 #### Publish
 
 ##### Publish to the Development environment
