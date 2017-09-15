@@ -20,7 +20,7 @@ BaseTerm uses Apache, PHP5, and MySQL (it has been tested using Linux, Windows (
 Clone this git repository to the desired directory on your Apache webserver setup.
 
 ```
-git clone https://bitbucket.org/byutrgteam/baseterm.git
+git clone https://github.com/byutrg/baseterm.git
 ```
 
 Enter the directory:
