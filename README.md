@@ -45,6 +45,8 @@ Once you have composer in the main directory, you must run it:
 php composer install
 ```
 
+You will need to provide the value of `"termbase_api_location"` in parameters.yml.  Default is "localhost:6543", for the CRITI API default deployment configuration.
+
 This should install Symfony and all other requirements for BaseTerm.  You will need to provide information about your MySQL instance.  If you do not know yet, these settings can changed later in the app/config/parameters.yml file.
 
 ### Prepare the site
