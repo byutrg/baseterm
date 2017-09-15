@@ -8,11 +8,11 @@ BaseTerm is an open-source and free to use terminology management system built w
 
 You can choose between two version of the API:
 
-+ The Python-based CRITI API:  [https://github.com/LexTerm/CRITI/tree/master/server]
++ The Python-based CRITI API:  https://github.com/LexTerm/CRITI/tree/master/server
     + This API is more stable and reliable, but may be more difficult to install.
 
-+ A PHP Symfony-based BaseTerm API: [https://github.com/byutrg/baseterm-api]
-    + This API is still being developed and my exhibit unexpected behavior, but it may be easier to install.
++ A PHP Symfony-based BaseTerm API: https://github.com/byutrg/baseterm-api
+    + This API is still being developed and may exhibit unexpected behavior, but it may be easier to install.
 
 
 ## Installation
