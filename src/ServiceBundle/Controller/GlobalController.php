@@ -12,13 +12,14 @@
 namespace ServiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class GlobalController extends Controller
 {
-	public $api_address;
+	protected $api_address;
 	
-	public function __construct()
+	public function __construct($api_address)
 	{
-		$this->api_address = 'localhost:6543';
+		$this->api_address = $this->getParameter('termbase_api_location');
 	}
 }

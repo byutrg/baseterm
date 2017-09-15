@@ -13,19 +13,16 @@ namespace ServiceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ServiceBundle\Controller\apiController;
-use ServiceBundle\Controller\GlobalController;
 
 class TermbasesController extends Controller
 {
 	private $path;
 	private $api_address;
 	
-	public function __construct()
+	public function __construct($api_address)
 	{
-		$gobals = new GlobalController();
-		$this->api_address = $gobals->api_address;
-		
-		$this->path = $this->api_address."/termbases";
+		$this->api_address = $api_address;
+		$this->path = $api_address."/termbases";
 	}
 	
 	public function getAllAction()

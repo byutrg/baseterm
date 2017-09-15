@@ -109,7 +109,8 @@ class UserEditController extends Controller
 		$userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserByUsername($name);
 		
-		$personController = new PersonController($tid);
+		$personController = $this->get('person_controller');
+        $personController->setPath($tid);
 		$result = json_decode($personController->postPerson($person));
 		
 		$pid = $result->created;

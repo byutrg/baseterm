@@ -25,11 +25,8 @@ class TermbaseController extends Controller
 	public $baseId;
 	public $name;
 	
-	public function __construct()
+	public function __construct($api_address)
 	{
-		$gobals = new GlobalController();
-		$api_address = $gobals->api_address;
-		
 		$this->path = $api_address."/termbases";
 	}
 	

@@ -50,7 +50,7 @@ class TermbaseEditController extends Controller
 		$fileName = $request->files->get('form')['file']->getClientOriginalName();
 		$filePath = $request->files->get('form')['file']->getPathName();
 
-		$termbases = new TermbasesController();
+		$termbases = $this->get('termbases_controller');
 		$response = $termbases->import($filePath, $fileName);
 
 		return $this->redirectToRoute('termbase_list');
@@ -94,7 +94,7 @@ class TermbaseEditController extends Controller
 		$working_language = $request->request->get('languageCode');
 		$name = $request->request->get('termbase_name').".tbx";
 		
-		$termbase = new TermbaseController();
+		$termbase = $this->get('termbase_controller');
 		
 		$termbase->create($working_language, $name);
 		
@@ -129,7 +129,7 @@ class TermbaseEditController extends Controller
 	{ 
 		$id = $request->query->get('id');
 		
-		$termbase = new TermbaseController();
+		$termbase = $this->get('termbase_controller');
 		
 		$termbase->get($id);
 		$termbase->delete();

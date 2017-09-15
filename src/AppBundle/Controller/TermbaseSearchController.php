@@ -132,11 +132,14 @@ class TermbaseSearchController extends Controller
      */
 	public function scriptAction($id)
 	{
-		$entryController = new EntryController($id);
+		
+		$entryController = $this->get('entry_controller');
+		$entryController->setPath($id);
 		$entries_json = $entryController->getAll();
 		$entries = json_decode($entries_json);
 		
-		$personController = new PersonController($id);
+		$personController = $this->get('person_controller');
+        $personController->setPath($id);
 		$persons_json = $personController->getAll();
 		$persons = json_decode($persons_json);
 		
@@ -174,14 +177,16 @@ class TermbaseSearchController extends Controller
 	{
 		$entries_list = array();
 		$entry_termbase_link = array();
-		$tc = new TermbasesController();
+		
+		$tc = $this->get('termbases_controller');
 		$termbases = json_decode($tc->getAllAction());
 		
 		if (isset($termbases) && count($termbases) > 0)
 		{
 			foreach ($termbases as $termbase)
 			{
-				$entryController = new EntryController($termbase->id);
+                $entryController = $this->get('entry_controller');
+                $entryController->setPath($termbase->id);
 				$entries_json = $entryController->getAll();
 				$entries = json_decode($entries_json);
 				

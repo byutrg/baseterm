@@ -17,16 +17,20 @@ use ServiceBundle\Controller\GlobalController;
 
 class EntryController extends Controller
 {
+	private $api_address;
 	private $path;
 	private $path_id;
 	
-	public function __construct($termbase_id)
+	public function __construct($api_address)
 	{
-		$globals = new GlobalController();
-		$api_address = $globals->api_address;
-		
-		$this->path = $api_address."/termbases/".$termbase_id."/entries";
+		$this->api_address = $api_address;
 	}
+
+	public function setPath($termbase_id)
+	{
+		$this->path = $this->api_address."/termbases/".$termbase_id."/entries";
+	}
+
 	
 	//Entry Controller
 	public function setId($entry_id)

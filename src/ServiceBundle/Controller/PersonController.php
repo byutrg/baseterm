@@ -17,16 +17,19 @@ use ServiceBundle\Controller\GlobalController;
 
 class PersonController extends Controller
 {
+	private $api_adress;
 	private $path;
 	
-	public function __construct($termbase_id)
+	public function __construct($api_address)
 	{
-		$gobals = new GlobalController();
-		$api_address = $gobals->api_address;
-		
-		$this->path = $api_address."/termbases/".$termbase_id."/people";
+		$this->api_address = $api_address;
 	}
 	
+	public function setPath($termbase_id)
+	{
+		$this->path = $this->api_address."/termbases/".$termbase_id."/people";
+	}
+
 	//Person Controller
 	public function getAll()
 	{

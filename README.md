@@ -2,7 +2,14 @@
 
 A Symfony project created on September 16, 2015, 3:57 pm.
 
-BaseTerm is an open-source and free to use terminology management system built with the primary goal of natively supporting the most popular TBX dialect for exchange, TBX-Basic.
+BaseTerm is an open-source and free to use terminology management system built with the primary goal of natively supporting the most popular TBX dialect for exchange, TBX-Basic.  Note that BaseTerm is still under development and bugs are likely to be encountered (please report them when you do find them! Thanks!).
+
+**BaseTerm relies on an API to handle termbase storage.**
+
+Currently the CRITI API is the only option:  https://github.com/LexTerm/CRITI/tree/master/server
+
+Soon we be releasing a PHP Symfony version of the API here.
+
 
 ## Installation
 

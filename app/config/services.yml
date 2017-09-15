@@ -11,14 +11,19 @@ services:
         class: ServiceBundle\Controller\apiController
     termbases_controller:
         class: ServiceBundle\Controller\TermbasesController
+        arguments: ["%termbase_api_location%"]
     termbase_controller:
         class: ServiceBundle\Controller\TermbaseController
+        arguments: ["%termbase_api_location%"]
     global_controller:
         class: ServiceBundle\Controller\GlobalController
+        arguments: ["%termbase_api_location%"]
     person_controller:
         class: ServiceBundle\Controller\PersonController
+        arguments: ["%termbase_api_location%"]
     entry_controller:
         class: ServiceBundle\Controller\EntryController
+        arguments: ["%termbase_api_location%"]
     app.form.registration:
         class: UserBundle\Form\Type\RegistrationFormType
         tags:

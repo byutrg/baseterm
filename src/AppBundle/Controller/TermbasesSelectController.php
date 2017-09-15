@@ -22,7 +22,7 @@ class TermbasesSelectController extends Controller
 {	
 	public function getAllAction()
 	{
-		$TermbasesController = new TermbasesController();
+		$TermbasesController = $this->get('termbases_controller');
 		$result = $TermbasesController->getAllAction();
 		$termbases = json_decode($result);
 		$forms = array();
@@ -54,7 +54,7 @@ class TermbasesSelectController extends Controller
 	{
 		$id = $request->query->get('id');
 		
-		$termbase = new TermbaseController();
+		$termbase = $this->get('termbase_controller');
 		$termbase->get($id);
 		
 		return new Response($termbase->exportToFile());

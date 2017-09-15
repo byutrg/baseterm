@@ -28,7 +28,8 @@ Class EditEntryController extends Controller
 
 		$id = $request->request->get('id');
 		
-		$entryController = new EntryController($id);
+		$entryController = $this->get('entry_controller');
+        $entryController->setPath($id);
 		$entries_json = $entryController->getAll();
 		
 		return new Response($entries_json);
@@ -53,7 +54,8 @@ Class EditEntryController extends Controller
 		$entryObject = $request->request->get('entry');
 		$id = $request->request->get('termbaseId');
 		
-		$entry = new EntryController($id);
+		$entry = $this->get('entry_controller');
+        $entry->setPath($id);
 		$entry->setId($entryObject['id']);
 		$response = $entry->updateEntry($entryObject);
 		
@@ -68,7 +70,8 @@ Class EditEntryController extends Controller
 		$entryId = $request->request->get('entry');
 		$id = $request->request->get('termbaseId');
 		
-		$entry = new EntryController($id);
+		$entry = $this->get('entry_controller');
+        $entry->setPath($id);
 		$entry->setId($entryId);
 		$response = $entry->deleteEntry();
 		
@@ -83,7 +86,8 @@ Class EditEntryController extends Controller
 		$entryObject = $request->request->get('entry');
 		$id = $request->request->get('termbaseId');
 		
-		$entry = new EntryController($id);
+		$entry = $this->get('entry_controller');
+        $entry->setPath($id);
 		$result = $entry->addEntry($entryObject);
 		
 		return new Response(var_dump($result));
