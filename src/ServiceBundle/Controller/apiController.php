@@ -33,17 +33,17 @@ class apiController extends Controller
 	public function post($path, $data) //takes API path and post data array
 	{
 		$ch = curl_init();
-		
+        
 		curl_setopt_array($ch, array(
 			CURLOPT_RETURNTRANSFER => 1,
-			//CURLOPT_HTTPHEADER => array('Content-Type: application/json'), //x-www-form-urlencoded
+			CURLOPT_HTTPHEADER => array('Content-Type: application/json'), //x-www-form-urlencoded
 			CURLOPT_URL => $path,
 			CURLOPT_POST => 1,
 			CURLOPT_POSTFIELDS => json_encode($data)
 		));
 	
 		$result = curl_exec($ch);
-		
+
 		return $result;
 	}
 	
