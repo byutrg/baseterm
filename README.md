@@ -80,9 +80,17 @@ Note, you may need to fix permissions for the app/cache and app/logs folders aft
 php app/console cache:clear
 ```
 
+#### Create First User
+
+You can create the user using the BaseTerm Register page, but you can also do it via terminal command:
+
+```
+php app/console fos:user:create
+```
+
 #### Promote User
 
-After accessing BaseTerm and creating your first user, you will need to promote them to admin.  After this all permissions can be handled internally within BaseTerm.
+After creating your first user, you will need to promote them to admin.  After this all permissions can be handled internally within BaseTerm.
 
 ```
 php app\console fos:user:promote [USERNAME] ROLE_ADMIN
