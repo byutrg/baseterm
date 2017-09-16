@@ -43,7 +43,7 @@ class UserGroupAssociation
     /**
      *
      * @ORM\ManyToOne(targetEntity="GroupBundle\Entity\Group", inversedBy="user_group_associations")
-     * @ORM\JoinColumn(name="Group_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
     private $group;
  
