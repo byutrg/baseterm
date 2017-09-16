@@ -109,49 +109,52 @@ function getLists()
 	langList = [];
 	tigList = [];
 	termList = [];
+    
+    if (null != entries)
+    {
+        for (var el = 0; el < entries_list.length; el++)
+        {
+            for (var e = 0; e < entries_list[el].length; e++)
+            {
+                if (typeof entries_list[el][e]['languages'] == 'undefined') continue;
+                var languages = entries_list[el][e]['languages'];
+                //create List structures
+                for (var l = 0; l < languages.length; l++)
+                {
+                    var language = languages[l];
+                    var tigs = languages[l]['terms'];
+                    langList.push({
+                            'el':el,
+                            'entry_id':e, 
+                            'language_id':l,
+                            'language':language
+                        });
 
-	for (var el = 0; el < entries_list.length; el++)
-	{
-		for (var e = 0; e < entries_list[el].length; e++)
-		{
-			if (typeof entries_list[el][e]['languages'] == 'undefined') continue;
-			var languages = entries_list[el][e]['languages'];
-			//create List structures
-			for (var l = 0; l < languages.length; l++)
-			{
-				var language = languages[l];
-				var tigs = languages[l]['terms'];
-				langList.push({
-						'el':el,
-						'entry_id':e, 
-						'language_id':l,
-						'language':language
-					});
-					
-				for (var t = 0; t < tigs.length; t++)
-				{
-					tigCount++;
-					var term = tigs[t]['term'];
-					var tig = tigs[t];
-					tigList.push({
-						'el':el,
-						'entry_id':e,
-						'language_id':l,
-						'tig_id':t,
-						'tig':tig
-					});
-					
-					termList.push({
-						'el':el,
-						'entry_id':e,
-						'language_id':l,
-						'tig_id':t,
-						'term':term
-					});
-				}
-			}
-		}
-	}
+                    for (var t = 0; t < tigs.length; t++)
+                    {
+                        tigCount++;
+                        var term = tigs[t]['term'];
+                        var tig = tigs[t];
+                        tigList.push({
+                            'el':el,
+                            'entry_id':e,
+                            'language_id':l,
+                            'tig_id':t,
+                            'tig':tig
+                        });
+
+                        termList.push({
+                            'el':el,
+                            'entry_id':e,
+                            'language_id':l,
+                            'tig_id':t,
+                            'term':term
+                        });
+                    }
+                }
+            }
+        }
+    }
 }
 
 function getNavObject()
@@ -772,26 +775,33 @@ function transacLooper(transactions, personList) //used by transacPersonLoader()
 
 function subjectFieldLoader()
 {
-	for (var el = 0; el < entries_list.length; el++)
-	{
-		for (var i = 0; i < entries_list[el].length; i++)
-		{
-			var field = entries_list[el][i].subject_field;
-			
-			if (typeof field != 'undefined' && $.inArray(field, subjectFields) == -1)
-			{
-				subjectFields.push(field);
-			}
-		}
-	}
-	for (var i = 0; i < subjectFields.length; i++)
-	{
-		var field = subjectFields[i];
-		var opt = $('<option></option>');
-		opt.attr('value', field);
-		opt.text(field);
-		$('#subjectField').append(opt);
-	}
+    if (null != entries_list)
+    {
+        for (var el = 0; el < entries_list.length; el++)
+        {
+            for (var i = 0; i < entries_list[el].length; i++)
+            {
+                var field = entries_list[el][i].subject_field;
+
+                if (typeof field != 'undefined' && $.inArray(field, subjectFields) == -1)
+                {
+                    subjectFields.push(field);
+                }
+            }
+        }
+    }
+    
+    if (null != subjectFields)
+    {
+        for (var i = 0; i < subjectFields.length; i++)
+        {
+            var field = subjectFields[i];
+            var opt = $('<option></option>');
+            opt.attr('value', field);
+            opt.text(field);
+            $('#subjectField').append(opt);
+        }
+    }
 }
 
 function customerLoader()
@@ -1081,35 +1091,38 @@ function subjectFieldFind(query)
 {
 	var results = [];
 	
-	for (var el = 0; el < entries_list.length; el++)
-	{
-		for (var e = 0; e < entries_list[el].length; e++)
-		{
-			var subjectField = (typeof entries_list[el][e]['subject_field'] != 'undefined') ? entries_list[el][e]['subject_field'] : "";
-			
-			var found = (subjectField != "" && subjectField.toUpperCase() == query.toUpperCase()) ? true : false;
-			if (typeof entries_list[el][e]['languages'] == 'undefined') continue;
-			var languages = entries_list[el][e]['languages'];
-			for (var l = 0; l < languages.length; l++)
-			{
-				var language = languages[l];	
-				var tigs = language['terms'];
-				for (var t = 0; t < tigs.length; t++)
-				{
-					var tig = tigs[t];
-					
-					var resultId = "I-"+tigs[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+el+"_"+e+"_"+l+"_"+t;
-					
-					if (found && $.inArray(resultId, results) < 0)
-					{
-						results.push(resultId);
-					}
-					
-				}
-			}
+    if (null != entries_list)
+    {
+        for (var el = 0; el < entries_list.length; el++)
+        {
+            for (var e = 0; e < entries_list[el].length; e++)
+            {
+                var subjectField = (typeof entries_list[el][e]['subject_field'] != 'undefined') ? entries_list[el][e]['subject_field'] : "";
 
-		}
-	}
+                var found = (subjectField != "" && subjectField.toUpperCase() == query.toUpperCase()) ? true : false;
+                if (typeof entries_list[el][e]['languages'] == 'undefined') continue;
+                var languages = entries_list[el][e]['languages'];
+                for (var l = 0; l < languages.length; l++)
+                {
+                    var language = languages[l];	
+                    var tigs = language['terms'];
+                    for (var t = 0; t < tigs.length; t++)
+                    {
+                        var tig = tigs[t];
+
+                        var resultId = "I-"+tigs[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+el+"_"+e+"_"+l+"_"+t;
+
+                        if (found && $.inArray(resultId, results) < 0)
+                        {
+                            results.push(resultId);
+                        }
+
+                    }
+                }
+
+            }
+        }
+    }
 	
 	return results;
 }

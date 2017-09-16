@@ -71,8 +71,14 @@ function init()
 	
 	if (!showTips){$('#myonoffswitch').prop('checked', false);} 
 
-	$('#entry_count').text('This termbase has '+entries.length+' entries ('+tigCount+' terms).');
-	
+    if (null != entries)
+    {
+        $('#entry_count').text('This termbase has '+entries.length+' entries ('+tigCount+' terms).');
+    }
+    else
+    {
+        $('#entry_count').text('This termbase has 0 entries ('+tigCount+' terms).');
+    }
 	//add options to #transacPerson select
 	// transacPersonLoader();
 	
@@ -221,16 +227,18 @@ function checkPerson()
 		result = '';
 		personExists = false;
 		
-		for (var p = 0; p < persons.length; p++)
-		{
-			if (persons[p].fn == '{{app.user.fullusername|raw}}')
-			{
-				personExists = true;
-				pid = persons[p].id;
-				break;
-			}
+        if (null != persons)
+        {
+            for (var p = 0; p < persons.length; p++)
+            {
+                if (persons[p].fn == '{{app.user.fullusername|raw}}')
+                {
+                    personExists = true;
+                    pid = persons[p].id;
+                    break;
+                }
+            }
 		}
-		
 		if (personExists)
 		{
 			$.ajax({ //set personId for person
@@ -291,44 +299,46 @@ function getLists()
 	langList = [];
 	tigList = [];
 	termList = [];
-	tigCount = 0;
-	for (var e = 0; e < entries.length; e++)
-	{
-		var languages = entries[e]['languages'];
-		//create List structures
-		for (var l = 0; l < languages.length; l++)
-		{
-			var language = languages[l];
-			var tigs = languages[l]['terms'];
+	tigCount = 0
+    if (null != entries)
+    {
+        for (var e = 0; e < entries.length; e++)
+        {
+            var languages = entries[e]['languages'];
+            //create List structures
+            for (var l = 0; l < languages.length; l++)
+            {
+                var language = languages[l];
+                var tigs = languages[l]['terms'];
 
-			langList.push({
-					'entry_id':e, 
-					'language_id':l,
-					'language':language
-				});
-				
-			for (var t = 0; t < tigs.length; t++)
-			{
-				tigCount++;
-				var term = tigs[t]['term'];
-				var tig = tigs[t];
-				tigList.push({
-					'entry_id':e,
-					'language_id':l,
-					'tig_id':t,
-					'tig':tig
-				});
-				
-				termList.push({
-					'entry_id':e,
-					'language_id':l,
-					'tig_id':t,
-					'term':term
-				});
-			}
-		}
-	}
-	
+                langList.push({
+                        'entry_id':e, 
+                        'language_id':l,
+                        'language':language
+                    });
+
+                for (var t = 0; t < tigs.length; t++)
+                {
+                    tigCount++;
+                    var term = tigs[t]['term'];
+                    var tig = tigs[t];
+                    tigList.push({
+                        'entry_id':e,
+                        'language_id':l,
+                        'tig_id':t,
+                        'tig':tig
+                    });
+
+                    termList.push({
+                        'entry_id':e,
+                        'language_id':l,
+                        'tig_id':t,
+                        'term':term
+                    });
+                }
+            }
+        }
+    }
 	//add options to #subjectField select
 	subjectFieldLoader();
 	
@@ -1254,15 +1264,18 @@ function subjectFieldLoader()
 {
 	subjectFields = [];
 	$('#subjectField option').remove();
-	for (var i = 0; i < entries.length; i++)
-	{
-		var field = entries[i].subject_field;
-		
-		if (typeof field != 'undefined' && $.inArray(field, subjectFields) < 0)
-		{
-			subjectFields.push(field);
-		}
-	}
+    if (null != entries)
+    {
+        for (var i = 0; i < entries.length; i++)
+        {
+            var field = entries[i].subject_field;
+
+            if (typeof field != 'undefined' && $.inArray(field, subjectFields) < 0)
+            {
+                subjectFields.push(field);
+            }
+        }
+    }
 	var opt = $('<option></option>');
 	opt.attr('value', '');
 	opt.text("Select a subject field...");
@@ -1561,32 +1574,35 @@ function subjectFieldFind(query)
 {
 	var results = [];
 	
-	for (var e = 0; e < entries.length; e++)
-	{
-		var subjectField = (typeof entries[e]['subject_field'] != 'undefined') ? entries[e]['subject_field'] : "";
-		
-		var found = (subjectField != "" && subjectField.toUpperCase() == query.toUpperCase()) ? true : false;
-		
-		var languages = entries[e]['languages'];
-		for (var l = 0; l < languages.length; l++)
-		{
-			var language = languages[l];	
-			var tigs = language['terms'];
-			for (var t = 0; t < tigs.length; t++)
-			{
-				var tig = tigs[t];
-				
-				var resultId = "I-"+tigs[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+e+"_"+l+"_"+t;
-				
-				if (found && $.inArray(resultId, results) < 0)
-				{
-					results.push(resultId);
-				}
-				
-			}
-		}
+    if (null != entries)
+    {
+        for (var e = 0; e < entries.length; e++)
+        {
+            var subjectField = (typeof entries[e]['subject_field'] != 'undefined') ? entries[e]['subject_field'] : "";
 
-	}
+            var found = (subjectField != "" && subjectField.toUpperCase() == query.toUpperCase()) ? true : false;
+
+            var languages = entries[e]['languages'];
+            for (var l = 0; l < languages.length; l++)
+            {
+                var language = languages[l];	
+                var tigs = language['terms'];
+                for (var t = 0; t < tigs.length; t++)
+                {
+                    var tig = tigs[t];
+
+                    var resultId = "I-"+tigs[t].term.replace(/[^\w]/g,'~').toUpperCase()+"_"+e+"_"+l+"_"+t;
+
+                    if (found && $.inArray(resultId, results) < 0)
+                    {
+                        results.push(resultId);
+                    }
+
+                }
+            }
+
+        }
+    }
 	return results;
 }
 
