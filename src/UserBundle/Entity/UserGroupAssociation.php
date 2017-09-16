@@ -34,7 +34,7 @@ class UserGroupAssociation
  
     /**
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="user_Group_associations")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="user_group_associations")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *
      */
@@ -42,10 +42,10 @@ class UserGroupAssociation
  
     /**
      *
-     * @ORM\ManyToOne(targetEntity="GroupBundle\Entity\Group", inversedBy="user_Group_associations")
+     * @ORM\ManyToOne(targetEntity="GroupBundle\Entity\Group", inversedBy="user_group_associations")
      * @ORM\JoinColumn(name="Group_id", referencedColumnName="id")
      */
-    private $Group;
+    private $group;
  
     /**
      * Get id
@@ -83,12 +83,12 @@ class UserGroupAssociation
     /**
      * Set group
      *
-     * @param \GroupBundle\Entity\Group $Group
+     * @param \GroupBundle\Entity\Group $group
      * @return UserGroupAssociation
      */
-    public function setGroup(\GroupBundle\Entity\Group $Group = null)
+    public function setGroup(\GroupBundle\Entity\Group $group = null)
     {
-        $this->Group = $Group;
+        $this->group = $group;
  
         return $this;
     }
@@ -100,6 +100,6 @@ class UserGroupAssociation
      */
     public function getGroup()
     {
-        return $this->Group;
+        return $this->group;
     }
 }
