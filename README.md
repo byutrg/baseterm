@@ -2,17 +2,18 @@
 
 A Symfony project created on September 16, 2015, 3:57 pm.
 
-BaseTerm is an open-source and free to use terminology management system built with the primary goal of natively supporting the most popular TBX dialect for exchange, TBX-Basic.  Note that BaseTerm is still under development and bugs are likely to be encountered (please report them when you do find them! Thanks!).
+BaseTerm is an open-source and free to use terminology management system built with the primary goal of natively supporting the most popular TBX dialect for exchange, TBX-Basic.  Note that BaseTerm is still under development and bugs are likely to be encountered (Please report them when you do find them! Thanks!).
 
 **BaseTerm relies on an API to handle termbase storage.**
 
-You can choose between two version of the API:
+You can choose between two versions of the API:
 
 + The Python-based CRITI API:  https://github.com/LexTerm/CRITI/tree/master/server
-    + This API is more stable and reliable, but may be more difficult to install.
+    + This API is more stable and reliable, but may be more difficult to install in a Windows environment.  
+    + The CRITI API is no longer being actively developed.
 
 + A PHP Symfony-based BaseTerm API: https://github.com/byutrg/baseterm-api
-    + This API is still being developed and may exhibit unexpected behavior, but it may be easier to install.
+    + This API is still being developed and may exhibit unexpected behavior, but it may be easier to install in all OS environments.
 
 
 ## Installation
@@ -62,7 +63,7 @@ From the main directory run the following:
 php app/console doctrine:schema:update --force
 ```
 
-After initializing the database, you will need to import "langauges_regions.sql" located in the "app" directory to have access to Langauges and Regions.  In the future this will be changed to happen automatically.
+After initializing the database, you will need to import "languages_regions.sql" located in the "app" directory to have access to Languages and Regions.  In the future this will be changed to happen automatically.
 
 #### Publish
 
